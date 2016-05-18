@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:weightSum="5">
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/img_icon_question_detail"
+        android:src="@mipmap/grey"
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/txt_name_question_detail"
+        android:gravity="center_vertical"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_weight="3"
+        android:text="Question 1"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="16sp"/>
+    <ImageView
+        android:id="@+id/img_isdone_question_detail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:src="@mipmap/ic_panorama_fish_eye_black_24dp"
+        android:tint="@color/color_grey_500"/>
+
+</LinearLayout>

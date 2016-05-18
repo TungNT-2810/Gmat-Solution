@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorMain">#FF5722</color>
+    <color name="color_white">#FFFFFF</color>
+    <color name="color_correct">#66BB6A</color>
+    <color name="color_in_correct">#EF5350</color>
+    <color name="color_orange_main">#FF6F00</color>
+    <color name="color_orange_500">#FFEBEE</color>
+    <color name="color_orange_400">#EF5350</color>
+    <color name="color_selected_answer">#2196F3</color>
+    <color name="color_normal_answer">#000000</color>
+    <color name="color_grey_50">#FAFAFA</color>
+    <color name="color_grey_500">#9E9E9E</color>
+    <color name="color_red_500">#F44336</color>
+    <color name="color_green_500">#4CAF50</color>
+    <color name="color_yellow_500">#FFEB3B</color>
+    <color name="color_primary">#FF5722</color>
+    <color name="color_primary_dark">#E64A19</color>
+    <color name="color_window_background">#FAFAFA</color>
+    <color name="color_background_line">#E0E0E0</color>
+    <color name="color_home_background">#FFE0B2</color>
+    <color name="text_color">#224b5f</color>
+</resources>

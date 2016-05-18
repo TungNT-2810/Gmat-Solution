@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="50dp"
+    android:padding="@dimen/question_answer_summary_padding">
+    <TextView
+        android:id="@+id/txv_index"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:textSize="@dimen/question_text_size"
+        android:layout_marginRight="@dimen/question_margin"
+        android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/txv_preview"
+        android:layout_width="0dp"
+        android:layout_weight="6"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:textSize="@dimen/question_text_size"
+        android:layout_marginRight="@dimen/question_margin"
+        android:singleLine="true"
+        android:ellipsize="end"
+        />
+    <ImageView
+        android:id="@+id/imv_status"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:scaleType="center"
+        android:layout_height="match_parent" />
+</LinearLayout>
+

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="0dp"
+    android:paddingBottom="0dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:fitsSystemWindows="true"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/color_orange_main"
+    tools:context="org.iliat.gmat.activity.AnswerQuestionActivity"
+    android:orientation="vertical"
+    android:weightSum="10">
+    <RelativeLayout
+        android:id="@+id/nav_question"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.2"
+        android:background="@color/color_orange_main">
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:id="@+id/doing_progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="55dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:max="100"
+            android:progress="80"
+            android:progressDrawable="@drawable/progress_bar_question_activity_background"/>
+        <TextView
+            android:id="@+id/text_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 / 10"
+            android:textColor="@color/color_white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_alignParentRight="true"/>
+        <TextView
+            android:id="@+id/textView_count_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00"
+            android:textColor="@color/color_white"
+            android:textSize="16sp"
+            android:layout_marginTop="15dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"/>
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/color_white"
+        android:orientation="vertical"
+        android:layout_weight="8.8">
+        <FrameLayout
+            android:background="@color/color_white"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/fragment_view_of_answer_question">
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal"
+            android:background="@color/color_orange_500"
+            android:padding="@dimen/question_answer_bottom_bar_padding"
+            android:gravity="center_horizontal"
+            android:weightSum="3">
+
+            <Button
+                android:id="@+id/btn_next"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@drawable/background_button_start"
+                android:text="@string/next_question" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
