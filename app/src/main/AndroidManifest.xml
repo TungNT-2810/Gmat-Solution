@@ -23,9 +23,11 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        >
         <activity
             android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,14 +36,18 @@
             </intent-filter>
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".activity.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme"></activity>
-        <activity android:name=".activity.AnswerQuestionActivity" />
-        <activity android:name=".activity.ScoreActivity" >
+        <activity android:name=".activity.AnswerQuestionActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.ScoreActivity"
+            android:screenOrientation="portrait">
 
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".activity.QuestionReviewActivity"
             android:label="@string/title_activity_question_review_fragment"
             android:theme="@style/AppTheme2"></activity>

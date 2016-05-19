@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -59,6 +60,19 @@ public class SumaryFragment extends BaseFragment {
         getDataForSumary();
         getSumaryTypeOfQuestion();
         listTypeQuestion.setAdapter(new ListTypeQuestionAdapter(view.getContext(), arrayList));
+        listTypeQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                QuestionType questionType=arrayList.get(position);
+                if(questionType!=null){
+                    QuestionTypeDetailFragment fragment=new QuestionTypeDetailFragment();
+                    Bundle bundle=new Bundle();
+                    bundle.putSerializable("type",questionType);
+                    fragment.setArguments(bundle);
+                    getScreenManager().openFragment(fragment,true);
+                }
+            }
+        });
         return view;
     }
 
@@ -115,7 +129,7 @@ public class SumaryFragment extends BaseFragment {
                     totalTagStar++;
                 }
             }
-            arrayList.add(new QuestionType(resultQTypes.get(i).getDetail(), results.size(), totalAnswered, totalRightAnswer));
+            arrayList.add(new QuestionType(resultQTypes.get(i).getCode() ,resultQTypes.get(i).getDetail(), results.size(), totalAnswered, totalRightAnswer));
             txtTagGrey.setText(String.valueOf(totalTagGrey));
             txtTagGreen.setText(String.valueOf(totalTagGreen));
             txtTagRed.setText(String.valueOf(totalTagRed));

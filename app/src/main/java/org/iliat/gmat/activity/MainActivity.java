@@ -29,7 +29,7 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ScreenManager {
+        implements NavigationView.OnNavigationItemSelectedListener, ScreenManager, FragmentManager.OnBackStackChangedListener {
 
     FragmentManager mFragmentManager;
     QuestionPackFragment questionPackFragment;
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity
 
     public void goToActivity(Class activityClass, Bundle bundle) {
         Intent intent = new Intent(this, activityClass);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtras(bundle);
         getApplicationContext().startActivity(intent);
     }
@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity
         super.onStart();
 
     }
+
 
     @Override
     public void onBackPressed() {
@@ -120,6 +121,10 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        if(id==android.R.id.home){
+            this.finish();
+            return true;
+        }
 
         //noinspection SimplifiableIfStatement
 
@@ -185,8 +190,21 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
     @Override
     public void setTitleOfActionBar(String titles) {
         getSupportActionBar().setTitle(titles);
+    }
+
+    @Override
+    public void onBackStackChanged() {
+        boolean canBack=getSupportFragmentManager().getBackStackEntryCount()>0;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(canBack);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        getFragmentManager().popBackStack();
+        return true;
     }
 }

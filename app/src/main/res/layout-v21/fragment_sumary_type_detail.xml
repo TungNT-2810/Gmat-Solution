@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
-    tools:context="org.iliat.gmat.activity.ScoreActivity"
     android:background="#224b5f">
-
-
 
     <LinearLayout
         android:id="@+id/viewHeader_score"
@@ -22,7 +18,7 @@
             android:layout_height="match_parent"
             android:layout_weight="5">
             <com.github.lzyzsd.circleprogress.ArcProgress
-                android:id="@+id/sumary_arc_progress"
+                android:id="@+id/sumary_arc_progress_detail"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 custom:arc_progress="80"
@@ -67,7 +63,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_toEndOf="@+id/imgTime"
                         android:layout_centerVertical="true"
-                        android:id="@+id/sumary_avg_time" />
+                        android:id="@+id/sumary_avg_time_detail" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_width="0dp"
@@ -88,7 +84,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_toEndOf="@+id/imgStar"
                         android:layout_centerVertical="true"
-                        android:id="@+id/sumary_Star" />
+                        android:id="@+id/sumary_Star_detail" />
                 </RelativeLayout>
             </LinearLayout>
             <LinearLayout
@@ -115,7 +111,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_toEndOf="@+id/imgGrey"
                         android:layout_centerVertical="true"
-                        android:id="@+id/sumary_grey" />
+                        android:id="@+id/sumary_grey_detail" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_width="0dp"
@@ -136,7 +132,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_toEndOf="@+id/imgGreen"
                         android:layout_centerVertical="true"
-                        android:id="@+id/sumary_green" />
+                        android:id="@+id/sumary_green_detail" />
                 </RelativeLayout>
             </LinearLayout>
             <LinearLayout
@@ -162,7 +158,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_toEndOf="@+id/imgYellow"
                         android:layout_centerVertical="true"
-                        android:id="@+id/sumary_Yellow" />
+                        android:id="@+id/sumary_Yellow_detail" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_width="0dp"
@@ -183,7 +179,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_toEndOf="@+id/imgRed"
                         android:layout_centerVertical="true"
-                        android:id="@+id/sumary_Red" />
+                        android:id="@+id/sumary_Red_detail" />
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
@@ -196,7 +192,7 @@
         android:textSize="18dp"
         android:layout_marginLeft="10dp"
         android:textColor="#9E9E9E"
-        android:id="@+id/txtCategory"
+        android:id="@+id/txtCategoryDetai"
         />
     <View
         android:layout_width="match_parent"
@@ -206,7 +202,7 @@
         />
 
     <ListView
-        android:id="@+id/ltv_type_question"
+        android:id="@+id/ltv_type_question_detail"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fitsSystemWindows="true"

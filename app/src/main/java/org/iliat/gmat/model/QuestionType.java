@@ -1,20 +1,32 @@
 package org.iliat.gmat.model;
 
 
+import java.io.Serializable;
+
 /**
  * Created by MrBom on 5/13/2016.
  */
-public class QuestionType {
+public class QuestionType implements Serializable{
+    private String code;
     private String typeName;
     private int totalQuestion;
     private int totalRightAnswer;
     private int totalAnswer;
 
-    public QuestionType(String typeName, int totalQuestion, int totalAnswer, int totalRightAnswer) {
+    public QuestionType(String code ,String typeName, int totalQuestion, int totalAnswer, int totalRightAnswer) {
+        this.code=code;
         this.typeName = typeName;
         this.totalQuestion = totalQuestion;
         this.totalRightAnswer = totalRightAnswer;
         this.totalAnswer=totalAnswer;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getTypeName() {
