@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity
 
     public void goToActivity(Class activityClass, Bundle bundle) {
         Intent intent = new Intent(this, activityClass);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtras(bundle);
         getApplicationContext().startActivity(intent);
     }
@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void openFragment(Fragment fragment, boolean addToBackStack) {
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.trans_left_in, R.anim.trans_left_out);
+        fragmentTransaction.setCustomAnimations(R.anim.anim_there_come, R.anim.anim_there_gone);
         fragmentTransaction.replace(R.id.view_fragment, fragment)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         if (addToBackStack) {
