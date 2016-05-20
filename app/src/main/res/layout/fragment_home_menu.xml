@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:background="@color/color_home_background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/fragment_home_menu">
 
     <LinearLayout
         android:layout_width="match_parent"
