@@ -52,6 +52,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:layout_centerVertical="true"
+                android:id="@+id/totalQuestion"
                 android:layout_marginLeft="16dp"/>
         </RelativeLayout>
 

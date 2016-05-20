@@ -26,6 +26,9 @@ import org.iliat.gmat.interf.OnDownloadFinished;
 import org.iliat.gmat.interf.ScreenManager;
 import org.iliat.gmat.utils.QuestionHelper;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ScreenManager, FragmentManager.OnBackStackChangedListener {
@@ -153,7 +156,7 @@ public class MainActivity extends AppCompatActivity
                 toggle.onOptionsItemSelected(item)) {
             return true;
         }
-        if (item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home && getFragmentManager().getBackStackEntryCount()>0) {
             getFragmentManager().popBackStack();
             Log.d("asdd","sssss");
             return true;
@@ -200,9 +203,9 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.setCustomAnimations(R.anim.trans_left_in, R.anim.trans_left_out);
         fragmentTransaction.replace(R.id.view_fragment, fragment).addToBackStack(fragment.getClass().getName())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-//        if (addToBackStack) {
-//            fragmentTransaction.addToBackStack(fragment.getClass().getName());
-//        }
+        if (addToBackStack) {
+            fragmentTransaction.addToBackStack(fragment.getClass().getName());
+        }
         fragmentTransaction.commit();
     }
 

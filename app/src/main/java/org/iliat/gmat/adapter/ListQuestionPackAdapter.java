@@ -81,6 +81,8 @@ public class ListQuestionPackAdapter extends
 
         holder.txtTime.setText(mQuestionPackVIewModels.get(position).getAvailableTime());
         holder.questionPack = questionPack;
+        holder.totalQuestion.setText(questionPack.getNumberOfQuestions()+" questions");
+        holder.txtIndexOfPack.setText((position+1)+"/"+mQuestionPackVIewModels.size());
 
     }
 
@@ -97,12 +99,16 @@ public class ListQuestionPackAdapter extends
     public class QuestionPackViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         CardView cardMain;
         TextView txtTime;
+        TextView totalQuestion;
+        TextView txtIndexOfPack;
         public QuestionPackViewModel questionPack;
 
         public QuestionPackViewHolder(View itemView) {
             super(itemView);
             cardMain = (CardView) itemView.findViewById(R.id.card_question_pack);
             txtTime = (TextView) itemView.findViewById(R.id.question_pack_name);
+            totalQuestion=(TextView)itemView.findViewById(R.id.totalQuestion);
+            txtIndexOfPack=(TextView)itemView.findViewById(R.id.index_of_pack);
             itemView.setOnClickListener(this);
         }
 
