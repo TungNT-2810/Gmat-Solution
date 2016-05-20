@@ -17,10 +17,12 @@
     <color name="color_red_500">#F44336</color>
     <color name="color_green_500">#4CAF50</color>
     <color name="color_yellow_500">#FFEB3B</color>
-    <color name="color_primary">#FF5722</color>
-    <color name="color_primary_dark">#E64A19</color>
+    <color name="color_primary">#00bcd4</color>
+    <color name="color_primary_dark">#0097a7</color>
     <color name="color_window_background">#FAFAFA</color>
     <color name="color_background_line">#E0E0E0</color>
-    <color name="color_home_background">#FFE0B2</color>
+    <color name="color_home_background">#eeeeee</color>
     <color name="text_color">#224b5f</color>
+    <color name="button_color">#8bc34a</color>
+    <color name="pack_locked_color">#dadada</color>
 </resources>

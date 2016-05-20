@@ -33,7 +33,14 @@ public class QuestionViewModel implements Serializable{
     }
 
     public AnswerModel getUserAnswer() {
+        if(answerChoices == null){
+            answerChoices = question.getAnswerList();
+        }
         return answerChoices.get(question.getUserAnswer());
+    }
+
+    public int getUserAnswerIndex() {
+        return question.getUserAnswer();
     }
 
     public int getUserChoise(){
@@ -114,7 +121,14 @@ public class QuestionViewModel implements Serializable{
     }
 
     public void saveUserAnswer() {
+        Log.d("saveUserAnswer", ""+question.getUserAnswer());
         question.setUserAnswer(question.getUserAnswer());
+    }
 
+    public int getTimeToFinish(){
+        return question.getTimeToFinish();
+    }
+    public void setTimeToFinish(int time){
+        question.setTimeToFinish(time);
     }
 }

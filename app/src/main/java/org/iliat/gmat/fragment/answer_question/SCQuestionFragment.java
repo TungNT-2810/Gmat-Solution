@@ -1,6 +1,5 @@
 package org.iliat.gmat.fragment.answer_question;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -70,15 +69,6 @@ public class SCQuestionFragment extends BaseFragment
         mQuestionCRModel = question;
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SCQuestionFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static SCQuestionFragment newInstance(String param1, String param2) {
         SCQuestionFragment fragment = new SCQuestionFragment();
         return fragment;
@@ -101,7 +91,7 @@ public class SCQuestionFragment extends BaseFragment
     private void initLayout(View view) {
         if (answerCRQuestionArrayList == null) {
             questionContent =  (MathView)view.findViewById(R.id.question_content);
-            answerCRQuestionArrayList = new ArrayList<AnswerCRQuestion>();
+            answerCRQuestionArrayList = new ArrayList<>();
             answerCRQuestionArrayList.add((AnswerCRQuestion)view.findViewById(R.id.answer_queston_1));
             answerCRQuestionArrayList.add((AnswerCRQuestion)view.findViewById(R.id.answer_queston_2));
             answerCRQuestionArrayList.add((AnswerCRQuestion)view.findViewById(R.id.answer_queston_3));
@@ -120,25 +110,6 @@ public class SCQuestionFragment extends BaseFragment
             questionContent.setText(mQuestionCRModel.getStimulus());
         }
     }
-
-
-/*    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }*/
-
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
 
     @Override
     public void onDetach() {
@@ -171,6 +142,7 @@ public class SCQuestionFragment extends BaseFragment
 
     @Override
     public void changeState(int index) {
+        mQuestionCRModel.getQuestion().setUserAnswer(index);
         for (int i = 0; i < ANSWER_CHOICE_NUM; i++) {
             if (i != index) {
                 answerCRQuestionArrayList.get(i).setUserChoise(false);
@@ -180,16 +152,6 @@ public class SCQuestionFragment extends BaseFragment
         }
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

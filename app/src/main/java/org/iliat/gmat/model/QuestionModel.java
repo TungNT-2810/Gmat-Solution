@@ -115,6 +115,7 @@ public class QuestionModel extends RealmObject {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         this.userAnswer = userAnswer;
+        realm.copyToRealmOrUpdate(this);
         realm.commitTransaction();
     }
 

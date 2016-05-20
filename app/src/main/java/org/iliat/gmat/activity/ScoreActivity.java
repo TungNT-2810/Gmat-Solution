@@ -1,18 +1,11 @@
 package org.iliat.gmat.activity;
 
 import android.content.Intent;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,15 +13,12 @@ import com.github.lzyzsd.circleprogress.ArcProgress;
 
 import org.iliat.gmat.R;
 import org.iliat.gmat.adapter.QuestionAnswerSummaryAdapter;
-import org.iliat.gmat.database.QuestionPack;
 import org.iliat.gmat.model.QuestionPackModel;
 import org.iliat.gmat.view_model.QuestionPackViewModel;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
-
-public class ScoreActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class ScoreActivity extends AppCompatActivity{
     private static final String TAG = ScoreActivity.class.toString();
     public static final String TAG_QUESTION_PACK_VIEW_MODEL = "QUESTION_PACK_VIEW_MODEL";
     public static final String SCOREACTIIVTY_POSITION = "SCOREACTIIVTY_POSITION";
@@ -85,9 +75,6 @@ public class ScoreActivity extends AppCompatActivity implements NavigationView.O
     @Override
     protected void onStart() {
         super.onStart();
-        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(getApplicationContext()).build();
-        realm = Realm.getInstance(realmConfiguration);
-        realm.setDefaultConfiguration(realmConfiguration);
         realm = Realm.getDefaultInstance();
     }
 
@@ -102,11 +89,13 @@ public class ScoreActivity extends AppCompatActivity implements NavigationView.O
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         String questionPackId = getDataFromBundle(bundle);
-        realm = realm.getDefaultInstance();
         QuestionPackModel questionPack = realm.where(QuestionPackModel.class).equalTo("id",questionPackId).findFirst();
         questionPackViewModel = new QuestionPackViewModel(questionPack, this);
         countTimeAverage = bundle.getInt(AnswerQuestionActivity.KEY_TIME_AVERAGE);
-        Log.d(TAG, questionPackViewModel.getAvailableTime());
+        for (int i = 0; i < questionPackViewModel.getQuestionViewModels().size(); i++){
+            Log.d("HungTD","" + questionPackViewModel.getQuestionViewModels().get(i).getUserAnswerIndex());
+        }
+
     }
 
     private void connectView(){
@@ -170,31 +159,5 @@ public class ScoreActivity extends AppCompatActivity implements NavigationView.O
 
     public static String getDataFromBundle(Bundle bundle) {
         return (String)bundle.getSerializable(QUESTION_PACK_VIEW_MODEL_BUNDLE_STRING);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_general) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 }

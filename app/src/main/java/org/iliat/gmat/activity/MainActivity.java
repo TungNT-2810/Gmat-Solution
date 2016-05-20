@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import org.iliat.gmat.R;
@@ -25,8 +26,6 @@ import org.iliat.gmat.interf.OnDownloadFinished;
 import org.iliat.gmat.interf.ScreenManager;
 import org.iliat.gmat.utils.QuestionHelper;
 
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ScreenManager, FragmentManager.OnBackStackChangedListener {
@@ -34,10 +33,11 @@ public class MainActivity extends AppCompatActivity
     FragmentManager mFragmentManager;
     QuestionPackFragment questionPackFragment;
     HomeFragment homeFragment;
+    ActionBarDrawerToggle toggle;
 
     public void goToActivity(Class activityClass, Bundle bundle) {
         Intent intent = new Intent(this, activityClass);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtras(bundle);
         getApplicationContext().startActivity(intent);
     }
@@ -49,19 +49,35 @@ public class MainActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+
+            public void onDrawerClosed(View view) {
+                invalidateOptionsMenu();
+                syncState();
+            }
+
+            public void onDrawerOpened(View drawerView) {
+                invalidateOptionsMenu();
+                syncState();
+            }
+        };
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        RealmConfiguration realmConfig = new RealmConfiguration.Builder(getApplicationContext()).build();
-        Realm.setDefaultConfiguration(realmConfig);
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().popBackStack();
+            }
+        });
         getIntances();
+        getFragmentManager().addOnBackStackChangedListener(this);
         homeFragment = new HomeFragment();
         openFragment(homeFragment, true);
     }
@@ -77,6 +93,13 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+
+    private void syncActionBarArrowState() {
+        int backStackEntryCount =
+                getFragmentManager().getBackStackEntryCount();
+        Log.d("TAGGG", ""+backStackEntryCount);
+        toggle.setDrawerIndicatorEnabled(backStackEntryCount == 1);
+    }
 
     @Override
     public void onBackPressed() {
@@ -94,7 +117,6 @@ public class MainActivity extends AppCompatActivity
         questionHelper.setOnDownloadFinished(new OnDownloadFinished() {
             @Override
             public void downloadFinish() {
-                Log.d("FUCK", "DUOC ROI");
                 //reload fragment
                 FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
                 fragmentTransaction.detach(questionPackFragment).attach(questionPackFragment).commit();
@@ -117,19 +139,25 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if(id==android.R.id.home){
-            this.finish();
+
+//        int id = item.getItemId();
+//        if(id==android.R.id.home){
+//            this.finish();
+//            return true;
+//        }
+
+        if (toggle.isDrawerIndicatorEnabled() &&
+                toggle.onOptionsItemSelected(item)) {
             return true;
         }
-
+        if (item.getItemId() == android.R.id.home) {
+            getFragmentManager().popBackStack();
+            Log.d("asdd","sssss");
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
         //noinspection SimplifiableIfStatement
-
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void getIntances() {
@@ -167,11 +195,11 @@ public class MainActivity extends AppCompatActivity
     public void openFragment(Fragment fragment, boolean addToBackStack) {
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.trans_left_in, R.anim.trans_left_out);
-        fragmentTransaction.replace(R.id.view_fragment, fragment)
+        fragmentTransaction.replace(R.id.view_fragment, fragment).addToBackStack(fragment.getClass().getName())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        if (addToBackStack) {
-            fragmentTransaction.addToBackStack(fragment.getClass().getName());
-        }
+//        if (addToBackStack) {
+//            fragmentTransaction.addToBackStack(fragment.getClass().getName());
+//        }
         fragmentTransaction.commit();
     }
 
@@ -198,8 +226,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackStackChanged() {
-        boolean canBack=getSupportFragmentManager().getBackStackEntryCount()>0;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(canBack);
+        syncActionBarArrowState();
     }
 
     @Override

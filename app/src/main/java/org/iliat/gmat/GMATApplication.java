@@ -26,20 +26,12 @@ public class GMATApplication extends Application {
     public static final String KEY_SHARE_PREFERENCES = "KEY_UNLOCK";
 
 
+
     @Override
     public void onCreate() {
         super.onCreate();
         RealmConfiguration realmConfig = new RealmConfiguration.Builder(getApplicationContext())
                 .build();
         Realm.setDefaultConfiguration(realmConfig);
-        //hello
-        //hi
-        //hihi
-        //hello
-        //Hello Hello Hello
-        //hello nam
-        //good
-        //Hello Linh
-        //ggg
     }
 }

@@ -7,7 +7,9 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -15,7 +17,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.iliat.gmat.R;
-import org.iliat.gmat.database.QuestionPack;
 import org.iliat.gmat.fragment.answer_question.SCQuestionFragment;
 import org.iliat.gmat.interf.ButtonNextControl;
 import org.iliat.gmat.interf.CallBackAnswerQuestion;
@@ -28,13 +29,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 public class AnswerQuestionActivity
         extends AppCompatActivity
-        implements ScreenManager, CallBackAnswerQuestion, ButtonNextControl {
+        implements ScreenManager, CallBackAnswerQuestion, ButtonNextControl{
     public static final String KEY_TIME_AVERAGE = "ANSWER_QUESTION_KEY_TIME_AVERAGE";
     long countTime = 0;
+    long timeQuestion = 0;
     Realm realm;
     int countAnswer = 12;
     int maxQuestion = 16;
@@ -53,6 +54,10 @@ public class AnswerQuestionActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answer_question);
 
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        setTitle("Quiz Test");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getDataFromIntent();
         getViewReferences();
         createTimer();
@@ -60,18 +65,29 @@ public class AnswerQuestionActivity
         openQuestionFragment();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void getDataFromIntent() {
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
         String questionPackId = getQuestionPackFromBundle(bundle);
-        RealmConfiguration realmConfig = new RealmConfiguration.Builder(getApplicationContext()).build();
-        realm = Realm.getInstance(realmConfig);
-        realm.setDefaultConfiguration(realmConfig);
+        realm = Realm.getDefaultInstance();
         QuestionPackModel questionPack = realm.where(QuestionPackModel.class).equalTo("id",questionPackId).findFirst();
-
         questionPackViewModel = new QuestionPackViewModel(questionPack, this);
         questionViewModel = questionPackViewModel.getFirstQuestionViewModel();
-
         countAnswer = 0;
         maxQuestion = questionPackViewModel.getNumberOfQuestions();
 
@@ -112,7 +128,7 @@ public class AnswerQuestionActivity
      *
      */
     public void fillData() {
-        progressText.setText(String.format("%d / %d", countAnswer + 1, maxQuestion));
+        progressText.setText(String.format("%d/%d", countAnswer + 1, maxQuestion));
         progressBarDoing.setMax(maxQuestion);
         progressBarDoing.setProgress(countAnswer + 1);
         updateSubmitButtonText();
@@ -129,15 +145,23 @@ public class AnswerQuestionActivity
             public void onClick(View v) {
                 if(questionPackViewModel.isLastQuestionInPack(questionViewModel)) {
                     questionPackViewModel.saveUserAnswers();
+                    realm.beginTransaction();
+                    questionViewModel.getQuestion().setTimeToFinish((int)timeQuestion);
+                    realm.copyToRealmOrUpdate(questionViewModel.getQuestion());
+                    realm.commitTransaction();
                     Bundle bundle = ScoreActivity.buildBundle(questionPackViewModel.getQuestionPack().getId());
                     bundle.putInt(KEY_TIME_AVERAGE, (int)(countTime / 10));
                     goToActivity(ScoreActivity.class, bundle);
                 }
                 else {
                     countAnswer++;
-                    Log.i("COUNT",String.valueOf(countAnswer));
                     fillData();
+                    realm.beginTransaction();
+                    questionViewModel.getQuestion().setTimeToFinish((int)timeQuestion);
+                    realm.copyToRealmOrUpdate(questionViewModel.getQuestion());
+                    realm.commitTransaction();
                     questionViewModel = questionPackViewModel.getNextQuestionViewModel(questionViewModel);
+                    timeQuestion = 0;
                     openQuestionFragment();
                 }
                 updateSubmitButtonText();
@@ -158,12 +182,12 @@ public class AnswerQuestionActivity
                     @Override
                     public void run() {
                     if (countTime / 3600 >= 1) {
-                        txtCountTime.setText(String.format("%02d:%02d:%02d", countTime / 3600, (countTime % 3600) / 60, countTime % 60));
+                        txtCountTime.setText(String.format("%02d:%02d:%02d | Total: %02d:%02d:%02d", timeQuestion / 3600, (timeQuestion % 3600) / 60, timeQuestion % 60,countTime / 3600, (countTime % 3600) / 60, countTime % 60));
                     } else {
-                        txtCountTime.setText(String.format("%02d:%02d", countTime / 60, countTime % 60));
+                        txtCountTime.setText(String.format("%02d:%02d | Total: %02d:%02d", timeQuestion / 60, timeQuestion % 60 ,countTime / 60, countTime % 60));
                     }
-
                     countTime++;
+                    timeQuestion++;
                     }
                 });
             }
@@ -188,13 +212,20 @@ public class AnswerQuestionActivity
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
     public boolean back() {
         return false;
     }
 
     @Override
     public void setTitleOfActionBar(String titles) {
-
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setTitle(titles);
+        }
     }
 
     @Override
@@ -226,4 +257,5 @@ public class AnswerQuestionActivity
             btnNext.setEnabled(false);
         }
     }
+
 }

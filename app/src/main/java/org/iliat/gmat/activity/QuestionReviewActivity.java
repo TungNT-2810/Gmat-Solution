@@ -351,7 +351,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                 if(mQuestionPack.getQuestionViewModels().get(position).getUserChoise() ==  i){
                     answerChoiseViewItemArrayList.get(i).setUserChoise(true);
                 }
-                if(mQuestionPack.getQuestionViewModels().get(position).getQuestion().getRightAnswerIndex() ==  i){
+                if(mQuestionPack.getQuestionViewModels().get(position).getQuestion().getRightAnswerIndex() == i){
                     answerChoiseViewItemArrayList.get(i).setRightAnswer(true);
                 }
 
