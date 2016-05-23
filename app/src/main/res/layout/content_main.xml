@@ -7,14 +7,12 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="org.iliat.gmat.activity.MainActivity"
     tools:showIn="@layout/app_bar_main"
-    android:fitsSystemWindows="true"
-    android:background="@color/color_grey_50">
+    android:fitsSystemWindows="true">
     <FrameLayout
-        android:background="@color/color_grey_50"
+        android:background="@color/color_home_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/view_fragment">
-
     </FrameLayout>
 
 </RelativeLayout>

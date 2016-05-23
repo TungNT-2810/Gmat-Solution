@@ -1,11 +1,9 @@
 package org.iliat.gmat.fragment;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -13,7 +11,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 
 import org.iliat.gmat.R;
-import org.iliat.gmat.interf.ScreenManager;
 
 /**
  * Created by ZYuTernity on 5/16/2016.
@@ -24,20 +21,20 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private ImageButton btn_summary;
     private ImageButton btn_about;
     private ImageButton btn_1;
-    private Animation animScale;
+    private Animation animIn;
     private QuestionPackFragment questionPackFragment;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_home_menu,container, false);
+        View view = inflater.inflate(R.layout.fragment_home_menu, container, false);
         getScreenManager().setTitleOfActionBar("GMAT");
         setWidgets(view);
         return view;
     }
 
-    public void setWidgets(View view){
-        animScale = AnimationUtils.loadAnimation(view.getContext(), R.anim.anim_scale_button);
+    public void setWidgets(View view) {
+        animIn = AnimationUtils.loadAnimation(view.getContext(), R.anim.anim_button_in);
         btn_questions = (ImageButton) view.findViewById(R.id.btn_questions);
         btn_summary = (ImageButton) view.findViewById(R.id.btn_summary);
         btn_about = (ImageButton) view.findViewById(R.id.btn_about);
@@ -50,54 +47,30 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btn_questions:
-                animScale.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        questionPackFragment = new QuestionPackFragment();
-                        questionPackFragment.setmContext(getView().getContext());
-                        getScreenManager().openFragment(questionPackFragment, true);
-                        getScreenManager().setTitleOfActionBar("Question Packages");
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-
-                    }
-                });
-                v.startAnimation(animScale);
+        switch (v.getId()) {
+            case R.id.btn_questions: {
+                btn_questions.startAnimation(animIn);
+                questionPackFragment = new QuestionPackFragment();
+                questionPackFragment.setmContext(getView().getContext());
+                getScreenManager().openFragment(questionPackFragment, true);
+                getScreenManager().setTitleOfActionBar("Question Packages");
                 break;
-            case R.id.btn_summary:
-                animScale.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        getScreenManager().openFragment(new SumaryFragment(),true);
-                        getScreenManager().setTitleOfActionBar("Sumary");
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-
-                    }
-                });
-                v.startAnimation(animScale);
+            }
+            case R.id.btn_summary: {
+                btn_summary.startAnimation(animIn);
+                getScreenManager().openFragment(new SumaryFragment(), true);
+                getScreenManager().setTitleOfActionBar("Sumary");
                 break;
-            case R.id.btn_about:
-                v.startAnimation(animScale);
+            }
+            case R.id.btn_about: {
+                btn_about.startAnimation(animIn);
                 break;
-            case R.id.btn_1:
-                v.startAnimation(animScale);
+            }
+            case R.id.btn_1: {
+                btn_1.startAnimation(animIn);
+                break;
+            }
+            default:
                 break;
         }
     }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -109,6 +110,9 @@ public class QuestionPackFragment extends BaseFragment
             listQuestionPackAdapter.setQuestionPackListener(this);
             listQuestionPackAdapter.setContext(this.getmContext());
             recyclerView.setAdapter(listQuestionPackAdapter);
+            StaggeredGridLayoutManager staggeredGridLayoutManager =
+                    new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+            recyclerView.setLayoutManager(staggeredGridLayoutManager);
         }
         return view;
     }

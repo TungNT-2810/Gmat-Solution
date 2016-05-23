@@ -80,55 +80,9 @@ public class ListQuestionPackAdapter extends
         final QuestionPackViewModel questionPack = this.mQuestionPackVIewModels.get(position);
 
         holder.txtTime.setText(mQuestionPackVIewModels.get(position).getAvailableTime());
-        holder.prbProcess.getProgressDrawable().setColorFilter(
-                Color.parseColor("#FF5722"), android.graphics.PorterDuff.Mode.SRC_IN);
-        holder.prbProcess.setMax(10);
-        holder.prbProcess.setProgress(8);
-
-        holder.btnStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mQuestionPackListener.onQuestionPackInteraction(questionPack);
-            }
-        });
-
-        ListQuestionDetailAdapter adapter = new ListQuestionDetailAdapter
-                (mContext, R.layout.item_question_on_list,
-                        mQuestionPackVIewModels.get(position).getQuestionViewModels());
-
-        holder.listViewQuestion.setAdapter(adapter);
-
-
-        holder.listViewQuestion.setOnItemClickListener(new ListView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int positionOfQuestion, long id) {
-                Intent intent = new Intent(mContext, QuestionReviewActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt(ScoreActivity.SCOREACTIIVTY_POSITION, positionOfQuestion);
-                bundle.putString(ScoreActivity.TAG_QUESTION_PACK_VIEW_MODEL, mQuestionPackVIewModels.get(position).getId());
-                intent.putExtra(ScoreActivity.TAG_QUESTION_PACK_VIEW_MODEL, bundle);
-                mContext.startActivity(intent);
-            }
-        });
-
-        LayoutParams list = (LayoutParams) holder.listViewQuestion.getLayoutParams();
-        int totalHeight = holder.listViewQuestion.getPaddingTop() + holder.listViewQuestion.getPaddingBottom();;
-        for (int i = 0; i < mQuestionPackVIewModels.get(position).getQuestionViewModels().size(); i++){
-            View itemView = adapter.getView(i, null, holder.listViewQuestion);
-            itemView.measure(0, 0);
-            totalHeight += itemView.getMeasuredHeight();
-        }
-        list.height = totalHeight;
-        holder.totalHeight = totalHeight;
-        holder.listViewQuestion.setLayoutParams(list);
-
-        // Expand supporting text view
-
-        if (mQuestionPackVIewModels.get(position).isShowDetail()) {
-            holder.listViewQuestion.setVisibility(View.VISIBLE);
-        } else {
-            holder.listViewQuestion.setVisibility(View.GONE);
-        }
+        holder.questionPack = questionPack;
+        holder.totalQuestion.setText(questionPack.getNumberOfQuestions()+" questions");
+        holder.txtIndexOfPack.setText((position+1)+"/"+mQuestionPackVIewModels.size());
 
     }
 
@@ -144,119 +98,25 @@ public class ListQuestionPackAdapter extends
 
     public class QuestionPackViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         CardView cardMain;
-        int totalHeight;
         TextView txtTime;
-        ProgressBar prbProcess;
-        Button btnStart;
-        ImageButton btnExtend;
-        ListView listViewQuestion;
-        QuestionPack questionPack;
+        TextView totalQuestion;
+        TextView txtIndexOfPack;
+        public QuestionPackViewModel questionPack;
 
         public QuestionPackViewHolder(View itemView) {
             super(itemView);
-            btnExtend = (ImageButton) itemView.findViewById(R.id.imageButton);
-            listViewQuestion = (ListView) itemView.findViewById(R.id.list_question_detail);
             cardMain = (CardView) itemView.findViewById(R.id.card_question_pack);
             txtTime = (TextView) itemView.findViewById(R.id.question_pack_name);
-            prbProcess = (ProgressBar) itemView.findViewById(R.id.progressBar);
-            btnStart = (Button) itemView.findViewById(R.id.button_question_pack);
-
-            btnExtend.setOnClickListener(new View.OnClickListener(){
-
-                @Override
-                public void onClick(View v) {
-                    if (getAdapterPosition() != RecyclerView.NO_POSITION) {
-
-                        if (mQuestionPackVIewModels.get(getAdapterPosition()).isShowDetail()) {
-                            mQuestionPackVIewModels.get(getAdapterPosition()).setIsShowDetail(false);
-                            collapse();
-                        } else {
-                            mQuestionPackVIewModels.get(getAdapterPosition()).setIsShowDetail(true);
-                            expand();
-                        }
-                        //notifyItemChanged(getAdapterPosition());
-                    }
-                }
-            });
-
+            totalQuestion=(TextView)itemView.findViewById(R.id.totalQuestion);
+            txtIndexOfPack=(TextView)itemView.findViewById(R.id.index_of_pack);
             itemView.setOnClickListener(this);
         }
 
-        private void expand() {
-            //set Visible
-
-            RotateAnimation rotate = new RotateAnimation(0, 180,
-                    Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
-                    0.5f);
-            rotate.setFillAfter(true);
-            rotate.setDuration(600);
-            btnExtend.setAnimation(rotate);
-
-
-            listViewQuestion.setVisibility(View.VISIBLE);
-
-            final int widthSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-            final int heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-            listViewQuestion.measure(widthSpec, heightSpec);
-
-            ValueAnimator mAnimator = slideAnimator(0, totalHeight);
-            mAnimator.start();
-        }
-
-        private void collapse() {
-            int finalHeight = listViewQuestion.getHeight();
-            RotateAnimation rotate = new RotateAnimation(180, 360,
-                    Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
-                    0.5f);
-            //rotate.setFillAfter(true);
-            rotate.setDuration(600);
-            btnExtend.setAnimation(rotate);
-            ValueAnimator mAnimator = slideAnimator(finalHeight, 0);
-            mAnimator.addListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animator animator) {
-                    //Height=0, but it set visibility to GONE
-                    listViewQuestion.setVisibility(View.GONE);
-                }
-
-                @Override
-                public void onAnimationCancel(Animator animation) {
-
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animation) {
-
-                }
-
-            });
-            mAnimator.start();
-        }
-
-        private ValueAnimator slideAnimator(int start, int end) {
-
-            ValueAnimator animator = ValueAnimator.ofInt(start, end);
-            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                    //Update Height
-                    int value = (Integer) valueAnimator.getAnimatedValue();
-                    ViewGroup.LayoutParams layoutParams = listViewQuestion.getLayoutParams();
-                    layoutParams.height = value;
-                    listViewQuestion.setLayoutParams(layoutParams);
-                }
-            });
-            return animator;
-        }
 
         @Override
         public void onClick(View v) {
             Log.d("ViewHoder", "Clicked");
+            mQuestionPackListener.onQuestionPackInteraction(questionPack);
             if (mMultipleSelectAdapterCallback != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
 
                 int clickedPosition = getAdapterPosition();
@@ -274,22 +134,12 @@ public class ListQuestionPackAdapter extends
         }
     }
 
-//    public interface OnListFragmentInteractionListener {
-//        // TODO: Update argument type and name
-//        void onListFragmentInteraction(QuestionPack item);
-//    }
 
     public interface MultipleSelectAdapterCallback {
-        public void itemClicked(int count, List<String> selectedItemId);
+        void itemClicked(int count, List<String> selectedItemId);
     }
 
-    public MultipleSelectAdapterCallback getMultipleSelectAdapterCallback() {
-        return mMultipleSelectAdapterCallback;
-    }
 
-    public void setMultipleSelectAdapterCallback(MultipleSelectAdapterCallback multipleSelectAdapterCallback) {
-        mMultipleSelectAdapterCallback = multipleSelectAdapterCallback;
-    }
 
     public interface OnListQuestionPackListener {
         void onQuestionPackInteraction (QuestionPackViewModel item);
