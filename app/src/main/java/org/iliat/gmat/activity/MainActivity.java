@@ -13,10 +13,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import org.iliat.gmat.R;
 import org.iliat.gmat.dialog.DownloadImageDialog;
@@ -52,12 +52,14 @@ public class MainActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
-
             public void onDrawerClosed(View view) {
                 invalidateOptionsMenu();
                 syncState();
@@ -68,20 +70,31 @@ public class MainActivity extends AppCompatActivity
                 syncState();
             }
         };
-        drawer.setDrawerListener(toggle);
+        if(drawer != null){
+            drawer.setDrawerListener(toggle);
+        }
+
         toggle.syncState();
 
         RealmConfiguration realmConfig = new RealmConfiguration.Builder(getApplicationContext()).build();
         Realm.setDefaultConfiguration(realmConfig);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getFragmentManager().popBackStack();
-            }
-        });
+        if(navigationView != null && toolbar != null){
+            navigationView.setNavigationItemSelectedListener(this);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(getFragmentManager().getBackStackEntryCount() > 1){
+                        getFragmentManager().popBackStack();
+                    } else {
+                        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                        drawer.openDrawer(GravityCompat.START);
+                    }
+
+                }
+            });
+        }
         getIntances();
         getFragmentManager().addOnBackStackChangedListener(this);
         homeFragment = new HomeFragment();
@@ -103,18 +116,21 @@ public class MainActivity extends AppCompatActivity
     private void syncActionBarArrowState() {
         int backStackEntryCount =
                 getFragmentManager().getBackStackEntryCount();
-        Log.d("TAGGG", ""+backStackEntryCount);
+        Log.d("getBackStackEntryCount", ""+backStackEntryCount);
         toggle.setDrawerIndicatorEnabled(backStackEntryCount == 1);
     }
 
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+        if (drawer != null){
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            } else {
+                super.onBackPressed();
+            }
         }
+
     }
 
 
@@ -132,9 +148,6 @@ public class MainActivity extends AppCompatActivity
         showDialogFragment(new DownloadImageDialog(), "DOWNLOAD_IMAGE_DIALOG");
     }
 
-    private void checkUpdate() {
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -146,17 +159,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-//        int id = item.getItemId();
-//        if(id==android.R.id.home){
-//            this.finish();
-//            return true;
-//        }
-
+        Log.d("asdd","sssss11");
         if (toggle.isDrawerIndicatorEnabled() &&
                 toggle.onOptionsItemSelected(item)) {
             return true;
         }
-        if (item.getItemId() == android.R.id.home && getFragmentManager().getBackStackEntryCount()>0) {
+        if (item.getItemId() == android.R.id.home && getFragmentManager().getBackStackEntryCount()>1) {
             getFragmentManager().popBackStack();
             Log.d("asdd","sssss");
             return true;
@@ -182,8 +190,6 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_slideshow) {
             updateQuestion();
-
-
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
@@ -193,7 +199,10 @@ public class MainActivity extends AppCompatActivity
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        if(drawer != null){
+            drawer.closeDrawer(GravityCompat.START);
+        }
+
         return true;
     }
 
@@ -217,6 +226,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean back() {
         if (mFragmentManager.getBackStackEntryCount() > 1) {
+            Log.d("HungTD",""+mFragmentManager.getBackStackEntryCount());
             mFragmentManager.popBackStack();
             return true;
         } else {
@@ -227,7 +237,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void setTitleOfActionBar(String titles) {
-        getSupportActionBar().setTitle(titles);
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setTitle(titles);
+        }
     }
 
     @Override
