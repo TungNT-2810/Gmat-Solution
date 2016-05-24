@@ -1,6 +1,7 @@
 package org.iliat.gmat.item_view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
@@ -32,6 +33,8 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
     private boolean isUserChoise;
     private String strAnswer;
     private int index;
+    private int blue = Color.parseColor("#BBDEFB");
+    private int white = Color.parseColor("#FFFFFF");
     private int [] IMAGE_RESOURCE = {R.drawable.a,R.drawable.b,R.drawable.c,R.drawable.d,R.drawable.e};
 
     public AnswerCRQuestion(Context context, AttributeSet attrs) {
@@ -69,6 +72,7 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
         txtContentAnswer.setText(this.strAnswer);
         if (isUserChoise) {
             imgChoise.setColorFilter(ContextCompat.getColor(mContext, R.color.color_selected_answer));
+            txtContentAnswer.setBackgroundColor(blue);
 //            txtContentAnswer.setTextColor(ContextCompat.getColor(mContext, R.color.color_selected_answer));
 //            txtContentAnswer.setTypeface(Typeface.DEFAULT_BOLD);
         }
@@ -78,10 +82,12 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
         isUserChoise = userChoise;
         if (isUserChoise) {
             imgChoise.setColorFilter(ContextCompat.getColor(mContext, R.color.color_selected_answer));
+            txtContentAnswer.setBackgroundColor(blue);
 //            txtContentAnswer.setTextColor(ContextCompat.getColor(mContext, R.color.color_selected_answer));
 //            txtContentAnswer.setTypeface(Typeface.DEFAULT_BOLD);
         } else {
             imgChoise.setColorFilter(ContextCompat.getColor(mContext, R.color.color_normal_answer));
+            txtContentAnswer.setBackgroundColor(white);
 //            txtContentAnswer.setTextColor(ContextCompat.getColor(mContext, R.color.color_normal_answer));
 //            txtContentAnswer.setTypeface(Typeface.DEFAULT);
         }
