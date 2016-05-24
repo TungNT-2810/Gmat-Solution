@@ -7,7 +7,6 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.iliat.gmat.R;
-import org.iliat.gmat.fragment.answer_question.FragmentReadingQuestion;
+import org.iliat.gmat.fragment.answer_question.RCQuestionFragment;
 import org.iliat.gmat.fragment.answer_question.SCQuestionFragment;
 import org.iliat.gmat.interf.ButtonNextControl;
 import org.iliat.gmat.interf.CallBackAnswerQuestion;
@@ -37,23 +36,21 @@ public class AnswerQuestionActivity
         extends AppCompatActivity
         implements ScreenManager, CallBackAnswerQuestion, ButtonNextControl {
     public static final String KEY_TIME_AVERAGE = "ANSWER_QUESTION_KEY_TIME_AVERAGE";
-    long countTime = 0;
-    long timeQuestion = 0;
-    Realm realm;
-    int countAnswer = 12;
-    int maxQuestion = 16;
-    TextView txtCountTime;
-    TextView progressText;
-    ProgressBar progressBarDoing;
-    FrameLayout fragmentView;
-    Button btnNext;
-    FragmentManager mFragmentManager;
-    Button test;
-    private int count = 0;
+    private long countTime = 0;
+    private long timeQuestion = 0;
+    private Realm realm;
+    private int countAnswer = 12;
+    private int maxQuestion = 16;
+    private TextView txtCountTime;
+    private TextView progressText;
+    private ProgressBar progressBarDoing;
+    private FrameLayout fragmentView;
+    private Button btnNext;
+    private FragmentManager mFragmentManager;
     private QuestionViewModel questionViewModel;
     private QuestionPackViewModel questionPackViewModel;
     private SCQuestionFragment scQuestionFragment;
-    private FragmentReadingQuestion fragmentReadingQuestion;
+    private RCQuestionFragment RCQuestionFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +65,6 @@ public class AnswerQuestionActivity
         createTimer();
         fillData();
         openQuestionFragment();
-
-
     }
 
     @Override
@@ -97,24 +92,27 @@ public class AnswerQuestionActivity
         questionViewModel = questionPackViewModel.getFirstQuestionViewModel();
         countAnswer = 0;
         maxQuestion = questionPackViewModel.getNumberOfQuestions();
-
     }
 
+    /**
+     * LinhDQ changed
+     * if type of a question is RC then open RCQuestionFragment
+     * else open SCQuestionFragment
+     */
     private void openQuestionFragment() {
-            Log.d("contentQues",questionViewModel.getStem());
         if (questionViewModel.getQuestion().getType().equalsIgnoreCase("RC")) {
-            if (fragmentReadingQuestion == null) {
-                fragmentReadingQuestion = new FragmentReadingQuestion();
-                fragmentReadingQuestion.setButtonNextControl(this);
+            if (RCQuestionFragment == null) {
+                RCQuestionFragment = new RCQuestionFragment();
+                RCQuestionFragment.setButtonNextControl(this);
                 this.setButtonNextState(0);
-                fragmentReadingQuestion.setQuestion(this.questionViewModel);
-                openFragment(fragmentReadingQuestion, true);
+                RCQuestionFragment.setQuestion(this.questionViewModel);
+                openFragment(RCQuestionFragment, true);
             } else {
-                if (fragmentReadingQuestion.getmQuestionCRModel().getStimulus().equalsIgnoreCase(questionViewModel.getStimulus())) {
-                    fragmentReadingQuestion.setStem(questionViewModel);
+                if (RCQuestionFragment.getmQuestionCRModel().getStimulus().equalsIgnoreCase(questionViewModel.getStimulus())) {
+                    RCQuestionFragment.setStem(questionViewModel);
                 } else {
-                    fragmentReadingQuestion.setQuestion(this.questionViewModel);
-                    openFragment(fragmentReadingQuestion, true);
+                    RCQuestionFragment.setQuestion(this.questionViewModel);
+                    openFragment(RCQuestionFragment, true);
                 }
             }
         } else {
@@ -123,7 +121,7 @@ public class AnswerQuestionActivity
             this.setButtonNextState(0);
             scQuestionFragment.setQuestion(this.questionViewModel);
             openFragment(scQuestionFragment, true);
-            fragmentReadingQuestion=null;
+            RCQuestionFragment = null;
         }
     }
 
@@ -237,7 +235,7 @@ public class AnswerQuestionActivity
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(this,"You need to complete all questions!",Toast.LENGTH_LONG);
+        Toast.makeText(this, "You need to complete all questions!", Toast.LENGTH_LONG);
 //        super.onBackPressed();
     }
 

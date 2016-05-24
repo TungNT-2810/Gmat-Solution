@@ -6,19 +6,19 @@ import java.io.Serializable;
 /**
  * Created by MrBom on 5/13/2016.
  */
-public class QuestionType implements Serializable{
+public class QuestionType implements Serializable {
     private String code;
     private String typeName;
     private int totalQuestion;
     private int totalRightAnswer;
     private int totalAnswer;
 
-    public QuestionType(String code ,String typeName, int totalQuestion, int totalAnswer, int totalRightAnswer) {
-        this.code=code;
+    public QuestionType(String code, String typeName, int totalQuestion, int totalAnswer, int totalRightAnswer) {
+        this.code = code;
         this.typeName = typeName;
         this.totalQuestion = totalQuestion;
         this.totalRightAnswer = totalRightAnswer;
-        this.totalAnswer=totalAnswer;
+        this.totalAnswer = totalAnswer;
     }
 
     public String getCode() {

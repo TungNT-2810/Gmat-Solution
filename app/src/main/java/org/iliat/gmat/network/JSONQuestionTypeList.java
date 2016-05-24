@@ -5,10 +5,12 @@ import com.orm.SugarRecord;
 
 import java.util.List;
 
+import io.realm.RealmObject;
+
 /**
  * Created by MrBom on 5/16/2016.
  */
-public class JSONQuestionTypeList extends SugarRecord {
+public class JSONQuestionTypeList extends RealmObject {
     private static final String QUESTION_TYPE = "type";
     @SerializedName(QUESTION_TYPE)
     private List<JSONQuestionType> list;

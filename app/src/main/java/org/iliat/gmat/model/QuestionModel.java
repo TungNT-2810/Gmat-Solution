@@ -1,12 +1,10 @@
 package org.iliat.gmat.model;
 
-import android.content.Context;
 
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
-import io.realm.annotations.Required;
 
 /**
  * Created by hungtran on 4/17/16.

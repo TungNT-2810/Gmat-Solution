@@ -3,7 +3,6 @@ package org.iliat.gmat.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -29,11 +28,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_menu, container, false);
         getScreenManager().setTitleOfActionBar("GMAT");
-        setWidgets(view);
+        inits(view);
         return view;
     }
 
-    public void setWidgets(View view) {
+    public void inits(View view) {
         animIn = AnimationUtils.loadAnimation(view.getContext(), R.anim.anim_button_in);
         btn_questions = (ImageButton) view.findViewById(R.id.btn_questions);
         btn_summary = (ImageButton) view.findViewById(R.id.btn_summary);

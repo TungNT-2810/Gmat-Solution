@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
 
             public void onDrawerClosed(View view) {
                 invalidateOptionsMenu();
@@ -75,12 +75,12 @@ public class MainActivity extends AppCompatActivity
         Realm.setDefaultConfiguration(realmConfig);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        if(navigationView != null && toolbar != null){
+        if (navigationView != null && toolbar != null) {
             navigationView.setNavigationItemSelectedListener(this);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(getFragmentManager().getBackStackEntryCount() > 1){
+                    if (getFragmentManager().getBackStackEntryCount() > 1) {
                         getFragmentManager().popBackStack();
                     } else {
                         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity
     private void syncActionBarArrowState() {
         int backStackEntryCount =
                 getFragmentManager().getBackStackEntryCount();
-        Log.d("TAGGG", ""+backStackEntryCount);
+        Log.d("TAGGG", "" + backStackEntryCount);
         toggle.setDrawerIndicatorEnabled(backStackEntryCount == 1);
     }
 
@@ -140,9 +140,6 @@ public class MainActivity extends AppCompatActivity
         showDialogFragment(new DownloadImageDialog(), "DOWNLOAD_IMAGE_DIALOG");
     }
 
-    private void checkUpdate() {
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -154,24 +151,17 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-//        int id = item.getItemId();
-//        if(id==android.R.id.home){
-//            this.finish();
-//            return true;
-//        }
-
         if (toggle.isDrawerIndicatorEnabled() &&
                 toggle.onOptionsItemSelected(item)) {
             return true;
         }
-        if (item.getItemId() == android.R.id.home && getFragmentManager().getBackStackEntryCount()>0) {
+        if (item.getItemId() == android.R.id.home && getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStack();
-            Log.d("asdd","sssss");
+            Log.d("asdd", "sssss");
             return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
-        //noinspection SimplifiableIfStatement
     }
 
     private void getIntances() {

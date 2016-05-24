@@ -56,7 +56,7 @@ public class ListTypeQuestionAdapter extends BaseAdapter {
             TextView txtTotalQues = (TextView) view.findViewById(R.id.sumary_total_question);
             ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.sumary_progress);
             txtPackName.setText(questionType.getTypeName());
-            txtTotalQues.setText(questionType.getTotalQuestion()+" questions");
+            txtTotalQues.setText(questionType.getTotalQuestion() + " questions");
             progressBar.setMax(questionType.getTotalQuestion());
             progressBar.setProgress(questionType.getTotalRightAnswer());
         }

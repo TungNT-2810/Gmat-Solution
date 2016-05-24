@@ -8,13 +8,11 @@ import com.google.gson.annotations.SerializedName;
 public class JSONQuestionType {
     private static final String CODE = "code";
     private static final String DETAIL = "detail";
-    private static final String ID = "type";
     @SerializedName(DETAIL)
     private String detail;
 
     @SerializedName(CODE)
     private String code;
-
 
 
     public String getCode() {

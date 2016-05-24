@@ -60,19 +60,19 @@ public class SumaryFragment extends BaseFragment {
         getDataForSumary();
         getSumaryTypeOfQuestion();
         listTypeQuestion.setAdapter(new ListTypeQuestionAdapter(view.getContext(), arrayList));
-        listTypeQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                QuestionType questionType=arrayList.get(position);
-                if(questionType!=null){
-                    QuestionTypeDetailFragment fragment=new QuestionTypeDetailFragment();
-                    Bundle bundle=new Bundle();
-                    bundle.putSerializable("type",questionType);
-                    fragment.setArguments(bundle);
-                    getScreenManager().openFragment(fragment,true);
-                }
-            }
-        });
+//        listTypeQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                QuestionType questionType = arrayList.get(position);
+//                if (questionType != null) {
+//                    QuestionTypeDetailFragment fragment = new QuestionTypeDetailFragment();
+//                    Bundle bundle = new Bundle();
+//                    bundle.putSerializable("type", questionType);
+//                    fragment.setArguments(bundle);
+//                    getScreenManager().openFragment(fragment, true);
+//                }
+//            }
+//        });
         return view;
     }
 
@@ -95,41 +95,57 @@ public class SumaryFragment extends BaseFragment {
         arrayList = new ArrayList<>();
         realm = Realm.getDefaultInstance();
         averageTime = totalAnswered = totalRightAnswer = 0;
-        totalTagGreen=totalTagGrey=totalTagYellow=totalTagStar=totalTagRed=0;
+        totalTagGreen = totalTagGrey = totalTagYellow = totalTagStar = totalTagRed = 0;
     }
 
     private void getSumaryTypeOfQuestion() {
         query = realm.where(QuestionModel.class);
         queryType = realm.where(QuestionTypeModel.class);
         resultQTypes = queryType.findAll();
+
         for (int i = 0; i < resultQTypes.size(); i++) {
             query.equalTo("type", resultQTypes.get(i).getCode());
             results = query.findAll();
             totalAnswered = totalRightAnswer = 0;
             for (int j = 0; j < results.size(); j++) {
+                //total answered
                 if (results.get(j).getUserAnswer() != 0) {
                     totalAnswered++;
                 }
+                //total correct
                 if (results.get(j).getUserAnswer() == results.get(j).getRightAnswerIndex()) {
                     totalRightAnswer++;
                 }
-                if(results.get(j).getTagId()== Constant.TAG_ID[0]){
-                    totalTagGrey++;
-                }
-                if(results.get(j).getTagId()== Constant.TAG_ID[1]){
-                    totalTagGreen++;
-                }
-                if(results.get(j).getTagId()== Constant.TAG_ID[2]){
-                    totalTagYellow++;
-                }
-                if(results.get(j).getTagId()== Constant.TAG_ID[3]){
-                    totalTagRed++;
-                }
-                if(results.get(j).isStar()){
+                //
+                if (results.get(j).isStar()) {
                     totalTagStar++;
                 }
+                //calculate number of tag
+                switch (results.get(j).getTagId()) {
+                    case 1: {
+                        totalTagGrey++;
+                        break;
+                    }
+                    case 2: {
+                        totalTagGreen++;
+                        break;
+                    }
+                    case 3: {
+                        totalTagYellow++;
+                        break;
+                    }
+                    case 4: {
+                        totalTagRed++;
+                        break;
+                    }
+                    default:
+                        break;
+                }
+
             }
-            arrayList.add(new QuestionType(resultQTypes.get(i).getCode() ,resultQTypes.get(i).getDetail(), results.size(), totalAnswered, totalRightAnswer));
+            arrayList.add(new QuestionType(resultQTypes.get(i).getCode(), resultQTypes.get(i).getDetail(),
+                    results.size(), totalAnswered, totalRightAnswer));
+            //push data
             txtTagGrey.setText(String.valueOf(totalTagGrey));
             txtTagGreen.setText(String.valueOf(totalTagGreen));
             txtTagRed.setText(String.valueOf(totalTagRed));

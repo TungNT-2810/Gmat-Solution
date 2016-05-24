@@ -1,6 +1,5 @@
 package org.iliat.gmat.fragment.answer_question;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -9,12 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import org.iliat.gmat.R;
-import org.iliat.gmat.adapter.ListAnswerChoiceAdapter;
 import org.iliat.gmat.fragment.BaseFragment;
 import org.iliat.gmat.interf.ButtonNextControl;
 import org.iliat.gmat.item_view.AnswerCRQuestion;
@@ -27,15 +23,13 @@ import io.github.kexanie.library.MathView;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SCQuestionFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SCQuestionFragment#newInstance} factory method to
+ * Use the {@link SCQuestionFragment} factory method to
  * create an instance of this fragment.
  */
 public class SCQuestionFragment extends BaseFragment
-        implements  AdapterView.OnItemSelectedListener,
-                    View.OnClickListener,
-                    ChangeStateOfAnswerItemsInterface{
+        implements AdapterView.OnItemSelectedListener,
+        ChangeStateOfAnswerItemsInterface {
     private final int ANSWER_CHOICE_NUM = 5;
     private ButtonNextControl buttonNextControl;
     private ArrayList<AnswerCRQuestion> answerCRQuestionArrayList;
@@ -46,32 +40,16 @@ public class SCQuestionFragment extends BaseFragment
         this.buttonNextControl = buttonNextControl;
     }
 
-    private ListView ltvQuestion;
-    private Button btnSubmit;
-
-
     private QuestionViewModel mQuestionCRModel;
 
-    ListAnswerChoiceAdapter adapter;
-
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
 
     public SCQuestionFragment() {
         // Required empty public constructor
     }
 
-
     public void setQuestion(QuestionViewModel question) {
         mQuestionCRModel = question;
-    }
-
-    public static SCQuestionFragment newInstance(String param1, String param2) {
-        SCQuestionFragment fragment = new SCQuestionFragment();
-        return fragment;
     }
 
     @Override
@@ -90,17 +68,17 @@ public class SCQuestionFragment extends BaseFragment
 
     private void initLayout(View view) {
         if (answerCRQuestionArrayList == null) {
-            questionContent =  (MathView)view.findViewById(R.id.question_content);
+            questionContent = (MathView) view.findViewById(R.id.question_content);
             answerCRQuestionArrayList = new ArrayList<>();
-            answerCRQuestionArrayList.add((AnswerCRQuestion)view.findViewById(R.id.answer_queston_1));
-            answerCRQuestionArrayList.add((AnswerCRQuestion)view.findViewById(R.id.answer_queston_2));
-            answerCRQuestionArrayList.add((AnswerCRQuestion)view.findViewById(R.id.answer_queston_3));
-            answerCRQuestionArrayList.add((AnswerCRQuestion)view.findViewById(R.id.answer_queston_4));
-            answerCRQuestionArrayList.add((AnswerCRQuestion)view.findViewById(R.id.answer_queston_5));
+            answerCRQuestionArrayList.add((AnswerCRQuestion) view.findViewById(R.id.answer_queston_1));
+            answerCRQuestionArrayList.add((AnswerCRQuestion) view.findViewById(R.id.answer_queston_2));
+            answerCRQuestionArrayList.add((AnswerCRQuestion) view.findViewById(R.id.answer_queston_3));
+            answerCRQuestionArrayList.add((AnswerCRQuestion) view.findViewById(R.id.answer_queston_4));
+            answerCRQuestionArrayList.add((AnswerCRQuestion) view.findViewById(R.id.answer_queston_5));
         }
     }
 
-    private void fillData(){
+    private void fillData() {
         for (int i = 0; i < ANSWER_CHOICE_NUM; i++) {
             answerCRQuestionArrayList.get(i).setAnswerModel(mQuestionCRModel.getAnswerChoiceViewModel(i));
             answerCRQuestionArrayList.get(i).setmContext(getActivity());
@@ -114,12 +92,11 @@ public class SCQuestionFragment extends BaseFragment
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        TextView txvItem = (TextView)view.findViewById(R.id.txv_answer_choice);
+        TextView txvItem = (TextView) view.findViewById(R.id.txv_answer_choice);
         txvItem.setText(Html.fromHtml("<b>" + txvItem.getText().toString() + "</b>"));
         txvItem.setTextColor(ContextCompat.getColor(this.getActivity(), R.color.color_selected_answer));
 
@@ -127,16 +104,6 @@ public class SCQuestionFragment extends BaseFragment
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
-    }
-
-
-    /**
-     * Hàm này nhận sự kiện ấn nut NEXT từ thằng Activity gọi vào
-     * @param v
-     */
-    @Override
-    public void onClick(View v) {
 
     }
 
@@ -151,12 +118,6 @@ public class SCQuestionFragment extends BaseFragment
             }
         }
     }
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
-
 }
 
 
