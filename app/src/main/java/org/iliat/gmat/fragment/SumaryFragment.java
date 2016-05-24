@@ -3,6 +3,7 @@ package org.iliat.gmat.fragment;
 import android.support.annotation.Nullable;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.lzyzsd.circleprogress.ArcProgress;
+import com.github.lzyzsd.circleprogress.DonutProgress;
 
 import org.iliat.gmat.R;
 import org.iliat.gmat.adapter.ListTypeQuestionAdapter;
@@ -27,6 +29,8 @@ import io.realm.RealmResults;
 
 
 public class SumaryFragment extends BaseFragment {
+    private static final String TAG = SumaryFragment.class.toString();
+
     private ListView listTypeQuestion;
     private ArrayList<QuestionType> arrayList;
     private Realm realm;
@@ -43,7 +47,7 @@ public class SumaryFragment extends BaseFragment {
     private int totalTagYellow;
     private int totalTagStar;
     private int totalTagRed;
-    private ArcProgress arcProgress;
+    private DonutProgress donutProgress;
     private TextView txtAverageTime;
     private TextView txtTagGrey;
     private TextView txtTagGreen;
@@ -85,7 +89,7 @@ public class SumaryFragment extends BaseFragment {
 
     private void initControl(View view) {
         listTypeQuestion = (ListView) view.findViewById(R.id.ltv_type_question);
-        arcProgress = (ArcProgress) view.findViewById(R.id.sumary_arc_progress);
+        donutProgress = (DonutProgress) view.findViewById(R.id.sumary_arc_progress);
         txtAverageTime = (TextView) view.findViewById(R.id.sumary_avg_time);
         txtStar = (TextView) view.findViewById(R.id.sumary_Star);
         txtTagGreen = (TextView) view.findViewById(R.id.sumary_green);
@@ -99,14 +103,17 @@ public class SumaryFragment extends BaseFragment {
     }
 
     private void getSumaryTypeOfQuestion() {
-        query = realm.where(QuestionModel.class);
         queryType = realm.where(QuestionTypeModel.class);
         resultQTypes = queryType.findAll();
 
         for (int i = 0; i < resultQTypes.size(); i++) {
-            query.equalTo("type", resultQTypes.get(i).getCode());
+            query = realm.where(QuestionModel.class);
+            String code = resultQTypes.get(i).getCode();
+            query.equalTo("type", code);
             results = query.findAll();
+            Log.d(TAG, code + " "+results.size());
             totalAnswered = totalRightAnswer = 0;
+            Log.d("type",resultQTypes.get(i).getCode());
             for (int j = 0; j < results.size(); j++) {
                 //total answered
                 if (results.get(j).getUserAnswer() != 0) {
@@ -122,19 +129,19 @@ public class SumaryFragment extends BaseFragment {
                 }
                 //calculate number of tag
                 switch (results.get(j).getTagId()) {
-                    case 1: {
+                    case Constant.TAG_GREY: {
                         totalTagGrey++;
                         break;
                     }
-                    case 2: {
+                    case Constant.TAG_GREEN: {
                         totalTagGreen++;
                         break;
                     }
-                    case 3: {
+                    case Constant.TAG_YELLOW: {
                         totalTagYellow++;
                         break;
                     }
-                    case 4: {
+                    case Constant.TAG_RED: {
                         totalTagRed++;
                         break;
                     }
@@ -158,7 +165,8 @@ public class SumaryFragment extends BaseFragment {
         query = realm.where(QuestionModel.class);
         results = query.findAll();
         totalQuestion = results.size();
-        arcProgress.setMax(totalQuestion);
+
+        donutProgress.setMax(totalQuestion);
         query.notEqualTo("userAnswer", 0);
         results = query.findAll();
         totalAnswered = results.size();
@@ -171,7 +179,7 @@ public class SumaryFragment extends BaseFragment {
         } else {
             txtAverageTime.setText("0m 0s");
         }
-        arcProgress.setProgress(totalAnswered);
-        arcProgress.setBottomText(totalAnswered + "/" + totalQuestion);
+        donutProgress.setProgress(totalAnswered);
+        donutProgress.setSuffixText("/"+totalQuestion);
     }
 }
