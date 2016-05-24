@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.iliat.gmat.R;
+import org.iliat.gmat.constant.Constant;
 import org.iliat.gmat.fragment.answer_question.ChangeStateOfAnswerItemsInterface;
 import org.iliat.gmat.interf.ButtonNextControl;
 import org.iliat.gmat.view_model.AnswerChoiceViewModel;
@@ -72,7 +73,7 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
         txtContentAnswer.setText(this.strAnswer);
         if (isUserChoise) {
             imgChoise.setColorFilter(ContextCompat.getColor(mContext, R.color.color_selected_answer));
-            txtContentAnswer.setBackgroundColor(blue);
+            txtContentAnswer.setBackgroundColor(Color.parseColor("#2979FF"));
 //            txtContentAnswer.setTextColor(ContextCompat.getColor(mContext, R.color.color_selected_answer));
 //            txtContentAnswer.setTypeface(Typeface.DEFAULT_BOLD);
         }
@@ -82,7 +83,7 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
         isUserChoise = userChoise;
         if (isUserChoise) {
             imgChoise.setColorFilter(ContextCompat.getColor(mContext, R.color.color_selected_answer));
-            txtContentAnswer.setBackgroundColor(blue);
+            txtContentAnswer.setBackgroundColor(Color.parseColor("#2979FF"));
 //            txtContentAnswer.setTextColor(ContextCompat.getColor(mContext, R.color.color_selected_answer));
 //            txtContentAnswer.setTypeface(Typeface.DEFAULT_BOLD);
         } else {
