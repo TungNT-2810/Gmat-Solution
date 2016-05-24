@@ -1,6 +1,7 @@
 package org.iliat.gmat.item_view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.Image;
 import android.os.Build;
@@ -35,6 +36,8 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
     private String strAnswer;
     private String explanation;
     private int index;
+    private int red = Color.parseColor("#FFCDD2");
+    private int green = Color.parseColor("#C8E6C9");
     private int [] IMAGE_RESOURCE = {R.drawable.a,R.drawable.b,R.drawable.c,R.drawable.d,R.drawable.e};
     public AnswerCRQuestionReview(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -64,12 +67,12 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
         //Log.d("TAG",answerModel.getChoice());
         if (isUserChoise) {
             imgChoise.setColorFilter(getResources().getColor(R.color.color_red_500));
-            txtContentAnswer.setBackgroundColor(getResources().getColor(R.color.color_red_500));
+            txtContentAnswer.setBackgroundColor(red);
 //            txtContentAnswer.setTextColor(getResources().getColor(R.color.color_red_500));
         }
         if (isRightAnswer) {
             imgChoise.setColorFilter(getResources().getColor(R.color.color_green_500));
-            txtContentAnswer.setBackgroundColor(getResources().getColor(R.color.color_green_500));
+            txtContentAnswer.setBackgroundColor(green);
 //            txtContentAnswer.setTextColor(getResources().getColor(R.color.color_green_500));
         }
         Log.d("AnswerChoiseViewItem","fillData");
