@@ -8,7 +8,7 @@
         <!--   theme UI controls like checkboxes and text fields -->
         <item name="android:windowBackground">@color/color_background_line</item>
         <item name="android:textColorPrimary">@color/color_white</item>
-        <item name="android:colorAccent">@color/color_white</item>
+        <item name="android:colorAccent">#212121</item>
         <item name="android:textColorSecondary">@color/color_white</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>

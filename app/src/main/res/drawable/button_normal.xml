@@ -1,4 +1,16 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="true" android:drawable="@drawable/button_pressed"/>
-    <item android:drawable="@drawable/button_default"/>
+    <item android:drawable="@drawable/button_pressed"
+        android:state_pressed="true" />
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <corners android:radius="2dp" />
+            <solid android:color="#BDBDBD" />
+            <padding
+                android:bottom="0dp"
+                android:left="0dp"
+                android:right="0dp"
+                android:top="0dp" />
+        </shape>
+    </item>
+    <item android:drawable="@drawable/button_default" />
 </selector>

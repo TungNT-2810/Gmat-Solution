@@ -3,6 +3,7 @@ package org.iliat.gmat.activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -69,6 +70,10 @@ public class ScoreActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_score);
+        setSupportActionBar(toolbar);
+        setTitle("Score review");
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         connectView();//ket noi xml voi java
     }
 

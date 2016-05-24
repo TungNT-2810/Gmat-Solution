@@ -60,6 +60,9 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     private Button btnBack;
     private ImageButton btnShare;
     private Realm realm;
+    private int currentItem;
+    private int totalItem;
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -89,7 +92,6 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     }
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_question_review, menu);
@@ -99,13 +101,13 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d("ON PAUSE","ON PAUSE");
+        Log.d("ON PAUSE", "ON PAUSE");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("ON STOP","ON STOP");
+        Log.d("ON STOP", "ON STOP");
     }
 
     @Override
@@ -113,7 +115,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        switch (id){
+        switch (id) {
             case R.id.action_settings:
                 break;
             case android.R.id.home:
@@ -137,8 +139,8 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         String questionPackID = (intent.getBundleExtra(ScoreActivity.TAG_QUESTION_PACK_VIEW_MODEL))
                 .getString(ScoreActivity.TAG_QUESTION_PACK_VIEW_MODEL);
 
-        mQuestionPack = new QuestionPackViewModel(realm.where(QuestionPackModel.class).equalTo("id",questionPackID).findFirst());
-        Log.d("TAG",mQuestionPack.getQuestionViewModels().get(0).getAnswerChoices().get(0).getChoise());
+        mQuestionPack = new QuestionPackViewModel(realm.where(QuestionPackModel.class).equalTo("id", questionPackID).findFirst());
+        Log.d("TAG", mQuestionPack.getQuestionViewModels().get(0).getAnswerChoices().get(0).getChoise());
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), mQuestionPack);
 
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -152,22 +154,21 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     }
 
 
-
     private void getRefercenceForView() {
         isCorrect = (TextView) findViewById(R.id.txt_correct);
         isCorrect.setTypeface(Typeface.DEFAULT_BOLD);
         mViewPager = (ViewPager) findViewById(R.id.container);
         mFragmentManager = getFragmentManager();
-        topController = (RelativeLayout)findViewById(R.id.top_controller);
-        txtProcess = (TextView)findViewById(R.id.txt_process);
-        btnNext = (Button)findViewById(R.id.btn_next);
-        btnShare = (ImageButton)findViewById(R.id.btn_share);
+        topController = (RelativeLayout) findViewById(R.id.top_controller);
+        txtProcess = (TextView) findViewById(R.id.txt_process);
+        btnNext = (Button) findViewById(R.id.btn_next);
+        btnShare = (ImageButton) findViewById(R.id.btn_share);
         btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bitmap bm = screenShot(QuestionReviewActivity.this.mViewPager);
                 File file = saveBitmap(bm, "mantis_image.png");
-                Log.i("chase", "filepath: "+file.getAbsolutePath());
+                Log.i("chase", "filepath: " + file.getAbsolutePath());
                 Uri uri = Uri.fromFile(new File(file.getAbsolutePath()));
                 Intent shareIntent = new Intent();
                 shareIntent.setAction(Intent.ACTION_SEND);
@@ -181,16 +182,16 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mViewPager.getCurrentItem() + 1 < mQuestionPack.getQuestionViewModels().size()){
+                if (mViewPager.getCurrentItem() + 1 < mQuestionPack.getQuestionViewModels().size()) {
                     mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
                 }
             }
         });
-        btnBack = (Button)findViewById(R.id.btn_back);
+        btnBack = (Button) findViewById(R.id.btn_back);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mViewPager.getCurrentItem() - 1 >= 0){
+                if (mViewPager.getCurrentItem() - 1 >= 0) {
                     mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
                 }
             }
@@ -198,16 +199,16 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     }
 
     private Bitmap screenShot(View view) {
-        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(),view.getHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         view.draw(canvas);
         return bitmap;
     }
 
-    private static File saveBitmap(Bitmap bm, String fileName){
+    private static File saveBitmap(Bitmap bm, String fileName) {
         final String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Screenshots";
         File dir = new File(path);
-        if(!dir.exists())
+        if (!dir.exists())
             dir.mkdirs();
         File file = new File(dir, fileName);
         try {
@@ -221,8 +222,8 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         return file;
     }
 
-    private void updateTopView(int position){
-        String str = String.format("%d/%d | Time: %d:%d",position + 1, mQuestionPack.getQuestionViewModels().size(), 1,0);
+    private void updateTopView(int position) {
+        String str = String.format("%d/%d | Time: %d:%d", position + 1, mQuestionPack.getQuestionViewModels().size(), 1, 0);
         txtProcess.setText(str);
         if (mQuestionPack.getQuestionViewModels().get(position).getUserChoise()
                 == mQuestionPack.getQuestionViewModels().get(position).getQuestion().getRightAnswerIndex()) {
@@ -241,7 +242,20 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                totalItem = mQuestionPack.getNumberOfQuestions();
+                if (position == 0) {
+                    btnBack.setEnabled(false);
+                } else {
+                    btnBack.setEnabled(true);
+                }
+                if (position == totalItem - 1) {
+                    btnNext.setEnabled(false);
+                    btnBack.setEnabled(true);
+                }
+                if (position > 0 && position < totalItem - 1) {
+                    btnBack.setEnabled(true);
+                    btnNext.setEnabled(true);
+                }
             }
 
             @Override
@@ -254,6 +268,24 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
 
             }
         });
+//        if(mViewPager!=null) {
+//            currentItem = mViewPager.getCurrentItem();
+//            totalItem=mViewPager.getChildCount();
+//            if (currentItem>0 && currentItem<totalItem-1){
+//                btnNext.setEnabled(true);
+//                btnBack.setEnabled(true);
+//            }else if(currentItem==0 && totalItem>0){
+//                btnBack.setEnabled(false);
+//                btnNext.setEnabled(true);
+//            }else if( currentItem==totalItem-1 && totalItem-1!=0){
+//                btnNext.setEnabled(false);
+//                btnBack.setEnabled(true);
+//            }else if(totalItem==0){
+//                btnBack.setEnabled(false);
+//                btnNext.setEnabled(false);
+//                btnShare.setEnabled(false);
+//            }
+//        }
     }
 
     @Override
@@ -313,7 +345,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         private static final String ARG_SECTION_NUMBER = "section_number";
 
         public PlaceholderFragment() {
-            Log.d("PlaceholderFragment","PlaceholderFragment");
+            Log.d("PlaceholderFragment", "PlaceholderFragment");
         }
 
         /**
@@ -321,7 +353,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
          * number.
          */
         public static PlaceholderFragment newInstance(int sectionNumber) {
-            Log.d("PlaceholderFragment","newInstance");
+            Log.d("PlaceholderFragment", "newInstance");
             PlaceholderFragment fragment = new PlaceholderFragment();
             fragment.position = sectionNumber - 1;
             Bundle args = new Bundle();
@@ -333,7 +365,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            Log.d("PlaceholderFragment","onCreateView");
+            Log.d("PlaceholderFragment", "onCreateView");
             View rootView = inflater.inflate(R.layout.fragment_question_review, container, false);
             this.contentView = rootView;
             getRefercence(rootView);
@@ -345,13 +377,13 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         public void onResume() {
             super.onResume();
             fillData();
-            for (int i = 0 ; i < 5; i++){
+            for (int i = 0; i < 5; i++) {
                 answerChoiseViewItemArrayList.get(i)
                         .setAnswerModel(mQuestionPack.getQuestionViewModels().get(position).getAnswerChoiceViewModel(i));
-                if(mQuestionPack.getQuestionViewModels().get(position).getUserChoise() ==  i){
+                if (mQuestionPack.getQuestionViewModels().get(position).getUserChoise() == i) {
                     answerChoiseViewItemArrayList.get(i).setUserChoise(true);
                 }
-                if(mQuestionPack.getQuestionViewModels().get(position).getQuestion().getRightAnswerIndex() == i){
+                if (mQuestionPack.getQuestionViewModels().get(position).getQuestion().getRightAnswerIndex() == i) {
                     answerChoiseViewItemArrayList.get(i).setRightAnswer(true);
                 }
 
@@ -359,7 +391,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
             }
         }
 
-        private void fillData(){
+        private void fillData() {
             final QuestionViewModel questionViewModel = (mQuestionPack.getQuestionViewModels().get(position));
             contentQuestion.setText(questionViewModel.getStimulus() + "\\(ax^2 + bx + c = 0\\) <img src=\"file:///storage/emulated/0/gmat-image/vieclam.png\"  ");
         }
@@ -368,13 +400,13 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
             cardAnswers = (CardView) view.findViewById(R.id.card_answer);
             contentQuestion = (MathView) view.findViewById(R.id.question_content);
 
-            if (answerChoiseViewItemArrayList == null){
+            if (answerChoiseViewItemArrayList == null) {
                 answerChoiseViewItemArrayList = new ArrayList<AnswerCRQuestionReview>();
-                AnswerCRQuestionReview answerChoiseViewItem0 = (AnswerCRQuestionReview)view.findViewById(R.id.answer_queston_review_1);
-                AnswerCRQuestionReview answerChoiseViewItem1 = (AnswerCRQuestionReview)view.findViewById(R.id.answer_queston_review_2);
-                AnswerCRQuestionReview answerChoiseViewItem2 = (AnswerCRQuestionReview)view.findViewById(R.id.answer_queston_review_3);
-                AnswerCRQuestionReview answerChoiseViewItem3 = (AnswerCRQuestionReview)view.findViewById(R.id.answer_queston_review_4);
-                AnswerCRQuestionReview answerChoiseViewItem4 = (AnswerCRQuestionReview)view.findViewById(R.id.answer_queston_review_5);
+                AnswerCRQuestionReview answerChoiseViewItem0 = (AnswerCRQuestionReview) view.findViewById(R.id.answer_queston_review_1);
+                AnswerCRQuestionReview answerChoiseViewItem1 = (AnswerCRQuestionReview) view.findViewById(R.id.answer_queston_review_2);
+                AnswerCRQuestionReview answerChoiseViewItem2 = (AnswerCRQuestionReview) view.findViewById(R.id.answer_queston_review_3);
+                AnswerCRQuestionReview answerChoiseViewItem3 = (AnswerCRQuestionReview) view.findViewById(R.id.answer_queston_review_4);
+                AnswerCRQuestionReview answerChoiseViewItem4 = (AnswerCRQuestionReview) view.findViewById(R.id.answer_queston_review_5);
                 answerChoiseViewItemArrayList.add(answerChoiseViewItem0);
                 answerChoiseViewItemArrayList.add(answerChoiseViewItem1);
                 answerChoiseViewItemArrayList.add(answerChoiseViewItem2);

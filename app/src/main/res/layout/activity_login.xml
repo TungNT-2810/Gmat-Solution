@@ -39,7 +39,7 @@
                 android:layout_marginLeft="32dp"
                 android:layout_marginRight="32dp">
                 <EditText
-
+                    android:textColor="@color/text_color"
                     android:id="@+id/input_email"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -61,7 +61,7 @@
                 android:layout_marginRight="32dp">
 
                 <EditText
-
+                    android:textColor="@color/text_color"
                     android:id="@+id/input_password"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

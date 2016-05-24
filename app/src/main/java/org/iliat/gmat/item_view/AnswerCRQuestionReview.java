@@ -3,6 +3,7 @@ package org.iliat.gmat.item_view;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -17,14 +18,16 @@ import org.iliat.gmat.R;
 import org.iliat.gmat.model.AnswerModel;
 import org.iliat.gmat.view_model.AnswerChoiceViewModel;
 
+import io.github.kexanie.library.MathView;
+
 /**
  * Created by hungtran on 4/25/16.
  */
 public class AnswerCRQuestionReview extends LinearLayout implements View.OnClickListener{
     private boolean isClick = false;
     private AnswerChoiceViewModel answerModel;
-    private TextView txtContentAnswer;
-    private TextView txtExplanation;
+    private MathView txtContentAnswer;
+    private MathView txtExplanation;
     private ImageView imgChoise;
     private View line;
     private boolean isUserChoise;
@@ -44,8 +47,8 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
     private void getRefercence(View view){
         if(this.imgChoise == null){
             this.imgChoise = (ImageView)view.findViewById(R.id.img_icon_answer);
-            this.txtContentAnswer = (TextView)view.findViewById(R.id.txt_content_answer);
-            this.txtExplanation = (TextView)view.findViewById(R.id.txt_explanation);
+            this.txtContentAnswer = (MathView)view.findViewById(R.id.txt_content_answer);
+            this.txtExplanation = (MathView)view.findViewById(R.id.txt_explanation);
             this.line = view.findViewById(R.id.line_between_question_explanation);
             this.txtExplanation.setVisibility(View.GONE);
             this.line.setVisibility(View.GONE);
@@ -61,20 +64,22 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
         //Log.d("TAG",answerModel.getChoice());
         if (isUserChoise) {
             imgChoise.setColorFilter(getResources().getColor(R.color.color_red_500));
-            txtContentAnswer.setTextColor(getResources().getColor(R.color.color_red_500));
+            txtContentAnswer.setBackgroundColor(getResources().getColor(R.color.color_red_500));
+//            txtContentAnswer.setTextColor(getResources().getColor(R.color.color_red_500));
         }
         if (isRightAnswer) {
             imgChoise.setColorFilter(getResources().getColor(R.color.color_green_500));
-            txtContentAnswer.setTextColor(getResources().getColor(R.color.color_green_500));
+            txtContentAnswer.setBackgroundColor(getResources().getColor(R.color.color_green_500));
+//            txtContentAnswer.setTextColor(getResources().getColor(R.color.color_green_500));
         }
         Log.d("AnswerChoiseViewItem","fillData");
     }
 
-    public TextView getTxtContentAnswer() {
+    public MathView getTxtContentAnswer() {
         return txtContentAnswer;
     }
 
-    public void setTxtContentAnswer(TextView txtContentAnswer) {
+    public void setTxtContentAnswer(MathView txtContentAnswer) {
         this.txtContentAnswer = txtContentAnswer;
     }
 
@@ -82,14 +87,14 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
     public void onClick(View v) {
         if (!isClick){
             isClick = true;
-            txtContentAnswer.setTypeface(Typeface.DEFAULT_BOLD);
-            txtExplanation.setTypeface(Typeface.DEFAULT_BOLD);
+//            txtContentAnswer.setTypeface(Typeface.DEFAULT_BOLD);
+//            txtExplanation.setTypeface(Typeface.DEFAULT_BOLD);
             line.setVisibility(View.VISIBLE);
             txtExplanation.setVisibility(View.VISIBLE);
         } else {
             isClick = false;
-            txtContentAnswer.setTypeface(Typeface.DEFAULT);
-            txtExplanation.setTypeface(Typeface.DEFAULT);
+//            txtContentAnswer.setTypeface(Typeface.DEFAULT);
+//            txtExplanation.setTypeface(Typeface.DEFAULT);
             line.setVisibility(View.GONE);
             txtExplanation.setVisibility(View.GONE);
         }

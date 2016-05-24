@@ -2,6 +2,7 @@ package org.iliat.gmat.item_view;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -15,14 +16,16 @@ import org.iliat.gmat.fragment.answer_question.ChangeStateOfAnswerItemsInterface
 import org.iliat.gmat.interf.ButtonNextControl;
 import org.iliat.gmat.view_model.AnswerChoiceViewModel;
 
+import io.github.kexanie.library.MathView;
+
 /**
  * Created by hungtran on 5/2/16.
  */
 public class AnswerCRQuestion extends LinearLayout implements View.OnClickListener{
     private AnswerChoiceViewModel answerModel;
     private ChangeStateOfAnswerItemsInterface changeStateOfAnswerItemsInterface;
-    private TextView txtContentAnswer;
-    private TextView txtExplanation;
+    private MathView txtContentAnswer;
+    private MathView txtExplanation;
     private Context mContext;
     private ButtonNextControl buttonNextControl;
     private ImageView imgChoise;
@@ -54,8 +57,8 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
     private void getRefercence(View view){
         if(this.imgChoise == null){
             this.imgChoise = (ImageView)view.findViewById(R.id.img_icon_answer);
-            this.txtContentAnswer = (TextView)view.findViewById(R.id.txt_content_answer);
-            this.txtExplanation = (TextView)view.findViewById(R.id.txt_explanation);
+            this.txtContentAnswer = (MathView)view.findViewById(R.id.txt_content_answer);
+            this.txtExplanation = (MathView)view.findViewById(R.id.txt_explanation);
             this.txtExplanation.setVisibility(View.GONE);
         }
     }
@@ -66,8 +69,8 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
         txtContentAnswer.setText(this.strAnswer);
         if (isUserChoise) {
             imgChoise.setColorFilter(ContextCompat.getColor(mContext, R.color.color_selected_answer));
-            txtContentAnswer.setTextColor(ContextCompat.getColor(mContext, R.color.color_selected_answer));
-            txtContentAnswer.setTypeface(Typeface.DEFAULT_BOLD);
+//            txtContentAnswer.setTextColor(ContextCompat.getColor(mContext, R.color.color_selected_answer));
+//            txtContentAnswer.setTypeface(Typeface.DEFAULT_BOLD);
         }
     }
 
@@ -75,12 +78,12 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
         isUserChoise = userChoise;
         if (isUserChoise) {
             imgChoise.setColorFilter(ContextCompat.getColor(mContext, R.color.color_selected_answer));
-            txtContentAnswer.setTextColor(ContextCompat.getColor(mContext, R.color.color_selected_answer));
-            txtContentAnswer.setTypeface(Typeface.DEFAULT_BOLD);
+//            txtContentAnswer.setTextColor(ContextCompat.getColor(mContext, R.color.color_selected_answer));
+//            txtContentAnswer.setTypeface(Typeface.DEFAULT_BOLD);
         } else {
             imgChoise.setColorFilter(ContextCompat.getColor(mContext, R.color.color_normal_answer));
-            txtContentAnswer.setTextColor(ContextCompat.getColor(mContext, R.color.color_normal_answer));
-            txtContentAnswer.setTypeface(Typeface.DEFAULT);
+//            txtContentAnswer.setTextColor(ContextCompat.getColor(mContext, R.color.color_normal_answer));
+//            txtContentAnswer.setTypeface(Typeface.DEFAULT);
         }
 
     }

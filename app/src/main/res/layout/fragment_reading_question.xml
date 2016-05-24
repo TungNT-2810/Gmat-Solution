@@ -1,0 +1,150 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.QuestionReviewActivity$PlaceholderFragment">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtReadingText"
+                    android:textColor="#212121"
+                    android:textSize="16sp"
+                    android:text="Cecil Calvert, 2nd Lord of Baltimore, founded Maryland in 1632. Cecil's father, George Calvert had received a royal charter for the land from King Charles I. The new colony was named after Henrietta Maria, the wife of the king. In November of 1633, about 200 Catholic settlers led by Cecil's younger brother boarded the ships ARK and DOVE, and set sail for Marie's Land (later Maryland).
+
+By 1634, Maryland became one of the few territories of England to be predominately Catholic. The Catholic settlement became known as St. Mary's and is currently the fourth oldest permanent British settlement in America.
+
+In 1649, the Maryland Toleration Act was passed which guaranteed religious tolerance to settlers, as long as the religion was a sect of Christianity. After England's Glorious Revolution of 1688, which established the Protestant faith in England, Catholicism was outlawed in Maryland until after the Revolutionary War. The Puritan government of Maryland at the time burned down all of southern Maryland's original Catholic churches.
+
+By the 1700's, Maryland and Virginia became plantation economies, and grew tobacco as the cash crop. Up to 40 percent of Maryland's population were slaves or convicts who worked in the tobacco fields. Soon, Baltimore, a large port on the Chesapeake Bay, became an important center for tobacco export."
+                    />
+
+            </LinearLayout>
+
+
+        </ScrollView>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+
+            android:fillViewport="true"
+            android:id="@+id/scrollViewAnswer"
+            >
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_answer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtQuestion"
+                        android:text="Why did Peter Cooper sell his gelatin formula?"
+                        android:textSize="16sp"
+                        android:textColor="#212121"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_background_line"
+                        android:layout_marginTop="10dp"/>
+
+                    <org.iliat.gmat.item_view.AnswerCRQuestion
+                        android:id="@+id/answer_queston_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_background_line" />
+
+                    <org.iliat.gmat.item_view.AnswerCRQuestion
+                        android:id="@+id/answer_queston_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_background_line" />
+
+                    <org.iliat.gmat.item_view.AnswerCRQuestion
+                        android:id="@+id/answer_queston_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_background_line" />
+
+                    <org.iliat.gmat.item_view.AnswerCRQuestion
+                        android:id="@+id/answer_queston_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_background_line" />
+
+                    <org.iliat.gmat.item_view.AnswerCRQuestion
+                        android:id="@+id/answer_queston_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"/>
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </ScrollView>
+    </LinearLayout>
+
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/cutom_image_button"
+        android:src="@drawable/ic_clear_white_24dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:id="@+id/btnImgButton"
+        />
+
+
+</RelativeLayout>

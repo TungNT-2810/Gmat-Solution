@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="org.iliat.gmat.activity.ReadingQuestion"
+    android:background="#FFFFFF">
+    <ImageButton
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:id="@+id/imgButton"
+        android:background="@color/colorPrimary"
+        />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="5dp"
+            android:background="#E0E0E0"
+            >
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/txtReadingText"
+                android:textSize="18sp"
+                android:textColor="#212121"
+                android:layout_gravity="center"
+                android:text="Directions and examples of the types of questions you will find in the Reading Comprehension section of the TOEFL® test follow. Use the answer key to see the correct answers for the Reading Comprehension questions.
+Section 3 measures your ability to read and understand short passages similar in topic and style to those that students are likely to encounter in North American universities and colleges. This section contains reading passages and questions about the passages.
+
+Directions: In the Reading Comprehension section you will read several passages. Each one is followed by a number of questions about it. You are to choose the one best answer, A, B, C or D, to each question. Then, on your answer sheet, find the number of the question and fill in the space that corresponds to the letter of the answer you have chosen."
+                />
+        </LinearLayout>
+
+    </ScrollView>
+    <RelativeLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/relative">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="5dp"
+                android:background="#E0E0E0"
+                >
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/txtReadingText2"
+                    android:textSize="18sp"
+                    android:textColor="#212121"
+                    android:layout_gravity="center"
+                    android:text="Directions and examples of the types of questions you will find in the Reading Comprehension section of the TOEFL® test follow. Use the answer key to see the correct answers for the Reading Comprehension questions.
+Section 3 measures your ability to read and understand short passages similar in topic and style to those that students are likely to encounter in North American universities and colleges. This section contains reading passages and questions about the passages.
+
+Directions: In the Reading Comprehension section you will read several passages. Each one is followed by a number of questions about it. You are to choose the one best answer, A, B, C or D, to each question. Then, on your answer sheet, find the number of the question and fill in the space that corresponds to the letter of the answer you have chosen."
+                    />
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+
+</LinearLayout>
