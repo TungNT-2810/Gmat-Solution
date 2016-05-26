@@ -70,6 +70,7 @@ public class ListQuestionPackAdapter extends
         holder.cardMain.setCardBackgroundColor(Constant.COLOR_PICKER[position%Constant.COLOR_PICKER.length]);
         holder.txtDateOfPack.setText(mQuestionPackVIewModels.get(position).getAvailableTime());
         holder.imageView.setImageResource(Constant.PICTURES[position%Constant.PICTURES.length]);
+        holder.imgRateStar.setImageResource(Constant.STARS[position%Constant.STARS.length]);
         holder.questionPack = questionPack;
 
     }
@@ -89,6 +90,7 @@ public class ListQuestionPackAdapter extends
         private TextView txtDateOfPack;
         private ImageView imageView;
         private Animation animationIn, animationOut;
+        private ImageView imgRateStar;
 
         public QuestionPackViewModel questionPack;
         public QuestionPackViewHolder(View itemView) {
@@ -96,6 +98,7 @@ public class ListQuestionPackAdapter extends
             cardMain = (CardView) itemView.findViewById(R.id.card_question_pack);
             txtDateOfPack = (TextView) itemView.findViewById(R.id.txtDateOfPack);
             imageView=(ImageView)itemView.findViewById(R.id.imgContent);
+            imgRateStar=(ImageView)itemView.findViewById(R.id.imgRateStar);
             animationIn=AnimationUtils.loadAnimation(itemView.getContext(),R.anim.zoom_in);
             animationOut=AnimationUtils.loadAnimation(itemView.getContext(),R.anim.zoom_out);
             itemView.setOnClickListener(this);
