@@ -1,169 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/tools"
+    android:background="@drawable/background"
     android:orientation="vertical">
-    <android.support.v7.widget.CardView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/color_white"
-        custom:cardCornerRadius="5dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:gravity="center"
-            >
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1.1"
-                android:gravity="center_vertical|center_horizontal">
-                <com.github.lzyzsd.circleprogress.DonutProgress
-                    android:id="@+id/donut_progress"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
-                    custom:donut_unfinished_stroke_width="5dp"
-                    custom:donut_progress="80"
-                    custom:donut_text_color="#b7a921"
-                    custom:donut_text_size="20sp"
-                    custom:donut_finished_stroke_width="5dp"
-                    custom:donut_finished_color="#b7a921"
-                    custom:donut_unfinished_color="#e8db47"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"/>
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center_vertical"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Skill level"
-                    android:textSize="25sp"
-                    android:textColor="#535353"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="10dp"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Master"
-                    android:id="@+id/txtSkillLevel"
-                    android:textSize="25sp"
-                    android:textColor="#b7a921"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="10dp"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                >
-                <ImageButton
-                    android:layout_width="70dp"
-                    android:layout_height="50dp"
-                    android:id="@+id/btnMore"
-                    android:layout_marginRight="10dp"
-                    />
-            </LinearLayout>
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:gravity="center">
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_arrow_back_black_24dp" />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="3"
-            android:layout_height="30dp"
-            android:text="Swipe to choose Q packs!"
-            android:textSize="18sp"
-            android:textColor="#535353"
-            android:textAlignment="center"
-            />
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_arrow_forward_black_24dp"
-            />
-    </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        app:layoutManager="LinearLayoutManager"
-        android:id="@+id/list_pack_question"
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.7"
-        android:orientation="horizontal"
-        android:background="@drawable/custom_layout"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
+        android:background="@drawable/custom_layout_grey"
         >
-        <Button
+
+        <LinearLayout
+            android:layout_marginLeft="5dp"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:drawableLeft="@drawable/reminder"
+            android:layout_weight="1.1"
+            android:gravity="center_vertical|center_horizontal">
+
+            <com.github.lzyzsd.circleprogress.DonutProgress
+                android:id="@+id/donut_progress"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                custom:donut_finished_color="#ff7f00"
+                custom:donut_finished_stroke_width="5dp"
+                custom:donut_progress="80"
+                custom:donut_text_color="#ffb753"
+                custom:donut_text_size="20sp"
+                custom:donut_unfinished_color="#ffb753"
+                custom:donut_unfinished_stroke_width="5dp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:text="Skill level"
+                android:textColor="@color/color_white"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/txtSkillLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:text="Master"
+                android:textColor="#ffb753"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btnMore"
+                android:layout_width="70dp"
+                android:layout_height="45dp"
+                android:layout_marginRight="10dp"
+                android:text="More"
+                android:textSize="18sp"
+                android:textAllCaps="false"
+                android:background="@drawable/custom_button_orange"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_arrow_back_white_24dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="3"
+            android:text="Swipe to choose Q packs!"
+            android:textAlignment="center"
+            android:textColor="@color/color_white"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_arrow_forward_white_24dp" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_pack_question"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        app:layoutManager="LinearLayoutManager" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="0.7"
+        android:background="@drawable/custom_layout_grey"
+        android:orientation="horizontal">
+
+        <Button
             style="@style/Base.Widget.AppCompat.Button.Borderless"
-            android:text="Reminder"
-            android:textColor="#555555"
-            android:textSize="18sp"
-            android:textAllCaps="false"
-            android:drawablePadding="-15dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/reminder"
+            android:drawablePadding="-10dp"
             android:gravity="center"
+            android:text="Reminder"
+            android:textAllCaps="false"
+            android:textColor="@color/color_white"
+            android:textSize="20sp"
 
             />
+
         <View
             android:layout_width="2dp"
             android:layout_height="match_parent"
-            android:background="#555555"
+            android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:background="#555555" />
+
         <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:drawableRight="@drawable/about_us"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawablePadding="-15dp"
+            android:drawableRight="@drawable/about_uss"
             android:gravity="center"
             android:text="About us"
-            android:textColor="#555555"
-            android:textSize="18sp"
             android:textAllCaps="false"
-            android:drawablePadding="-15dp"
-            />
+            android:textColor="@color/color_white"
+            android:textSize="20sp" />
     </LinearLayout>
 
 </LinearLayout>

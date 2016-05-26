@@ -17,8 +17,8 @@
     <color name="color_red_500">#F44336</color>
     <color name="color_green_500">#4CAF50</color>
     <color name="color_yellow_500">#FFEB3B</color>
-    <color name="color_primary">#00bcd4</color>
-    <color name="color_primary_dark">#0097a7</color>
+    <color name="color_primary">#c96424</color>
+    <color name="color_primary_dark">#c05414</color>
     <color name="color_window_background">#FAFAFA</color>
     <color name="color_background_line">#E0E0E0</color>
     <color name="color_home_background">#eeeeee</color>
