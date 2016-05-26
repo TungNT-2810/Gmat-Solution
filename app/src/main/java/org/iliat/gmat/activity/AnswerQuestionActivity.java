@@ -235,8 +235,8 @@ public class AnswerQuestionActivity
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(this, "You need to complete all questions!", Toast.LENGTH_LONG);
-//        super.onBackPressed();
+//        Toast.makeText(this, "You need to complete all questions!", Toast.LENGTH_LONG);
+        super.onBackPressed();
     }
 
     @Override

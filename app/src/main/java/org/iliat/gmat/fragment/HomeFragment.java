@@ -1,76 +1,73 @@
 package org.iliat.gmat.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageButton;
 
 import org.iliat.gmat.R;
+import org.iliat.gmat.activity.AnswerQuestionActivity;
+import org.iliat.gmat.adapter.ListQuestionPackAdapter;
+import org.iliat.gmat.model.QuestionPackModel;
+import org.iliat.gmat.view_model.QuestionPackViewModel;
+
+import io.realm.Realm;
 
 /**
  * Created by ZYuTernity on 5/16/2016.
+ * Modified by LinhDQ on 26/05/2016
  */
-public class HomeFragment extends BaseFragment implements View.OnClickListener {
+public class HomeFragment extends BaseFragment implements View.OnClickListener,ListQuestionPackAdapter.OnListQuestionPackListener {
 
-    private ImageButton btn_questions;
-    private ImageButton btn_summary;
-    private ImageButton btn_about;
-    private ImageButton btn_1;
-    private Animation animIn;
-    private QuestionPackFragment questionPackFragment;
+    private Realm realm;
+    private RecyclerView recyclerView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_screen, container, false);
         getScreenManager().setTitleOfActionBar("GMAT");
-        //inits(view);
+        inits(view);
+        loadQuestionPack(view);
         return view;
     }
 
     public void inits(View view) {
-        animIn = AnimationUtils.loadAnimation(view.getContext(), R.anim.anim_button_in);
-        btn_questions = (ImageButton) view.findViewById(R.id.btn_questions);
-        btn_summary = (ImageButton) view.findViewById(R.id.btn_summary);
-        btn_about = (ImageButton) view.findViewById(R.id.btn_about);
-        btn_1 = (ImageButton) view.findViewById(R.id.btn_1);
-        btn_questions.setOnClickListener(this);
-        btn_summary.setOnClickListener(this);
-        btn_about.setOnClickListener(this);
-        btn_1.setOnClickListener(this);
+        recyclerView = (RecyclerView) view.findViewById(R.id.list_pack_question);
+    }
+
+    private void loadQuestionPack(View view) {
+        Context context = view.getContext();
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        ListQuestionPackAdapter listQuestionPackAdapter = new ListQuestionPackAdapter();
+        realm = Realm.getDefaultInstance();
+        listQuestionPackAdapter.setQuestionPackList(realm.where(QuestionPackModel.class).findAll());
+        listQuestionPackAdapter.setQuestionPackListener(this);
+        listQuestionPackAdapter.setContext(context);
+        recyclerView.setAdapter(listQuestionPackAdapter);
+        StaggeredGridLayoutManager staggeredGridLayoutManager =
+                new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
+        recyclerView.setLayoutManager(staggeredGridLayoutManager);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_questions: {
-                btn_questions.startAnimation(animIn);
-                questionPackFragment = new QuestionPackFragment();
-                questionPackFragment.setmContext(getView().getContext());
-                getScreenManager().openFragment(questionPackFragment, true);
-                getScreenManager().setTitleOfActionBar("Question Packages");
-                break;
-            }
-            case R.id.btn_summary: {
-                btn_summary.startAnimation(animIn);
-                getScreenManager().openFragment(new SumaryFragment(), true);
-                getScreenManager().setTitleOfActionBar("Sumary");
-                break;
-            }
-            case R.id.btn_about: {
-                btn_about.startAnimation(animIn);
-                break;
-            }
-            case R.id.btn_1: {
-                btn_1.startAnimation(animIn);
-                break;
-            }
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onQuestionPackInteraction(QuestionPackViewModel item) {
+        getScreenManager().goToActivity(AnswerQuestionActivity.class,
+                AnswerQuestionActivity.buildBundle(item.getQuestionPack().getId()));
     }
 }
