@@ -5,8 +5,12 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.iliat.gmat.R;
@@ -65,6 +69,7 @@ public class ListQuestionPackAdapter extends
         final QuestionPackViewModel questionPack = this.mQuestionPackVIewModels.get(position);
         holder.cardMain.setCardBackgroundColor(Constant.COLOR_PICKER[position%Constant.COLOR_PICKER.length]);
         holder.txtDateOfPack.setText(mQuestionPackVIewModels.get(position).getAvailableTime());
+        holder.imageView.setImageResource(Constant.PICTURES[position%Constant.PICTURES.length]);
         holder.questionPack = questionPack;
 
     }
@@ -80,26 +85,50 @@ public class ListQuestionPackAdapter extends
     }
 
     public class QuestionPackViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        CardView cardMain;
-        TextView txtDateOfPack;
+        private CardView cardMain;
+        private TextView txtDateOfPack;
+        private ImageView imageView;
+        private Animation animationIn, animationOut;
+
         public QuestionPackViewModel questionPack;
         public QuestionPackViewHolder(View itemView) {
             super(itemView);
             cardMain = (CardView) itemView.findViewById(R.id.card_question_pack);
             txtDateOfPack = (TextView) itemView.findViewById(R.id.txtDateOfPack);
+            imageView=(ImageView)itemView.findViewById(R.id.imgContent);
+            animationIn=AnimationUtils.loadAnimation(itemView.getContext(),R.anim.zoom_in);
+            animationOut=AnimationUtils.loadAnimation(itemView.getContext(),R.anim.zoom_out);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            mQuestionPackListener.onQuestionPackInteraction(questionPack);
-            if (mMultipleSelectAdapterCallback != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
-                int clickedPosition = getAdapterPosition();
-                notifyItemChanged(clickedPosition);
-                SelectedItem selectedItem = getSelectedItem();
-                mMultipleSelectAdapterCallback.itemClicked(selectedItem.getCount(), selectedItem.getSelectedItemIds());
-            }
+            v.startAnimation(animationIn);
+            animationOut.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    mQuestionPackListener.onQuestionPackInteraction(questionPack);
+                    if (mMultipleSelectAdapterCallback != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
+                        int clickedPosition = getAdapterPosition();
+                        notifyItemChanged(clickedPosition);
+                        SelectedItem selectedItem = getSelectedItem();
+                        mMultipleSelectAdapterCallback.itemClicked(selectedItem.getCount(), selectedItem.getSelectedItemIds());
+                    }
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            v.startAnimation(animationOut);
         }
+
     }
 
 

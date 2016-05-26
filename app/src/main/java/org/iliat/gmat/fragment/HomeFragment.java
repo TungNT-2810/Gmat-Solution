@@ -9,6 +9,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import org.iliat.gmat.R;
 import org.iliat.gmat.activity.AnswerQuestionActivity;
@@ -26,6 +27,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener,L
 
     private Realm realm;
     private RecyclerView recyclerView;
+    private Button btnMore;
 
     @Nullable
     @Override
@@ -39,6 +41,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener,L
 
     public void inits(View view) {
         recyclerView = (RecyclerView) view.findViewById(R.id.list_pack_question);
+        btnMore=(Button)view.findViewById(R.id.btnMore);
+        btnMore.setOnClickListener(this);
     }
 
     private void loadQuestionPack(View view) {
@@ -60,6 +64,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener,L
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.btnMore:{
+                getScreenManager().openFragment(new SumaryFragment(),true);
+                break;
+            }
             default:
                 break;
         }
