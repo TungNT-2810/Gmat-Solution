@@ -48,7 +48,7 @@ public class QuestionPackFragment extends BaseFragment
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
+     * fragment (e.g. upon screen o changes).
      */
     public QuestionPackFragment() {
 
