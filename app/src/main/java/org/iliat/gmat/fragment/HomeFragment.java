@@ -26,9 +26,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home_menu, container, false);
+        View view = inflater.inflate(R.layout.home_screen, container, false);
         getScreenManager().setTitleOfActionBar("GMAT");
-        inits(view);
+        //inits(view);
         return view;
     }
 
