@@ -57,7 +57,8 @@
                 android:layout_marginRight="10dp"
                 android:text="Skill level"
                 android:textColor="@color/color_white"
-                android:textSize="25sp" />
+                android:textSize="25sp"
+                />
 
             <TextView
                 android:id="@+id/txtSkillLevel"

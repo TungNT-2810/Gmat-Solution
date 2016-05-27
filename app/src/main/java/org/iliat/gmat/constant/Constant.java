@@ -12,9 +12,11 @@ public class Constant {
     public static final int TAG_GREEN=2;
     public static final int TAG_YELLOW=3;
     public static final int TAG_RED=4;
-    public static final int[] COLOR_PICKER={Color.parseColor("#009688"),Color.parseColor("#9C27B0"),
-            Color.parseColor("#3F51B5"),Color.parseColor("#4CAF50"),Color.parseColor("#CDDC39"),
-            Color.parseColor("#FFC107"),Color.parseColor("#607D8B"),Color.parseColor("#795548"),Color.parseColor("#00BCD4")};
+    public static final int[] COLOR_PICKER={Color.parseColor("#2d5139"),Color.parseColor("#2d3f51"),
+            Color.parseColor("#462e52"),Color.parseColor("#4e512d"),Color.parseColor("#512d2d"),
+            Color.parseColor("#2e524f"),Color.parseColor("#52432e"),Color.parseColor("#522e42"),Color.parseColor("#3c6b4c"),
+            Color.parseColor("#5b3c6b"), Color.parseColor("#676b3c"), Color.parseColor("#6b3c3c"), Color.parseColor("#3c6b67"),
+            Color.parseColor("#6b573c"), Color.parseColor("#6b3c56")};
     public static final int[] PICTURES={R.drawable.pic1,R.drawable.pic2,R.drawable.pic3,R.drawable.pic4,R.drawable.pic5};
 
 }

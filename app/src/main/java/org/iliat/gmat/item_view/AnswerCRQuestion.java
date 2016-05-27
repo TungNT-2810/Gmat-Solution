@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -73,7 +74,7 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
         txtContentAnswer.setText(this.strAnswer);
         if (isUserChoise) {
             imgChoise.setColorFilter(ContextCompat.getColor(mContext, R.color.color_selected_answer));
-            txtContentAnswer.setBackgroundColor(Color.parseColor("#2979FF"));
+            txtContentAnswer.setBackgroundColor(blue);
 //            txtContentAnswer.setTextColor(ContextCompat.getColor(mContext, R.color.color_selected_answer));
 //            txtContentAnswer.setTypeface(Typeface.DEFAULT_BOLD);
         }
@@ -83,7 +84,7 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
         isUserChoise = userChoise;
         if (isUserChoise) {
             imgChoise.setColorFilter(ContextCompat.getColor(mContext, R.color.color_selected_answer));
-            txtContentAnswer.setBackgroundColor(Color.parseColor("#2979FF"));
+            txtContentAnswer.setBackgroundColor(blue);
 //            txtContentAnswer.setTextColor(ContextCompat.getColor(mContext, R.color.color_selected_answer));
 //            txtContentAnswer.setTypeface(Typeface.DEFAULT_BOLD);
         } else {
@@ -92,7 +93,6 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
 //            txtContentAnswer.setTextColor(ContextCompat.getColor(mContext, R.color.color_normal_answer));
 //            txtContentAnswer.setTypeface(Typeface.DEFAULT);
         }
-
     }
 
     @Override
