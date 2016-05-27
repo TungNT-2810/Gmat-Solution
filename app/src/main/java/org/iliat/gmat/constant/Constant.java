@@ -18,5 +18,6 @@ public class Constant {
             Color.parseColor("#5b3c6b"), Color.parseColor("#676b3c"), Color.parseColor("#6b3c3c"), Color.parseColor("#3c6b67"),
             Color.parseColor("#6b573c"), Color.parseColor("#6b3c56")};
     public static final int[] PICTURES={R.drawable.pic1,R.drawable.pic2,R.drawable.pic3,R.drawable.pic4,R.drawable.pic5};
+    public static final int[] STARS={R.drawable.star0,R.drawable.star1,R.drawable.stars2,R.drawable.stars3};
 
 }
