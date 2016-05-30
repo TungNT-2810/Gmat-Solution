@@ -1,16 +1,23 @@
 package org.iliat.gmat.fragment.answer_question;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
 import org.iliat.gmat.R;
+import org.iliat.gmat.constant.Constant;
 import org.iliat.gmat.fragment.BaseFragment;
 import org.iliat.gmat.interf.ButtonNextControl;
 import org.iliat.gmat.item_view.AnswerCRQuestion;
@@ -33,7 +40,8 @@ public class SCQuestionFragment extends BaseFragment
     private final int ANSWER_CHOICE_NUM = 5;
     private ButtonNextControl buttonNextControl;
     private ArrayList<AnswerCRQuestion> answerCRQuestionArrayList;
-    private MathView questionContent;
+    private WebView questionContent;
+    private TextView questionContentText;
 
 
     public void setButtonNextControl(ButtonNextControl buttonNextControl) {
@@ -68,7 +76,16 @@ public class SCQuestionFragment extends BaseFragment
 
     private void initLayout(View view) {
         if (answerCRQuestionArrayList == null) {
-            questionContent = (MathView) view.findViewById(R.id.question_content);
+            questionContent = (WebView) view.findViewById(R.id.question_content);
+            questionContentText=(TextView)view.findViewById(R.id.question_content_text);
+
+            if(Build.VERSION.SDK_INT>=19){
+                questionContent.setLayerType(View.LAYER_TYPE_HARDWARE,null);
+            }else{
+                questionContent.setLayerType(View.LAYER_TYPE_SOFTWARE,null);
+            }
+            questionContent.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+
             answerCRQuestionArrayList = new ArrayList<>();
             answerCRQuestionArrayList.add((AnswerCRQuestion) view.findViewById(R.id.answer_queston_1));
             answerCRQuestionArrayList.add((AnswerCRQuestion) view.findViewById(R.id.answer_queston_2));
@@ -79,14 +96,26 @@ public class SCQuestionFragment extends BaseFragment
     }
 
     private void fillData() {
+        if(mQuestionCRModel.getQuestion().getType().equals("Q")) {
+            questionContent.loadData(Constant.js + mQuestionCRModel.getStimulus(), "text/html; charset=utf-8", "UTF-8");
+            questionContent.clearHistory();
+            questionContent.clearCache(true);
+        }else{
+            questionContent.setVisibility(View.GONE);
+            questionContentText.setVisibility(View.VISIBLE);
+            String stimulus=mQuestionCRModel.getStimulus();
+            stimulus=stimulus.replace("span style=\"text-decoration: underline;\"","u").replace("span","u");
+            questionContentText.setText(Html.fromHtml(stimulus));
+        }
         for (int i = 0; i < ANSWER_CHOICE_NUM; i++) {
             answerCRQuestionArrayList.get(i).setAnswerModel(mQuestionCRModel.getAnswerChoiceViewModel(i));
             answerCRQuestionArrayList.get(i).setmContext(getActivity());
             answerCRQuestionArrayList.get(i).setButtonNextControl(buttonNextControl);
             answerCRQuestionArrayList.get(i).setChangeStateOfAnswerItemsInterface(this);
             answerCRQuestionArrayList.get(i).fillData();
-            questionContent.setText(mQuestionCRModel.getStimulus());
+            answerCRQuestionArrayList.get(i).setQuestionType(mQuestionCRModel.getQuestion().getType());
         }
+
     }
 
     @Override

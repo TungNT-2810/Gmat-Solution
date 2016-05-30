@@ -139,7 +139,7 @@ By the 1700's, Maryland and Virginia became plantation economies, and grew tobac
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/cutom_image_button"
-        android:src="@drawable/ic_clear_white_24dp"
+        android:src="@drawable/ic_vertical_align_bottom_white_24dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="5dp"

@@ -17,14 +17,24 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <io.github.kexanie.library.MathView
+                <WebView
                     android:layout_margin="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/question_content"
-                    android:textSize="15sp"
+                    android:textSize="18sp"
                     android:padding="16dp"
-                    app:engine="KaTeX" />
+                    />
+                <TextView
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/question_content_text"
+                    android:textColor="#212121"
+                    android:textSize="18sp"
+                    android:padding="16dp"
+                    android:visibility="gone"
+                    />
             </LinearLayout>
 
             <android.support.v7.widget.CardView
@@ -40,6 +50,7 @@
                         android:id="@+id/answer_queston_1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical|left"
                         android:layout_marginRight="5dp"/>
                     <View
                         android:layout_width="match_parent"
@@ -48,6 +59,7 @@
                     <org.iliat.gmat.item_view.AnswerCRQuestion
                         android:id="@+id/answer_queston_2"
                         android:layout_width="match_parent"
+                        android:gravity="center_vertical|left"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"/>
                     <View
@@ -58,6 +70,7 @@
                         android:id="@+id/answer_queston_3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical|left"
                         android:layout_marginRight="5dp"/>
                     <View
                         android:layout_width="match_parent"
@@ -67,6 +80,7 @@
                         android:id="@+id/answer_queston_4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical|left"
                         android:layout_marginRight="5dp"/>
                     <View
                         android:layout_width="match_parent"
@@ -76,6 +90,7 @@
                         android:id="@+id/answer_queston_5"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical|left"
                         android:layout_marginRight="5dp"/>
 
                 </LinearLayout>

@@ -17,13 +17,12 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <io.github.kexanie.library.MathView
+                <WebView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/question_content"
                     android:textSize="15sp"
-                    android:padding="16dp"
-                    app:engine="MathJax"/>
+                    android:padding="16dp"/>
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -42,6 +41,7 @@
                     <org.iliat.gmat.item_view.AnswerCRQuestionReview
                         android:id="@+id/answer_queston_review_1"
                         android:layout_width="match_parent"
+                        android:gravity="center_vertical|left"
                         android:layout_height="wrap_content"/>
                     <View
                         android:layout_width="match_parent"
@@ -50,6 +50,7 @@
                     <org.iliat.gmat.item_view.AnswerCRQuestionReview
                         android:id="@+id/answer_queston_review_2"
                         android:layout_width="match_parent"
+                        android:gravity="center_vertical|left"
                         android:layout_height="wrap_content"/>
                     <View
                         android:layout_width="match_parent"
@@ -58,6 +59,7 @@
                     <org.iliat.gmat.item_view.AnswerCRQuestionReview
                         android:id="@+id/answer_queston_review_3"
                         android:layout_width="match_parent"
+                        android:gravity="center_vertical|left"
                         android:layout_height="wrap_content"/>
                     <View
                         android:layout_width="match_parent"
@@ -66,6 +68,7 @@
                     <org.iliat.gmat.item_view.AnswerCRQuestionReview
                         android:id="@+id/answer_queston_review_4"
                         android:layout_width="match_parent"
+                        android:gravity="center_vertical|left"
                         android:layout_height="wrap_content"/>
                     <View
                         android:layout_width="match_parent"
@@ -74,6 +77,7 @@
                     <org.iliat.gmat.item_view.AnswerCRQuestionReview
                         android:id="@+id/answer_queston_review_5"
                         android:layout_width="match_parent"
+                        android:gravity="center_vertical|left"
                         android:layout_height="wrap_content"/>
 
                 </LinearLayout>

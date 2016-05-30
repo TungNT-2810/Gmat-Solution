@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -23,13 +24,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.iliat.gmat.R;
 
+import org.iliat.gmat.constant.Constant;
+import org.iliat.gmat.fragment.answer_question.RCQuestionFragment;
 import org.iliat.gmat.interf.ScreenManager;
 import org.iliat.gmat.item_view.AnswerCRQuestionReview;
 import org.iliat.gmat.model.QuestionPackModel;
@@ -223,7 +229,9 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     }
 
     private void updateTopView(int position) {
-        String str = String.format("%d/%d | Time: %d:%d", position + 1, mQuestionPack.getQuestionViewModels().size(), 1, 0);
+        String str = String.format("%d/%d | Time: %d:%d", position + 1, mQuestionPack.getQuestionViewModels().size(),
+                mQuestionPack.getQuestionViewModels().get(position).getTimeToFinish()/60,
+                mQuestionPack.getQuestionViewModels().get(position).getTimeToFinish()%60);
         txtProcess.setText(str);
         if (mQuestionPack.getQuestionViewModels().get(position).getUserChoise()
                 == mQuestionPack.getQuestionViewModels().get(position).getQuestion().getRightAnswerIndex()) {
@@ -332,15 +340,20 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
          * The fragment argument representing the section number for this
          * fragment.
          */
-
+        private boolean isRC;
         private int position;
         private QuestionPackViewModel mQuestionPack;
-        private MathView contentQuestion;
+        private WebView contentQuestion;
         private MathView stemQuestion;
         private CardView cardAnswers;
         private ArrayList<AnswerCRQuestionReview> answerChoiseViewItemArrayList;
         private View contentView;
         public static Context context;
+        private TextView txtReadingText;
+        private TextView txtQuestion;
+        private ImageButton imageButton;
+        private ScrollView scrollView;
+        private boolean isGone=false;
 
         private static final String ARG_SECTION_NUMBER = "section_number";
 
@@ -366,9 +379,18 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             Log.d("PlaceholderFragment", "onCreateView");
-            View rootView = inflater.inflate(R.layout.fragment_question_review, container, false);
-            this.contentView = rootView;
+
+            View rootView=null;
+            if(mQuestionPack.getQuestionViewModels().get(position).getQuestion().getType().equals("RC")){
+                Log.d("dm","RC day");
+                rootView = inflater.inflate(R.layout.fragment_reading_question, container, false);
+                isRC=true;
+            }else{
+                rootView = inflater.inflate(R.layout.fragment_question_review, container, false);
+                isRC=false;
+            }
             getRefercence(rootView);
+            this.contentView = rootView;
             return rootView;
 
         }
@@ -377,47 +399,79 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         public void onResume() {
             super.onResume();
             fillData();
-            for (int i = 0; i < 5; i++) {
-                answerChoiseViewItemArrayList.get(i)
-                        .setAnswerModel(mQuestionPack.getQuestionViewModels().get(position).getAnswerChoiceViewModel(i));
-                if (mQuestionPack.getQuestionViewModels().get(position).getUserChoise() == i) {
-                    answerChoiseViewItemArrayList.get(i).setUserChoise(true);
+            if(!isRC) {
+                for (int i = 0; i < 5; i++) {
+                    answerChoiseViewItemArrayList.get(i)
+                            .setAnswerModel(mQuestionPack.getQuestionViewModels().get(position).getAnswerChoiceViewModel(i));
+                    if (mQuestionPack.getQuestionViewModels().get(position).getUserChoise() == i) {
+                        answerChoiseViewItemArrayList.get(i).setUserChoise(true);
+                    }
+                    if (mQuestionPack.getQuestionViewModels().get(position).getQuestion().getRightAnswerIndex() == i) {
+                        answerChoiseViewItemArrayList.get(i).setRightAnswer(true);
+                    }
+                    answerChoiseViewItemArrayList.get(i).setQuestionType(mQuestionPack.getQuestionViewModels().get(position).getQuestion().getType());
+                    answerChoiseViewItemArrayList.get(i).fillData();
                 }
-                if (mQuestionPack.getQuestionViewModels().get(position).getQuestion().getRightAnswerIndex() == i) {
-                    answerChoiseViewItemArrayList.get(i).setRightAnswer(true);
-                }
-
-                answerChoiseViewItemArrayList.get(i).fillData();
             }
         }
 
         private void fillData() {
             final QuestionViewModel questionViewModel = (mQuestionPack.getQuestionViewModels().get(position));
-            contentQuestion.setText(questionViewModel.getStimulus() + "\\(ax^2 + bx + c = 0\\) <img src=\"file:///storage/emulated/0/gmat-image/vieclam.png\"  ");
+            if(!isRC) {
+                contentQuestion.loadDataWithBaseURL("file:///android_asset/mathscribe", Constant.js + questionViewModel.getStimulus() +
+                        " $$cos^2θ+sin^2θ=1$$ </body></html>", "text/html; charset=utf-8", "UTF-8", null);
+            }else{
+                txtReadingText.setText(questionViewModel.getStimulus());
+                txtQuestion.setText(questionViewModel.getStem());
+            }
         }
 
         private void getRefercence(View view) {
-            cardAnswers = (CardView) view.findViewById(R.id.card_answer);
-            contentQuestion = (MathView) view.findViewById(R.id.question_content);
-
-            if (answerChoiseViewItemArrayList == null) {
-                answerChoiseViewItemArrayList = new ArrayList<AnswerCRQuestionReview>();
-                AnswerCRQuestionReview answerChoiseViewItem0 = (AnswerCRQuestionReview) view.findViewById(R.id.answer_queston_review_1);
-                AnswerCRQuestionReview answerChoiseViewItem1 = (AnswerCRQuestionReview) view.findViewById(R.id.answer_queston_review_2);
-                AnswerCRQuestionReview answerChoiseViewItem2 = (AnswerCRQuestionReview) view.findViewById(R.id.answer_queston_review_3);
-                AnswerCRQuestionReview answerChoiseViewItem3 = (AnswerCRQuestionReview) view.findViewById(R.id.answer_queston_review_4);
-                AnswerCRQuestionReview answerChoiseViewItem4 = (AnswerCRQuestionReview) view.findViewById(R.id.answer_queston_review_5);
-                answerChoiseViewItemArrayList.add(answerChoiseViewItem0);
-                answerChoiseViewItemArrayList.add(answerChoiseViewItem1);
-                answerChoiseViewItemArrayList.add(answerChoiseViewItem2);
-                answerChoiseViewItemArrayList.add(answerChoiseViewItem3);
-                answerChoiseViewItemArrayList.add(answerChoiseViewItem4);
+            if(!isRC) {
+                cardAnswers = (CardView) view.findViewById(R.id.card_answer);
+                contentQuestion = (WebView) view.findViewById(R.id.question_content);
+                if (Build.VERSION.SDK_INT >= 19) {
+                    contentQuestion.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+                } else {
+                    contentQuestion.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+                }
+                contentQuestion.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+                contentQuestion.getSettings().setJavaScriptEnabled(true);
+                if (answerChoiseViewItemArrayList == null) {
+                    answerChoiseViewItemArrayList = new ArrayList<AnswerCRQuestionReview>();
+                    AnswerCRQuestionReview answerChoiseViewItem0 = (AnswerCRQuestionReview) view.findViewById(R.id.answer_queston_review_1);
+                    AnswerCRQuestionReview answerChoiseViewItem1 = (AnswerCRQuestionReview) view.findViewById(R.id.answer_queston_review_2);
+                    AnswerCRQuestionReview answerChoiseViewItem2 = (AnswerCRQuestionReview) view.findViewById(R.id.answer_queston_review_3);
+                    AnswerCRQuestionReview answerChoiseViewItem3 = (AnswerCRQuestionReview) view.findViewById(R.id.answer_queston_review_4);
+                    AnswerCRQuestionReview answerChoiseViewItem4 = (AnswerCRQuestionReview) view.findViewById(R.id.answer_queston_review_5);
+                    answerChoiseViewItemArrayList.add(answerChoiseViewItem0);
+                    answerChoiseViewItemArrayList.add(answerChoiseViewItem1);
+                    answerChoiseViewItemArrayList.add(answerChoiseViewItem2);
+                    answerChoiseViewItemArrayList.add(answerChoiseViewItem3);
+                    answerChoiseViewItemArrayList.add(answerChoiseViewItem4);
+                }
+            }else{
+                txtReadingText=(TextView) view.findViewById(R.id.txtReadingText);
+                txtQuestion=(TextView)view.findViewById(R.id.txtQuestion);
+                imageButton=(ImageButton)view.findViewById(R.id.btnImgButton);
+                scrollView = (ScrollView) view.findViewById(R.id.scrollViewAnswer);
+                imageButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!isGone) {
+                            scrollView.setVisibility(View.GONE);
+                            imageButton.setImageResource(R.drawable.ic_vertical_align_top_white_24dp);
+                            isGone = true;
+                        } else {
+                            scrollView.setVisibility(View.VISIBLE);
+                            imageButton.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
+                            isGone = false;
+                        }
+                    }
+                });
             }
 
-
         }
-
-
     }
 
     /**
@@ -441,6 +495,11 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
             // Return a PlaceholderFragment (defined as a static inner class below).
             PlaceholderFragment placeholderFragment = PlaceholderFragment.newInstance(position + 1);
             placeholderFragment.setQuestionPack(questionPack);
+            if(questionPack.getQuestionViewModels().get(position).getQuestion().getType().equals("RC")){
+                RCQuestionFragment rcQuestionFragment=new RCQuestionFragment();
+                rcQuestionFragment.setQuestion(questionPack.getQuestionViewModels().get(position));
+                //return rcQuestionFragment;
+            }
             return placeholderFragment;
         }
 

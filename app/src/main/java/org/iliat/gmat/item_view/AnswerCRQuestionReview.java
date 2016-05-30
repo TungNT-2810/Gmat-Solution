@@ -7,16 +7,21 @@ import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.content.ContextCompat;
+import android.text.Html;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.iliat.gmat.R;
+import org.iliat.gmat.constant.Constant;
 import org.iliat.gmat.model.AnswerModel;
+import org.iliat.gmat.model.QuestionType;
 import org.iliat.gmat.view_model.AnswerChoiceViewModel;
 
 import io.github.kexanie.library.MathView;
@@ -27,8 +32,10 @@ import io.github.kexanie.library.MathView;
 public class AnswerCRQuestionReview extends LinearLayout implements View.OnClickListener{
     private boolean isClick = false;
     private AnswerChoiceViewModel answerModel;
-    private MathView txtContentAnswer;
-    private MathView txtExplanation;
+    private WebView txtContentAnswer;
+    private WebView txtExplanation;
+    private TextView txtContenAnswerText;
+    private TextView txtExplanationText;
     private ImageView imgChoise;
     private View line;
     private boolean isUserChoise;
@@ -38,6 +45,9 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
     private int index;
     private int red = Color.parseColor("#FFCDD2");
     private int green = Color.parseColor("#C8E6C9");
+    private String questionType;
+    private Context mContext;
+    private LinearLayout layoutItem;
     private int [] IMAGE_RESOURCE = {R.drawable.a,R.drawable.b,R.drawable.c,R.drawable.d,R.drawable.e};
     public AnswerCRQuestionReview(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -47,14 +57,27 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
         getRefercence(view);
     }
 
+    public void setQuestionType(String questionType){
+        this.questionType=questionType;
+    }
+
+    public void setmContext(Context mContext) {
+        this.mContext = mContext;
+    }
+
     private void getRefercence(View view){
         if(this.imgChoise == null){
             this.imgChoise = (ImageView)view.findViewById(R.id.img_icon_answer);
-            this.txtContentAnswer = (MathView)view.findViewById(R.id.txt_content_answer);
-            this.txtExplanation = (MathView)view.findViewById(R.id.txt_explanation);
+            this.txtContentAnswer = (WebView) view.findViewById(R.id.txt_content_answer);
+            this.txtExplanation = (WebView) view.findViewById(R.id.txt_explanation);
+            this.txtContenAnswerText=(TextView)view.findViewById(R.id.txt_content_answer_text);
+            this.txtExplanationText=(TextView)view.findViewById(R.id.txt_explanation_text);
             this.line = view.findViewById(R.id.line_between_question_explanation);
             this.txtExplanation.setVisibility(View.GONE);
+            this.txtContenAnswerText.setVisibility(GONE);
+            this.txtExplanationText.setVisibility(GONE);
             this.line.setVisibility(View.GONE);
+            this.layoutItem=(LinearLayout)view.findViewById(R.id.layout_item);
         }
         Log.d("AnswerChoiseViewItem","getRefercence");
     }
@@ -62,27 +85,57 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
     public void fillData(){
 //        Log.i("AnswerChoiseViewItem",answerModel.getChoice());
         imgChoise.setImageResource(IMAGE_RESOURCE[this.index]);
-        txtContentAnswer.setText(this.strAnswer);
-        txtExplanation.setText(this.explanation);
-        //Log.d("TAG",answerModel.getChoice());
+        if(questionType!=null && questionType.equals("Q")) {
+            txtContenAnswerText.setVisibility(GONE);
+            txtContentAnswer.setVisibility(VISIBLE);
+            txtExplanationText.setVisibility(GONE);
+            txtExplanation.setVisibility(GONE);
+            txtContentAnswer.loadData(Constant.js + this.strAnswer, "text/html; charset=utf-8", "UTF-8");
+        }else{
+            txtContenAnswerText.setVisibility(VISIBLE);
+            txtContentAnswer.setVisibility(GONE);
+            txtExplanationText.setVisibility(GONE);
+            txtExplanation.setVisibility(GONE);
+            txtContenAnswerText.setText(this.strAnswer);
+        }
+
         if (isUserChoise) {
             imgChoise.setColorFilter(getResources().getColor(R.color.color_red_500));
-            txtContentAnswer.setBackgroundColor(red);
-//            txtContentAnswer.setTextColor(getResources().getColor(R.color.color_red_500));
+            layoutItem.setBackgroundColor(red);
+            if(questionType!=null && questionType.equals("Q")) {
+                txtContenAnswerText.setVisibility(GONE);
+                txtContentAnswer.setVisibility(VISIBLE);
+                txtExplanationText.setVisibility(GONE);
+                txtExplanation.setVisibility(GONE);
+            }else{
+                txtContenAnswerText.setVisibility(VISIBLE);
+                txtContentAnswer.setVisibility(GONE);
+                txtExplanationText.setVisibility(GONE);
+                txtExplanation.setVisibility(GONE);
+            }
         }
         if (isRightAnswer) {
             imgChoise.setColorFilter(getResources().getColor(R.color.color_green_500));
-            txtContentAnswer.setBackgroundColor(green);
-//            txtContentAnswer.setTextColor(getResources().getColor(R.color.color_green_500));
+            if(questionType!=null && questionType.equals("Q")) {
+                txtContenAnswerText.setVisibility(GONE);
+                txtContentAnswer.setVisibility(VISIBLE);
+                txtExplanationText.setVisibility(GONE);
+                txtExplanation.setVisibility(GONE);
+            }else{
+                txtContenAnswerText.setVisibility(VISIBLE);
+                txtContentAnswer.setVisibility(GONE);
+                txtExplanationText.setVisibility(GONE);
+                txtExplanation.setVisibility(GONE);
+            }
+            layoutItem.setBackgroundColor(green);
         }
-        Log.d("AnswerChoiseViewItem","fillData");
     }
 
-    public MathView getTxtContentAnswer() {
+    public WebView getTxtContentAnswer() {
         return txtContentAnswer;
     }
 
-    public void setTxtContentAnswer(MathView txtContentAnswer) {
+    public void setTxtContentAnswer(WebView txtContentAnswer) {
         this.txtContentAnswer = txtContentAnswer;
     }
 
@@ -90,16 +143,22 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
     public void onClick(View v) {
         if (!isClick){
             isClick = true;
-//            txtContentAnswer.setTypeface(Typeface.DEFAULT_BOLD);
-//            txtExplanation.setTypeface(Typeface.DEFAULT_BOLD);
             line.setVisibility(View.VISIBLE);
-            txtExplanation.setVisibility(View.VISIBLE);
+            if(questionType!=null && questionType.equals("Q")) {
+                txtExplanationText.setVisibility(GONE);
+                txtExplanation.setVisibility(VISIBLE);
+                txtExplanation.getSettings().setDefaultTextEncodingName("utf-8");
+                txtExplanation.loadData(this.explanation, "text/html; charset=utf-8", "UTF-8");
+            }else{
+                txtExplanationText.setVisibility(VISIBLE);
+                txtExplanation.setVisibility(GONE);
+                txtExplanationText.setText(this.explanation);
+            }
         } else {
             isClick = false;
-//            txtContentAnswer.setTypeface(Typeface.DEFAULT);
-//            txtExplanation.setTypeface(Typeface.DEFAULT);
             line.setVisibility(View.GONE);
             txtExplanation.setVisibility(View.GONE);
+            txtExplanationText.setVisibility(GONE);
         }
     }
 

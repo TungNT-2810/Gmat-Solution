@@ -1,6 +1,7 @@
 package org.iliat.gmat.fragment.answer_question;
 
 import android.os.Bundle;
+import android.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -12,7 +13,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.iliat.gmat.R;
-import org.iliat.gmat.fragment.BaseFragment;
 import org.iliat.gmat.interf.ButtonNextControl;
 import org.iliat.gmat.item_view.AnswerCRQuestion;
 import org.iliat.gmat.model.QuestionModel;
@@ -21,7 +21,7 @@ import org.iliat.gmat.view_model.QuestionViewModel;
 import java.util.ArrayList;
 
 
-public class RCQuestionFragment extends BaseFragment
+public class RCQuestionFragment extends Fragment
         implements AdapterView.OnItemSelectedListener,
         ChangeStateOfAnswerItemsInterface {
     private final int ANSWER_CHOICE_NUM = 5;
@@ -101,11 +101,11 @@ public class RCQuestionFragment extends BaseFragment
                 public void onClick(View v) {
                     if (!isGone) {
                         scrollView.setVisibility(View.GONE);
-                        imageButton.setImageResource(R.drawable.ic_library_add_white_24dp);
+                        imageButton.setImageResource(R.drawable.ic_vertical_align_top_white_24dp);
                         isGone = true;
                     } else {
                         scrollView.setVisibility(View.VISIBLE);
-                        imageButton.setImageResource(R.drawable.ic_clear_white_24dp);
+                        imageButton.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
                         isGone = false;
                     }
                 }
