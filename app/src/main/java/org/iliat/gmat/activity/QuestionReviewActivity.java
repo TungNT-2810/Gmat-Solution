@@ -24,6 +24,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
@@ -218,6 +220,16 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         btn_tag_green.setVisibility(View.INVISIBLE);
         btn_share.setOnClickListener(this);
         btn_share.setVisibility(View.INVISIBLE);
+        btnShare = (ImageButton) findViewById(R.id.btn_share);
+        btnExpandStimulus = (ImageButton) findViewById(R.id.btnImgButton);
+        btnExpandStimulus.setVisibility(View.GONE);
+        btnBack = (Button) findViewById(R.id.btn_back);
+        scrollView = (ScrollView) mViewPager.findViewById(R.id.scrollViewAnswer1);
+        btnExpandStimulus.setOnClickListener(this);
+        btnShare.setOnClickListener(this);
+        btnNext.setOnClickListener(this);
+        btnBack.setOnClickListener(this);
+        isGone = true;
     }
 
     private void openButton(){
@@ -274,49 +286,40 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btn_share:
-                Bitmap bm = screenShot(QuestionReviewActivity.this.mViewPager);
-                File file = saveBitmap(bm, "mantis_image.png");
-                Log.i("chase", "filepath: " + file.getAbsolutePath());
-                Uri uri = Uri.fromFile(new File(file.getAbsolutePath()));
-                Intent shareIntent = new Intent();
-                shareIntent.setAction(Intent.ACTION_SEND);
-                shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out my app.");
-                shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-                shareIntent.setType("image/*");
-                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                startActivity(Intent.createChooser(shareIntent, "share via"));
-                break;
-            case R.id.btn_next:
-                closeButton();
-                if (mViewPager.getCurrentItem() + 1 < mQuestionPack.getQuestionViewModels().size()) {
-                    mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
-                }
-                break;
-            case R.id.btn_back:
-                closeButton();
-                if (mViewPager.getCurrentItem() - 1 >= 0) {
-                    mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
-                }
-                break;
-            case R.id.btn_open:
-                openButton();
-                break;
-        }
-        btnShare = (ImageButton) findViewById(R.id.btn_share);
-        btnExpandStimulus = (ImageButton) findViewById(R.id.btnImgButton);
-        btnExpandStimulus.setVisibility(View.GONE);
-        btnBack = (Button) findViewById(R.id.btn_back);
-        scrollView = (ScrollView) mViewPager.findViewById(R.id.scrollViewAnswer);
-        btnExpandStimulus.setOnClickListener(this);
-        btnShare.setOnClickListener(this);
-        btnNext.setOnClickListener(this);
-        btnBack.setOnClickListener(this);
-        isGone = true;
-    }
+//    @Override
+//    public void onClick(View v) {
+//        switch (v.getId()){
+//            case R.id.btn_share:
+//                Bitmap bm = screenShot(QuestionReviewActivity.this.mViewPager);
+//                File file = saveBitmap(bm, "mantis_image.png");
+//                Log.i("chase", "filepath: " + file.getAbsolutePath());
+//                Uri uri = Uri.fromFile(new File(file.getAbsolutePath()));
+//                Intent shareIntent = new Intent();
+//                shareIntent.setAction(Intent.ACTION_SEND);
+//                shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out my app.");
+//                shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+//                shareIntent.setType("image/*");
+//                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//                startActivity(Intent.createChooser(shareIntent, "share via"));
+//                break;
+//            case R.id.btn_next:
+//                closeButton();
+//                if (mViewPager.getCurrentItem() + 1 < mQuestionPack.getQuestionViewModels().size()) {
+//                    mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
+//                }
+//                break;
+//            case R.id.btn_back:
+//                closeButton();
+//                if (mViewPager.getCurrentItem() - 1 >= 0) {
+//                    mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
+//                }
+//                break;
+//            case R.id.btn_open:
+//                openButton();
+//                break;
+//        }
+//
+//    }
 
     private Bitmap screenShot(View view) {
         Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
@@ -436,6 +439,11 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                 if (fragment instanceof PlaceholderFragmentRC) {
                     isGone = !isGone;
                     ((PlaceholderFragmentRC) fragment).showHideScrollView(isGone);
+                    if(!isGone){
+                        btnExpandStimulus.setImageResource(R.drawable.ic_vertical_align_top_white_24dp);
+                    }else{
+                        btnExpandStimulus.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
+                    }
                 }
                 break;
             }
