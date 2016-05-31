@@ -67,11 +67,20 @@
                 android:layout_width="140dp"
                 android:layout_height="36dp"
                 android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
                 android:textSize="16sp"
-                android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"
                 android:background="@drawable/button_normal"
                 android:text="@string/next_question" />
+            <ImageButton
+                android:id="@+id/btnImgButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/cutom_image_button"
+                android:src="@drawable/ic_vertical_align_bottom_white_24dp" />
         </RelativeLayout>
+
     </RelativeLayout>
 </RelativeLayout>

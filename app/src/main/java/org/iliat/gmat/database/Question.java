@@ -15,6 +15,11 @@ import java.util.List;
  */
 public class Question extends SugarRecord implements Serializable {
 
+    public static final String TYPE_RC = "RC";
+    public static final String TYPE_CR = "CR";
+    public static final String TYPE_SC = "SC";
+    public static final String TYPE_Q = "Q";
+
     private Long id;
     private String idInServer;
     private String type;

@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.iliat.gmat.R;
-import org.iliat.gmat.interf.ButtonNextControl;
+import org.iliat.gmat.interf.ButtonControl;
 import org.iliat.gmat.view_model.QuestionViewModel;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import java.util.List;
  * Created by qhuydtvt on 3/19/2016.
  */
 public class QuestionAnswerAdapter extends BaseAdapter {
-    private ButtonNextControl buttonNextControl;
+    private ButtonControl buttonControl;
     private static final String TAG = QuestionAnswerAdapter.class.toString();
 
     private int fixedItemsCnt = 2;
@@ -35,11 +35,11 @@ public class QuestionAnswerAdapter extends BaseAdapter {
 
 
 
-    public QuestionAnswerAdapter(QuestionViewModel questionViewModel, Context context, LayoutInflater layoutInflater, ButtonNextControl buttonNextControl) {
+    public QuestionAnswerAdapter(QuestionViewModel questionViewModel, Context context, LayoutInflater layoutInflater, ButtonControl buttonControl) {
         this.mQuestionViewModel = questionViewModel;
         this.mLayoutInflater = layoutInflater;
         this.mContext = context;
-        this.buttonNextControl = buttonNextControl;
+        this.buttonControl = buttonControl;
     }
 
 
@@ -137,7 +137,7 @@ public class QuestionAnswerAdapter extends BaseAdapter {
                         txv.setTextColor(ContextCompat.getColor(mContext, R.color.color_normal_answer));
                         txv.setTypeface(typeFace);
                     }
-                    buttonNextControl.setButtonNextState(1);
+                    buttonControl.setButtonNextState(1);
                     for(ImageView img : answerIconViewList){
                         Log.d("FUCK","FUCK");
                         img.setColorFilter(ContextCompat.getColor(mContext, R.color.color_normal_answer));

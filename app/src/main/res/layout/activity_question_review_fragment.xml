@@ -44,50 +44,81 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/bottom_controller"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:layout_height="45dp"
         android:layout_alignParentBottom="true">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="match_parent">
+            <ImageButton
+                android:id="@+id/btn_open"
+                android:layout_marginLeft="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:background="@drawable/round_button"
+                android:src="@drawable/ic_add_white_24dp" />
+        </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/btn_open"
-            android:layout_marginLeft="10dp"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:gravity="center_vertical|center_horizontal"
-            android:background="@drawable/round_button"
-            android:src="@drawable/ic_add_white_24dp" />
-
-        <Button
-            android:id="@+id/btn_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button_normal"
-            android:text="NEXT"
-            android:textColor="@android:color/white"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:foreground="?android:attr/selectableItemBackground" />
-        <Button
-            android:id="@+id/btn_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button_normal"
-            android:text="BACK"
-            android:textColor="@android:color/white"
-            android:layout_centerHorizontal="true"
-            android:layout_marginRight="10dp"
-            android:layout_toStartOf="@id/btn_next"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:foreground="?android:attr/selectableItemBackground" />
-    </RelativeLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+            <Button
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_normal"
+                android:text="BACK"
+                android:textColor="@android:color/white"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="10dp"
+                android:layout_toStartOf="@id/btn_next"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:foreground="?android:attr/selectableItemBackground" />
+            <Button
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:id="@+id/btn_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_normal"
+                android:text="NEXT"
+                android:textColor="@android:color/white"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="10dp"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:foreground="?android:attr/selectableItemBackground" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            >
+            <ImageButton
+                android:id="@+id/btnImgButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/cutom_image_button"
+                android:src="@drawable/ic_vertical_align_bottom_white_24dp" />
+        </LinearLayout>
+    </LinearLayout>
 
     <ImageButton
         android:layout_width="50dp"

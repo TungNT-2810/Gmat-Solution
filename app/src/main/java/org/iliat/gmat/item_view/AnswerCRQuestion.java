@@ -2,13 +2,10 @@ package org.iliat.gmat.item_view;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
-import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,10 +14,8 @@ import android.widget.TextView;
 import org.iliat.gmat.R;
 import org.iliat.gmat.constant.Constant;
 import org.iliat.gmat.fragment.answer_question.ChangeStateOfAnswerItemsInterface;
-import org.iliat.gmat.interf.ButtonNextControl;
+import org.iliat.gmat.interf.ButtonControl;
 import org.iliat.gmat.view_model.AnswerChoiceViewModel;
-
-import io.github.kexanie.library.MathView;
 
 /**
  * Created by hungtran on 5/2/16.
@@ -33,7 +28,7 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
     private Context mContext;
     private TextView txtContenAnswerText;
     private TextView txtExplanationText;
-    private ButtonNextControl buttonNextControl;
+    private ButtonControl buttonControl;
     private ImageView imgChoise;
     private boolean isUserChoise;
     private String strAnswer;
@@ -63,8 +58,8 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
         this.mContext = mContext;
     }
 
-    public void setButtonNextControl(ButtonNextControl buttonNextControl) {
-        this.buttonNextControl = buttonNextControl;
+    public void setButtonControl(ButtonControl buttonControl) {
+        this.buttonControl = buttonControl;
     }
 
     private void getRefercence(View view){
@@ -132,7 +127,7 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
     public void onClick(View v) {
         isUserChoise = true;
         changeStateOfAnswerItemsInterface.changeState(index);
-        buttonNextControl.setButtonNextState(1);
+        buttonControl.setButtonNextState(1);
     }
 
     public void setAnswerModel(AnswerChoiceViewModel answerModel) {

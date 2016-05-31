@@ -44,7 +44,7 @@ By the 1700's, Maryland and Virginia became plantation economies, and grew tobac
         </ScrollView>
 
         <ScrollView
-            android:id="@+id/scrollViewAnswer"
+            android:id="@+id/scrollViewAnswer1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="5dp"
@@ -74,8 +74,8 @@ By the 1700's, Maryland and Virginia became plantation economies, and grew tobac
                     android:layout_marginTop="10dp"
                     android:background="@color/color_background_line" />
 
-                <org.iliat.gmat.item_view.AnswerCRQuestion
-                    android:id="@+id/answer_queston_1"
+                <org.iliat.gmat.item_view.AnswerCRQuestionReview
+                    android:id="@+id/answer_queston_review_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp" />
@@ -85,8 +85,8 @@ By the 1700's, Maryland and Virginia became plantation economies, and grew tobac
                     android:layout_height="1dp"
                     android:background="@color/color_background_line" />
 
-                <org.iliat.gmat.item_view.AnswerCRQuestion
-                    android:id="@+id/answer_queston_2"
+                <org.iliat.gmat.item_view.AnswerCRQuestionReview
+                    android:id="@+id/answer_queston_review_2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp" />
@@ -96,8 +96,8 @@ By the 1700's, Maryland and Virginia became plantation economies, and grew tobac
                     android:layout_height="1dp"
                     android:background="@color/color_background_line" />
 
-                <org.iliat.gmat.item_view.AnswerCRQuestion
-                    android:id="@+id/answer_queston_3"
+                <org.iliat.gmat.item_view.AnswerCRQuestionReview
+                    android:id="@+id/answer_queston_review_3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp" />
@@ -107,8 +107,8 @@ By the 1700's, Maryland and Virginia became plantation economies, and grew tobac
                     android:layout_height="1dp"
                     android:background="@color/color_background_line" />
 
-                <org.iliat.gmat.item_view.AnswerCRQuestion
-                    android:id="@+id/answer_queston_4"
+                <org.iliat.gmat.item_view.AnswerCRQuestionReview
+                    android:id="@+id/answer_queston_review_4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp" />
@@ -118,8 +118,8 @@ By the 1700's, Maryland and Virginia became plantation economies, and grew tobac
                     android:layout_height="1dp"
                     android:background="@color/color_background_line" />
 
-                <org.iliat.gmat.item_view.AnswerCRQuestion
-                    android:id="@+id/answer_queston_5"
+                <org.iliat.gmat.item_view.AnswerCRQuestionReview
+                    android:id="@+id/answer_queston_review_5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp" />

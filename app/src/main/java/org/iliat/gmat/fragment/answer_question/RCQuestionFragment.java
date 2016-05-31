@@ -8,12 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.iliat.gmat.R;
-import org.iliat.gmat.interf.ButtonNextControl;
+import org.iliat.gmat.interf.ButtonControl;
 import org.iliat.gmat.item_view.AnswerCRQuestion;
 import org.iliat.gmat.model.QuestionModel;
 import org.iliat.gmat.view_model.QuestionViewModel;
@@ -25,13 +24,12 @@ public class RCQuestionFragment extends Fragment
         implements AdapterView.OnItemSelectedListener,
         ChangeStateOfAnswerItemsInterface {
     private final int ANSWER_CHOICE_NUM = 5;
-    private ButtonNextControl buttonNextControl;
+    private ButtonControl buttonControl;
     private ArrayList<AnswerCRQuestion> answerCRQuestionArrayList;
     private TextView txtReadingText;
     private ScrollView scrollView;
     private QuestionViewModel mQuestionCRModel;
     private boolean isGone = false;
-    private ImageButton imageButton;
     private TextView txtQuestion;
     private QuestionModel question;
 
@@ -43,8 +41,8 @@ public class RCQuestionFragment extends Fragment
         this.question = question;
     }
 
-    public void setButtonNextControl(ButtonNextControl buttonNextControl) {
-        this.buttonNextControl = buttonNextControl;
+    public void setButtonControl(ButtonControl buttonControl) {
+        this.buttonControl = buttonControl;
     }
 
     public RCQuestionFragment() {
@@ -61,13 +59,13 @@ public class RCQuestionFragment extends Fragment
         for (int i = 0; i < ANSWER_CHOICE_NUM; i++) {
             answerCRQuestionArrayList.get(i).setAnswerModel(mQuestionCRModel.getAnswerChoiceViewModel(i));
             answerCRQuestionArrayList.get(i).setmContext(getActivity());
-            answerCRQuestionArrayList.get(i).setButtonNextControl(buttonNextControl);
+            answerCRQuestionArrayList.get(i).setButtonControl(buttonControl);
             answerCRQuestionArrayList.get(i).setChangeStateOfAnswerItemsInterface(this);
             answerCRQuestionArrayList.get(i).setUserChoise(false);
             answerCRQuestionArrayList.get(i).fillData();
         }
         txtQuestion.setText(Html.fromHtml(mQuestionCRModel.getStem()));
-        buttonNextControl.setButtonNextState(0);
+        buttonControl.setButtonNextState(0);
     }
 
     @Override
@@ -87,7 +85,6 @@ public class RCQuestionFragment extends Fragment
     private void initLayout(View view) {
         if (answerCRQuestionArrayList == null) {
             txtReadingText = (TextView) view.findViewById(R.id.txtReadingText);
-            imageButton = (ImageButton) view.findViewById(R.id.btnImgButton);
             txtQuestion = (TextView) view.findViewById(R.id.txtQuestion);
             scrollView = (ScrollView) view.findViewById(R.id.scrollViewAnswer);
             answerCRQuestionArrayList = new ArrayList<>();
@@ -96,29 +93,35 @@ public class RCQuestionFragment extends Fragment
             answerCRQuestionArrayList.add((AnswerCRQuestion) view.findViewById(R.id.answer_queston_3));
             answerCRQuestionArrayList.add((AnswerCRQuestion) view.findViewById(R.id.answer_queston_4));
             answerCRQuestionArrayList.add((AnswerCRQuestion) view.findViewById(R.id.answer_queston_5));
-            imageButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!isGone) {
-                        scrollView.setVisibility(View.GONE);
-                        imageButton.setImageResource(R.drawable.ic_vertical_align_top_white_24dp);
-                        isGone = true;
-                    } else {
-                        scrollView.setVisibility(View.VISIBLE);
-                        imageButton.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
-                        isGone = false;
-                    }
-                }
-            });
+//            imageButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (!isGone) {
+//                        scrollView.setVisibility(View.GONE);
+//                        imageButton.setImageResource(R.drawable.ic_vertical_align_top_white_24dp);
+//                        isGone = true;
+//                    } else {
+//                        scrollView.setVisibility(View.VISIBLE);
+//                        imageButton.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
+//                        isGone = false;
+//                    }
+//                }
+//            });
         }
     }
-
+    public void setQuestionState(boolean isGone){
+        if (isGone) {
+            scrollView.setVisibility(View.GONE);
+        } else {
+            scrollView.setVisibility(View.VISIBLE);
+        }
+    }
     private void fillData() {
 
         for (int i = 0; i < ANSWER_CHOICE_NUM; i++) {
             answerCRQuestionArrayList.get(i).setAnswerModel(mQuestionCRModel.getAnswerChoiceViewModel(i));
             answerCRQuestionArrayList.get(i).setmContext(getActivity());
-            answerCRQuestionArrayList.get(i).setButtonNextControl(buttonNextControl);
+            answerCRQuestionArrayList.get(i).setButtonControl(buttonControl);
             answerCRQuestionArrayList.get(i).setChangeStateOfAnswerItemsInterface(this);
             answerCRQuestionArrayList.get(i).fillData();
             answerCRQuestionArrayList.get(i).setUserChoise(false);

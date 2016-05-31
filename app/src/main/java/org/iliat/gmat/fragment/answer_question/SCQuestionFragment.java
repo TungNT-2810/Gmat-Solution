@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
-import android.text.SpannableString;
-import android.text.style.UnderlineSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +16,11 @@ import android.widget.TextView;
 import org.iliat.gmat.R;
 import org.iliat.gmat.constant.Constant;
 import org.iliat.gmat.fragment.BaseFragment;
-import org.iliat.gmat.interf.ButtonNextControl;
+import org.iliat.gmat.interf.ButtonControl;
 import org.iliat.gmat.item_view.AnswerCRQuestion;
 import org.iliat.gmat.view_model.QuestionViewModel;
 
 import java.util.ArrayList;
-
-import io.github.kexanie.library.MathView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,14 +33,14 @@ public class SCQuestionFragment extends BaseFragment
         implements AdapterView.OnItemSelectedListener,
         ChangeStateOfAnswerItemsInterface {
     private final int ANSWER_CHOICE_NUM = 5;
-    private ButtonNextControl buttonNextControl;
+    private ButtonControl buttonControl;
     private ArrayList<AnswerCRQuestion> answerCRQuestionArrayList;
     private WebView questionContent;
     private TextView questionContentText;
 
 
-    public void setButtonNextControl(ButtonNextControl buttonNextControl) {
-        this.buttonNextControl = buttonNextControl;
+    public void setButtonControl(ButtonControl buttonControl) {
+        this.buttonControl = buttonControl;
     }
 
     private QuestionViewModel mQuestionCRModel;
@@ -110,7 +105,7 @@ public class SCQuestionFragment extends BaseFragment
         for (int i = 0; i < ANSWER_CHOICE_NUM; i++) {
             answerCRQuestionArrayList.get(i).setAnswerModel(mQuestionCRModel.getAnswerChoiceViewModel(i));
             answerCRQuestionArrayList.get(i).setmContext(getActivity());
-            answerCRQuestionArrayList.get(i).setButtonNextControl(buttonNextControl);
+            answerCRQuestionArrayList.get(i).setButtonControl(buttonControl);
             answerCRQuestionArrayList.get(i).setChangeStateOfAnswerItemsInterface(this);
             answerCRQuestionArrayList.get(i).fillData();
             answerCRQuestionArrayList.get(i).setQuestionType(mQuestionCRModel.getQuestion().getType());
