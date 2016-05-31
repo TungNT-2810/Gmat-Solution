@@ -462,6 +462,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                 break;
             }
             case R.id.btn_next: {
+                closeButton();
                 Log.d("position", position + "");
                 isGone = true;
                 btnExpandStimulus.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
@@ -471,6 +472,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                 break;
             }
             case R.id.btn_back: {
+                closeButton();
                 isGone = true;
                 btnExpandStimulus.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
                 if (mViewPager.getCurrentItem() - 1 >= 0) {
@@ -478,6 +480,9 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                 }
                 break;
             }
+            case R.id.btn_open:
+                openButton();
+                break;
             default:
                 break;
         }

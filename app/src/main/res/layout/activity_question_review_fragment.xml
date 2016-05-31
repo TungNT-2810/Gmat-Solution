@@ -126,7 +126,7 @@
         android:layout_above="@id/bottom_controller"
         android:src="@mipmap/grey"
         android:background="@drawable/round_button_grey"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="10dp"
         android:id="@+id/btn_tag_grey" />
 
     <ImageButton
@@ -135,7 +135,7 @@
         android:layout_above="@id/btn_tag_grey"
         android:src="@mipmap/green"
         android:background="@drawable/round_button_green"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginBottom="20dp"
         android:id="@+id/btn_tag_green"/>
 
@@ -145,7 +145,7 @@
         android:layout_above="@id/btn_tag_green"
         android:src="@mipmap/yellow"
         android:background="@drawable/round_button_yellow"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginBottom="20dp"
         android:id="@+id/btn_tag_yellow"/>
 
@@ -155,7 +155,7 @@
         android:layout_above="@id/btn_tag_yellow"
         android:src="@mipmap/red"
         android:background="@drawable/round_button_red"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginBottom="20dp"
         android:id="@+id/btn_tag_red"/>
 
@@ -165,7 +165,7 @@
         android:layout_above="@id/btn_tag_red"
         android:src="@drawable/ic_star_white_24dp"
         android:background="@drawable/round_button_star"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginBottom="20dp"
         android:id="@+id/btn_tag_star"/>
 
@@ -175,7 +175,7 @@
         android:layout_above="@id/btn_tag_star"
         android:src="@mipmap/ic_share_white_24dp"
         android:background="@drawable/round_button_share"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginBottom="20dp"
         android:id="@+id/btn_share"/>
 
