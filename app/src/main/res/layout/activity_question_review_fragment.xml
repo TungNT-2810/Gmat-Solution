@@ -53,14 +53,16 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:layout_alignParentBottom="true">
+
         <ImageButton
-            android:id="@+id/btn_share"
+            android:id="@+id/btn_open"
             android:layout_marginLeft="10dp"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:gravity="center_vertical|center_horizontal"
             android:background="@drawable/round_button"
-            android:src="@mipmap/ic_share_white_24dp" />
+            android:src="@drawable/ic_add_white_24dp" />
+
         <Button
             android:id="@+id/btn_next"
             android:layout_width="wrap_content"
@@ -86,6 +88,65 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:foreground="?android:attr/selectableItemBackground" />
     </RelativeLayout>
+
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@id/bottom_controller"
+        android:src="@mipmap/grey"
+        android:background="@drawable/round_button_grey"
+        android:layout_marginLeft="5dp"
+        android:id="@+id/btn_tag_grey" />
+
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@id/btn_tag_grey"
+        android:src="@mipmap/green"
+        android:background="@drawable/round_button_green"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/btn_tag_green"/>
+
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@id/btn_tag_green"
+        android:src="@mipmap/yellow"
+        android:background="@drawable/round_button_yellow"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/btn_tag_yellow"/>
+
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@id/btn_tag_yellow"
+        android:src="@mipmap/red"
+        android:background="@drawable/round_button_red"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/btn_tag_red"/>
+
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@id/btn_tag_red"
+        android:src="@drawable/ic_star_white_24dp"
+        android:background="@drawable/round_button_star"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/btn_tag_star"/>
+
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@id/btn_tag_star"
+        android:src="@mipmap/ic_share_white_24dp"
+        android:background="@drawable/round_button_share"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/btn_share"/>
 
 
 

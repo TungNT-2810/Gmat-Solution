@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Typeface;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -24,6 +25,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
@@ -54,7 +57,7 @@ import io.realm.Realm;
  * Khi sử dụng nhớ set QuestionPack cho nó
  */
 /*TODO*/
-public class QuestionReviewActivity extends AppCompatActivity implements ScreenManager {
+public class QuestionReviewActivity extends AppCompatActivity implements ScreenManager,View.OnClickListener {
 
     //question Pack của cái activity này
     private QuestionPackViewModel mQuestionPack;
@@ -64,10 +67,18 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     TextView txtProcess;
     private Button btnNext;
     private Button btnBack;
-    private ImageButton btnShare;
+    private ImageButton btn_open;
     private Realm realm;
     private int currentItem;
     private int totalItem;
+    private ImageButton btn_tag_grey;
+    private ImageButton btn_tag_green;
+    private ImageButton btn_tag_yellow;
+    private ImageButton btn_tag_red;
+    private ImageButton btn_tag_star;
+    private ImageButton btn_share;
+    private boolean isOpen = false;
+    private Animation fab_open,fab_close,rotate_forward,rotate_backward;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -89,11 +100,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_review_fragment);
-        toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        PlaceholderFragment.context = this;
-        getRefercenceForView();
+        inits();
         addListenerForTabChange();
     }
 
@@ -159,8 +166,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
 
     }
 
-
-    private void getRefercenceForView() {
+    private void inits(){
         isCorrect = (TextView) findViewById(R.id.txt_correct);
         isCorrect.setTypeface(Typeface.DEFAULT_BOLD);
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -168,10 +174,97 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         topController = (RelativeLayout) findViewById(R.id.top_controller);
         txtProcess = (TextView) findViewById(R.id.txt_process);
         btnNext = (Button) findViewById(R.id.btn_next);
-        btnShare = (ImageButton) findViewById(R.id.btn_share);
-        btnShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnBack = (Button) findViewById(R.id.btn_back);
+        btn_open = (ImageButton) findViewById(R.id.btn_open);
+        btn_tag_grey = (ImageButton) findViewById(R.id.btn_tag_grey);
+        btn_tag_green = (ImageButton) findViewById(R.id.btn_tag_green);
+        btn_tag_yellow = (ImageButton) findViewById(R.id.btn_tag_yellow);
+        btn_tag_red = (ImageButton) findViewById(R.id.btn_tag_red);
+        btn_tag_star = (ImageButton) findViewById(R.id.btn_tag_star);
+        btn_share = (ImageButton) findViewById(R.id.btn_share);
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        PlaceholderFragment.context = this;
+        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
+        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
+        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_backward);
+        btnNext.setOnClickListener(this);
+        btnBack.setOnClickListener(this);
+        btn_open.setOnClickListener(this);
+        btn_tag_grey.setOnClickListener(this);
+        btn_tag_grey.setVisibility(View.INVISIBLE);
+        btn_tag_star.setOnClickListener(this);
+        btn_tag_star.setVisibility(View.INVISIBLE);
+        btn_tag_red.setOnClickListener(this);
+        btn_tag_red.setVisibility(View.INVISIBLE);
+        btn_tag_yellow.setOnClickListener(this);
+        btn_tag_yellow.setVisibility(View.INVISIBLE);
+        btn_tag_green.setOnClickListener(this);
+        btn_tag_green.setVisibility(View.INVISIBLE);
+        btn_share.setOnClickListener(this);
+        btn_share.setVisibility(View.INVISIBLE);
+    }
+
+    private void openButton(){
+        if (!isOpen){
+            btn_open.startAnimation(rotate_forward);
+            btn_tag_grey.startAnimation(fab_open);
+            btn_tag_grey.setClickable(true);
+            btn_tag_green.startAnimation(fab_open);
+            btn_tag_green.setClickable(true);
+            btn_tag_yellow.startAnimation(fab_open);
+            btn_tag_yellow.setClickable(true);
+            btn_tag_red.startAnimation(fab_open);
+            btn_tag_red.setClickable(true);
+            btn_tag_star.startAnimation(fab_open);
+            btn_tag_star.setClickable(true);
+            btn_share.startAnimation(fab_open);
+            btn_share.setClickable(true);
+            isOpen = true;
+        }
+        else {
+            btn_open.startAnimation(rotate_backward);
+            btn_tag_grey.startAnimation(fab_close);
+            btn_tag_grey.setClickable(false);
+            btn_tag_green.startAnimation(fab_close);
+            btn_tag_green.setClickable(false);
+            btn_tag_yellow.startAnimation(fab_close);
+            btn_tag_yellow.setClickable(false);
+            btn_tag_red.startAnimation(fab_close);
+            btn_tag_red.setClickable(false);
+            btn_tag_star.startAnimation(fab_close);
+            btn_tag_star.setClickable(false);
+            btn_share.startAnimation(fab_close);
+            btn_share.setClickable(false);
+            isOpen = false;
+        }
+    }
+
+    private void closeButton(){
+        if (isOpen){
+            btn_open.startAnimation(rotate_backward);
+            btn_tag_grey.startAnimation(fab_close);
+            btn_tag_grey.setClickable(false);
+            btn_tag_green.startAnimation(fab_close);
+            btn_tag_green.setClickable(false);
+            btn_tag_yellow.startAnimation(fab_close);
+            btn_tag_yellow.setClickable(false);
+            btn_tag_red.startAnimation(fab_close);
+            btn_tag_red.setClickable(false);
+            btn_tag_star.startAnimation(fab_close);
+            btn_tag_star.setClickable(false);
+            btn_share.startAnimation(fab_close);
+            btn_share.setClickable(false);
+            isOpen = false;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btn_share:
                 Bitmap bm = screenShot(QuestionReviewActivity.this.mViewPager);
                 File file = saveBitmap(bm, "mantis_image.png");
                 Log.i("chase", "filepath: " + file.getAbsolutePath());
@@ -183,25 +276,23 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                 shareIntent.setType("image/*");
                 shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 startActivity(Intent.createChooser(shareIntent, "share via"));
-            }
-        });
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                break;
+            case R.id.btn_next:
+                closeButton();
                 if (mViewPager.getCurrentItem() + 1 < mQuestionPack.getQuestionViewModels().size()) {
                     mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
                 }
-            }
-        });
-        btnBack = (Button) findViewById(R.id.btn_back);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                break;
+            case R.id.btn_back:
+                closeButton();
                 if (mViewPager.getCurrentItem() - 1 >= 0) {
                     mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
                 }
-            }
-        });
+                break;
+            case R.id.btn_open:
+                openButton();
+                break;
+        }
     }
 
     private Bitmap screenShot(View view) {
@@ -251,6 +342,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 totalItem = mQuestionPack.getNumberOfQuestions();
+                closeButton();
                 if (position == 0) {
                     btnBack.setEnabled(false);
                 } else {
