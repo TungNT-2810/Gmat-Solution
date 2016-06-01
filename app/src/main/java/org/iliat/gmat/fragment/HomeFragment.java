@@ -11,13 +11,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.github.lzyzsd.circleprogress.ArcProgress;
+
 import org.iliat.gmat.R;
 import org.iliat.gmat.activity.AnswerQuestionActivity;
 import org.iliat.gmat.adapter.ListQuestionPackAdapter;
+import org.iliat.gmat.model.QuestionModel;
 import org.iliat.gmat.model.QuestionPackModel;
 import org.iliat.gmat.view_model.QuestionPackViewModel;
 
 import io.realm.Realm;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
 
 /**
  * Created by ZYuTernity on 5/16/2016.
@@ -28,6 +33,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener,L
     private Realm realm;
     private RecyclerView recyclerView;
     private Button btnMore;
+    private ArcProgress arcProgress;
+    private RealmResults<QuestionModel> results;
+    private RealmQuery<QuestionModel> query;
 
     @Nullable
     @Override
@@ -36,6 +44,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener,L
         getScreenManager().setTitleOfActionBar("GMAT");
         inits(view);
         loadQuestionPack(view);
+        getDataForArcProgress();
         return view;
     }
 
@@ -43,6 +52,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener,L
         recyclerView = (RecyclerView) view.findViewById(R.id.list_pack_question);
         btnMore=(Button)view.findViewById(R.id.btnMore);
         btnMore.setOnClickListener(this);
+        arcProgress=(ArcProgress)view.findViewById(R.id.home_arc_progress);
     }
 
     private void loadQuestionPack(View view) {
@@ -59,6 +69,19 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener,L
         StaggeredGridLayoutManager staggeredGridLayoutManager =
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
+    }
+
+    private void getDataForArcProgress() {
+        int totalQuestion=0;
+        int totalAnswered=0;
+        query = realm.where(QuestionModel.class);
+        results = query.findAll();
+        totalQuestion = results.size();
+        arcProgress.setMax(totalQuestion);
+        query.notEqualTo("userAnswer", 0);
+        results = query.findAll();
+        totalAnswered = results.size();
+        arcProgress.setProgress(totalAnswered);
     }
 
     @Override

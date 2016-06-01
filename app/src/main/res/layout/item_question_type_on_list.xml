@@ -53,6 +53,7 @@
         android:layout_height="wrap_content"
         app:progress_text_color="#607D8B"
         app:progress_unreached_color="#607D8B"
+        app:progress_reached_color="#ff7f00"
         android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
         />

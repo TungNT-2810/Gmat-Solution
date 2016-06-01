@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.lzyzsd.circleprogress.ArcProgress;
+import com.github.lzyzsd.circleprogress.CircleProgress;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 
 import org.iliat.gmat.R;
@@ -54,29 +55,22 @@ public class SumaryFragment extends BaseFragment {
     private TextView txtTagYellow;
     private TextView txtTagRed;
     private TextView txtStar;
+    private View view;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_sumary, container, false);
+
+        if(view==null){
+            view=inflater.inflate(R.layout.fragment_sumary,container,false);
+        }else{
+            container.removeView(view);
+        }
         initControl(view);
         getDataForSumary();
         getSumaryTypeOfQuestion();
         listTypeQuestion.setAdapter(new ListTypeQuestionAdapter(view.getContext(), arrayList));
-//        listTypeQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                QuestionType questionType = arrayList.get(position);
-//                if (questionType != null) {
-//                    QuestionTypeDetailFragment fragment = new QuestionTypeDetailFragment();
-//                    Bundle bundle = new Bundle();
-//                    bundle.putSerializable("type", questionType);
-//                    fragment.setArguments(bundle);
-//                    getScreenManager().openFragment(fragment, true);
-//                }
-//            }
-//        });
         return view;
     }
 
@@ -180,6 +174,5 @@ public class SumaryFragment extends BaseFragment {
             txtAverageTime.setText("0m 0s");
         }
         arcProgress.setProgress(totalAnswered);
-        arcProgress.setBottomText("0/0");
     }
 }

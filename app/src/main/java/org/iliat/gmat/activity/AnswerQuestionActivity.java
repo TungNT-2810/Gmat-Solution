@@ -4,7 +4,9 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -215,8 +217,21 @@ public class AnswerQuestionActivity
 
     @Override
     public void onBackPressed() {
-//        Toast.makeText(this, "You need to complete all questions!", Toast.LENGTH_LONG);
-        super.onBackPressed();
+        //super.onBackPressed();
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Closing Activity")
+                .setMessage("Are you sure you want to close this activity?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 
     @Override

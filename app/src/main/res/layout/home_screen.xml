@@ -27,19 +27,19 @@
             android:layout_weight="1.1"
             android:gravity="center_vertical|center_horizontal">
 
-            <com.github.lzyzsd.circleprogress.DonutProgress
-                android:id="@+id/donut_progress"
+            <com.github.lzyzsd.circleprogress.ArcProgress
+                android:id="@+id/home_arc_progress"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
+                custom:arc_progress="80"
+                custom:arc_text_color="@color/color_white"
+                custom:arc_text_size="25sp"
+                custom:arc_stroke_width="8dp"
+                custom:arc_bottom_text_size="15sp"
+                custom:arc_finished_color="#ff7f00"
+                custom:arc_unfinished_color="@color/color_white"
                 android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                custom:donut_finished_color="#ff7f00"
-                custom:donut_finished_stroke_width="5dp"
-                custom:donut_progress="80"
-                custom:donut_text_color="#ffb753"
-                custom:donut_text_size="20sp"
-                custom:donut_unfinished_color="#ffb753"
-                custom:donut_unfinished_stroke_width="5dp" />
+                android:layout_centerVertical="true"/>
         </LinearLayout>
 
 
