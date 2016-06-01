@@ -286,7 +286,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
             isOpen = true;
         }
         else {
-            layout_tag.setAnimation(AnimationUtils.loadAnimation(QuestionReviewActivity.this, android.R.anim.slide_out_right));
+            layout_tag.setAnimation(AnimationUtils.loadAnimation(QuestionReviewActivity.this, R.anim.anim_down_gone));
             layout_tag.setVisibility(View.INVISIBLE);
             btn_open.startAnimation(rotate_backward);
             btn_tag_grey.setClickable(false);
@@ -301,7 +301,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
 
     private void closeButton(){
         if (isOpen){
-            layout_tag.setAnimation(AnimationUtils.loadAnimation(QuestionReviewActivity.this, android.R.anim.slide_out_right));
+            layout_tag.setAnimation(AnimationUtils.loadAnimation(QuestionReviewActivity.this, R.anim.anim_down_gone));
             layout_tag.setVisibility(View.INVISIBLE);
             btn_open.startAnimation(rotate_backward);
             btn_tag_grey.setClickable(false);
