@@ -88,7 +88,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener,L
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnMore:{
-                getScreenManager().openFragment(new SumaryFragment(),true);
+                getScreenManager().setTitleOfActionBar("Summary");
+                getScreenManager().openFragment(new SummaryFragment(),true);
                 break;
             }
             default:

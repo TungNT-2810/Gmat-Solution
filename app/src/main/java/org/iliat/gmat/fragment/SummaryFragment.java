@@ -7,13 +7,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.lzyzsd.circleprogress.ArcProgress;
-import com.github.lzyzsd.circleprogress.CircleProgress;
-import com.github.lzyzsd.circleprogress.DonutProgress;
 
 import org.iliat.gmat.R;
 import org.iliat.gmat.adapter.ListTypeQuestionAdapter;
@@ -29,8 +26,8 @@ import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 
-public class SumaryFragment extends BaseFragment {
-    private static final String TAG = SumaryFragment.class.toString();
+public class SummaryFragment extends BaseFragment {
+    private static final String TAG = SummaryFragment.class.toString();
 
     private ListView listTypeQuestion;
     private ArrayList<QuestionType> arrayList;
