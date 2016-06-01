@@ -40,7 +40,7 @@ public class AnswerQuestionActivity
     private long countTime = 0;
     private long timeQuestion = 0;
     private Realm realm;
-    private int countAnswer = 12;
+    private int countAnswer = 0;
     private int maxQuestion = 16;
     private TextView txtCountTime;
     private TextView progressText;
@@ -53,6 +53,7 @@ public class AnswerQuestionActivity
     private SCQuestionFragment scQuestionFragment;
     private RCQuestionFragment rcQuestionFragment;
     private ImageButton btnImage;
+    private ImageButton btnExit;
     private boolean isGone;
 
     @Override
@@ -139,6 +140,7 @@ public class AnswerQuestionActivity
         mFragmentManager = getFragmentManager();
         btnImage=(ImageButton)findViewById(R.id.btnImgButton);
         btnImage.setVisibility(View.GONE);
+        btnExit =(ImageButton)findViewById(R.id.btnImgButtonExit);
         isGone=true;
         addListeners();
     }
@@ -167,7 +169,7 @@ public class AnswerQuestionActivity
      * Hàm này để add listener cho cái button NEXT, listener có 2 cái, 1 cái ở activity 1 cái ở fragment
      */
     private void addListeners() {
-
+        btnExit.setOnClickListener(this);
         btnNext.setOnClickListener(this);
         btnImage.setOnClickListener(this);
     }
@@ -218,20 +220,6 @@ public class AnswerQuestionActivity
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
-        new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Closing Activity")
-                .setMessage("Are you sure you want to close this activity?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-
-                })
-                .setNegativeButton("No", null)
-                .show();
     }
 
     @Override
@@ -288,9 +276,25 @@ public class AnswerQuestionActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.btnImgButtonExit:{
+                new AlertDialog.Builder(this)
+                        .setTitle("Finish Quiz")
+                        .setMessage("Are you sure you want to finish?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent=new Intent(AnswerQuestionActivity.this,MainActivity.class);
+                                startActivity(intent);
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+                break;
+            }
             case R.id.btn_next:{
+                questionViewModel.saveUserAnswer();
                 if (questionPackViewModel.isLastQuestionInPack(questionViewModel)) {
-                    questionPackViewModel.saveUserAnswers();
                     realm.beginTransaction();
                     questionViewModel.getQuestion().setTimeToFinish((int) timeQuestion);
                     realm.copyToRealmOrUpdate(questionViewModel.getQuestion());
