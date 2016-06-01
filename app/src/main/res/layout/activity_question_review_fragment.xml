@@ -119,65 +119,150 @@
                 android:src="@drawable/ic_vertical_align_bottom_white_24dp" />
         </LinearLayout>
     </LinearLayout>
-
-    <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+    
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="350dp"
         android:layout_above="@id/bottom_controller"
-        android:src="@mipmap/grey"
-        android:background="@drawable/round_button_grey"
-        android:layout_marginLeft="10dp"
-        android:id="@+id/btn_tag_grey" />
+        android:layout_marginBottom="10dp"
+        android:id="@+id/layout_tag"
+        android:background="#FFFDE7">
 
-    <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_above="@id/btn_tag_grey"
-        android:src="@mipmap/green"
-        android:background="@drawable/round_button_green"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="20dp"
-        android:id="@+id/btn_tag_green"/>
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:src="@mipmap/grey"
+            android:background="@drawable/round_button_grey"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/btn_tag_grey" />
 
-    <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_above="@id/btn_tag_green"
-        android:src="@mipmap/yellow"
-        android:background="@drawable/round_button_yellow"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="20dp"
-        android:id="@+id/btn_tag_yellow"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_toRightOf="@id/btn_tag_grey"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="10dp"
+            android:textSize="15dp"
+            android:text="UNANSWERED"
+            android:textColor="#000000"
+            android:id="@+id/tv_grey"
+            />
 
-    <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_above="@id/btn_tag_yellow"
-        android:src="@mipmap/red"
-        android:background="@drawable/round_button_red"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="20dp"
-        android:id="@+id/btn_tag_red"/>
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_above="@id/btn_tag_grey"
+            android:src="@mipmap/green"
+            android:background="@drawable/round_button_green"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/btn_tag_green"/>
 
-    <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_above="@id/btn_tag_red"
-        android:src="@drawable/ic_star_white_24dp"
-        android:background="@drawable/round_button_star"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="20dp"
-        android:id="@+id/btn_tag_star"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_toRightOf="@id/btn_tag_green"
+            android:layout_above="@id/btn_tag_grey"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="15dp"
+            android:text="I UNDERSTOOD"
+            android:textColor="#000000"
+            android:id="@+id/tv_green"/>
 
-    <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_above="@id/btn_tag_star"
-        android:src="@mipmap/ic_share_white_24dp"
-        android:background="@drawable/round_button_share"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="20dp"
-        android:id="@+id/btn_share"/>
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_above="@id/btn_tag_green"
+            android:src="@mipmap/yellow"
+            android:background="@drawable/round_button_yellow"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/btn_tag_yellow"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_toRightOf="@id/btn_tag_yellow"
+            android:layout_above="@id/btn_tag_green"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="15dp"
+            android:text="I SOMEWHAT UNDERSTAND"
+            android:textColor="#000000"
+            android:id="@+id/tv_yellow"/>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_above="@id/btn_tag_yellow"
+            android:src="@mipmap/red"
+            android:background="@drawable/round_button_red"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/btn_tag_red"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_toRightOf="@id/btn_tag_red"
+            android:layout_above="@id/btn_tag_yellow"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:text="I DON'T UNDERSTAND"
+            android:id="@+id/tv_red"/>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_above="@id/btn_tag_red"
+            android:src="@drawable/ic_star_white_24dp"
+            android:background="@drawable/round_button_star"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/btn_tag_star"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_toRightOf="@id/btn_tag_star"
+            android:layout_above="@id/btn_tag_red"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="15dp"
+            android:text="INTERESTING"
+            android:textColor="#000000"
+            android:id="@+id/tv_star"/>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_above="@id/btn_tag_star"
+            android:src="@mipmap/ic_share_white_24dp"
+            android:background="@drawable/round_button_share"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/btn_share"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_toRightOf="@id/btn_share"
+            android:layout_above="@id/btn_tag_star"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="15dp"
+            android:text="SHARE"
+            android:textColor="#000000"
+            android:id="@+id/tv_share"/>
+
+    </RelativeLayout>
+
+
 
 
 

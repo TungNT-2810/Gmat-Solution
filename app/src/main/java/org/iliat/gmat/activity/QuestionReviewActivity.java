@@ -87,6 +87,13 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     private ImageButton btn_share;
     private boolean isOpen = false;
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
+    private TextView tv_grey;
+    private TextView tv_green;
+    private TextView tv_yellow;
+    private TextView tv_red;
+    private TextView tv_star;
+    private TextView tv_share;
+    private RelativeLayout layout_tag;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -197,6 +204,22 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         btn_tag_red = (ImageButton) findViewById(R.id.btn_tag_red);
         btn_tag_star = (ImageButton) findViewById(R.id.btn_tag_star);
         btn_share = (ImageButton) findViewById(R.id.btn_share);
+
+        tv_grey = (TextView) findViewById(R.id.tv_grey);
+        tv_grey.setVisibility(View.INVISIBLE);
+        tv_green = (TextView) findViewById(R.id.tv_green);
+        tv_green.setVisibility(View.INVISIBLE);
+        tv_yellow = (TextView) findViewById(R.id.tv_yellow);
+        tv_yellow.setVisibility(View.INVISIBLE);
+        tv_red = (TextView) findViewById(R.id.tv_red);
+        tv_red.setVisibility(View.INVISIBLE);
+        tv_star = (TextView) findViewById(R.id.tv_star);
+        tv_star.setVisibility(View.INVISIBLE);
+        tv_share = (TextView) findViewById(R.id.tv_share);
+        tv_share.setVisibility(View.INVISIBLE);
+        layout_tag = (RelativeLayout) findViewById(R.id.layout_tag);
+        layout_tag.setVisibility(View.INVISIBLE);
+
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -234,34 +257,43 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
 
     private void openButton(){
         if (!isOpen){
+            layout_tag.setVisibility(View.VISIBLE);
             btn_open.startAnimation(rotate_forward);
+            tv_grey.startAnimation(AnimationUtils.loadAnimation(QuestionReviewActivity.this, android.R.anim.slide_in_left));
+            tv_grey.setVisibility(View.VISIBLE);
             btn_tag_grey.startAnimation(fab_open);
             btn_tag_grey.setClickable(true);
+            tv_green.startAnimation(AnimationUtils.loadAnimation(QuestionReviewActivity.this, android.R.anim.slide_in_left));
+            tv_green.setVisibility(View.VISIBLE);
             btn_tag_green.startAnimation(fab_open);
             btn_tag_green.setClickable(true);
+            tv_yellow.startAnimation(AnimationUtils.loadAnimation(QuestionReviewActivity.this, android.R.anim.slide_in_left));
+            tv_yellow.setVisibility(View.VISIBLE);
             btn_tag_yellow.startAnimation(fab_open);
             btn_tag_yellow.setClickable(true);
+            tv_red.startAnimation(AnimationUtils.loadAnimation(QuestionReviewActivity.this, android.R.anim.slide_in_left));
+            tv_red.setVisibility(View.VISIBLE);
             btn_tag_red.startAnimation(fab_open);
             btn_tag_red.setClickable(true);
+            tv_star.startAnimation(AnimationUtils.loadAnimation(QuestionReviewActivity.this, android.R.anim.slide_in_left));
+            tv_star.setVisibility(View.VISIBLE);
             btn_tag_star.startAnimation(fab_open);
             btn_tag_star.setClickable(true);
+            tv_share.startAnimation(AnimationUtils.loadAnimation(QuestionReviewActivity.this, android.R.anim.slide_in_left));
+            tv_share.setVisibility(View.VISIBLE);
             btn_share.startAnimation(fab_open);
             btn_share.setClickable(true);
             isOpen = true;
         }
         else {
+            layout_tag.setAnimation(AnimationUtils.loadAnimation(QuestionReviewActivity.this, android.R.anim.slide_out_right));
+            layout_tag.setVisibility(View.INVISIBLE);
             btn_open.startAnimation(rotate_backward);
-            btn_tag_grey.startAnimation(fab_close);
             btn_tag_grey.setClickable(false);
-            btn_tag_green.startAnimation(fab_close);
             btn_tag_green.setClickable(false);
-            btn_tag_yellow.startAnimation(fab_close);
             btn_tag_yellow.setClickable(false);
-            btn_tag_red.startAnimation(fab_close);
             btn_tag_red.setClickable(false);
-            btn_tag_star.startAnimation(fab_close);
             btn_tag_star.setClickable(false);
-            btn_share.startAnimation(fab_close);
             btn_share.setClickable(false);
             isOpen = false;
         }
@@ -269,57 +301,18 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
 
     private void closeButton(){
         if (isOpen){
+            layout_tag.setAnimation(AnimationUtils.loadAnimation(QuestionReviewActivity.this, android.R.anim.slide_out_right));
+            layout_tag.setVisibility(View.INVISIBLE);
             btn_open.startAnimation(rotate_backward);
-            btn_tag_grey.startAnimation(fab_close);
             btn_tag_grey.setClickable(false);
-            btn_tag_green.startAnimation(fab_close);
             btn_tag_green.setClickable(false);
-            btn_tag_yellow.startAnimation(fab_close);
             btn_tag_yellow.setClickable(false);
-            btn_tag_red.startAnimation(fab_close);
             btn_tag_red.setClickable(false);
-            btn_tag_star.startAnimation(fab_close);
             btn_tag_star.setClickable(false);
-            btn_share.startAnimation(fab_close);
             btn_share.setClickable(false);
             isOpen = false;
         }
     }
-
-//    @Override
-//    public void onClick(View v) {
-//        switch (v.getId()){
-//            case R.id.btn_share:
-//                Bitmap bm = screenShot(QuestionReviewActivity.this.mViewPager);
-//                File file = saveBitmap(bm, "mantis_image.png");
-//                Log.i("chase", "filepath: " + file.getAbsolutePath());
-//                Uri uri = Uri.fromFile(new File(file.getAbsolutePath()));
-//                Intent shareIntent = new Intent();
-//                shareIntent.setAction(Intent.ACTION_SEND);
-//                shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out my app.");
-//                shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-//                shareIntent.setType("image/*");
-//                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//                startActivity(Intent.createChooser(shareIntent, "share via"));
-//                break;
-//            case R.id.btn_next:
-//                closeButton();
-//                if (mViewPager.getCurrentItem() + 1 < mQuestionPack.getQuestionViewModels().size()) {
-//                    mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
-//                }
-//                break;
-//            case R.id.btn_back:
-//                closeButton();
-//                if (mViewPager.getCurrentItem() - 1 >= 0) {
-//                    mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
-//                }
-//                break;
-//            case R.id.btn_open:
-//                openButton();
-//                break;
-//        }
-//
-//    }
 
     private Bitmap screenShot(View view) {
         Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
