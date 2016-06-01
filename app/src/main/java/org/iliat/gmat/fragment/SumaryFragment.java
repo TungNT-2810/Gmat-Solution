@@ -47,7 +47,7 @@ public class SumaryFragment extends BaseFragment {
     private int totalTagYellow;
     private int totalTagStar;
     private int totalTagRed;
-    private DonutProgress donutProgress;
+    private ArcProgress arcProgress;
     private TextView txtAverageTime;
     private TextView txtTagGrey;
     private TextView txtTagGreen;
@@ -89,7 +89,7 @@ public class SumaryFragment extends BaseFragment {
 
     private void initControl(View view) {
         listTypeQuestion = (ListView) view.findViewById(R.id.ltv_type_question);
-        donutProgress = (DonutProgress) view.findViewById(R.id.sumary_arc_progress);
+        arcProgress = (ArcProgress) view.findViewById(R.id.sumary_arc_progress);
         txtAverageTime = (TextView) view.findViewById(R.id.sumary_avg_time);
         txtStar = (TextView) view.findViewById(R.id.sumary_Star);
         txtTagGreen = (TextView) view.findViewById(R.id.sumary_green);
@@ -166,7 +166,7 @@ public class SumaryFragment extends BaseFragment {
         results = query.findAll();
         totalQuestion = results.size();
 
-        donutProgress.setMax(totalQuestion);
+        arcProgress.setMax(totalQuestion);
         query.notEqualTo("userAnswer", 0);
         results = query.findAll();
         totalAnswered = results.size();
@@ -179,7 +179,7 @@ public class SumaryFragment extends BaseFragment {
         } else {
             txtAverageTime.setText("0m 0s");
         }
-        donutProgress.setProgress(totalAnswered);
-        donutProgress.setSuffixText("/"+totalQuestion);
+        arcProgress.setProgress(totalAnswered);
+        arcProgress.setBottomText("0/0");
     }
 }

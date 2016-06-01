@@ -14,8 +14,8 @@
     <color name="color_normal_answer">#000000</color>
     <color name="color_grey_50">#FAFAFA</color>
     <color name="color_grey_500">#9E9E9E</color>
-    <color name="color_red_500">#F44336</color>
-    <color name="color_green_500">#4CAF50</color>
+    <color name="color_red_500">#D50000</color>
+    <color name="color_green_500">#33691E</color>
     <color name="color_yellow_500">#FFEB3B</color>
     <color name="color_primary">#c96424</color>
     <color name="color_primary_dark">#c05414</color>
@@ -25,4 +25,6 @@
     <color name="text_color">#224b5f</color>
     <color name="button_color">#8bc34a</color>
     <color name="pack_locked_color">#dadada</color>
+    <color name="red">#EF9A9A</color>
+    <color name="green">#A5D6A7</color>
 </resources>

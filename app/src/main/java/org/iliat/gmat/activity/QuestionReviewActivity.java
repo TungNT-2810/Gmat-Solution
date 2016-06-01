@@ -314,6 +314,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         }
     }
 
+
     private Bitmap screenShot(View view) {
         Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
@@ -346,10 +347,14 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         if (mQuestionPack.getQuestionViewModels().get(position).getUserChoise()
                 == mQuestionPack.getQuestionViewModels().get(position).getQuestion().getRightAnswerIndex()) {
             isCorrect.setText("Correct");
-            topController.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.color_correct));
+            isCorrect.setTextColor(getResources().getColor(R.color.color_green_500));
+            txtProcess.setTextColor(getResources().getColor(R.color.color_green_500));
+            topController.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
         } else {
+            isCorrect.setTextColor(getResources().getColor(R.color.color_red_500));
+            txtProcess.setTextColor(getResources().getColor(R.color.color_red_500));
             isCorrect.setText("Incorrect");
-            topController.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.color_in_correct));
+            topController.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
         }
     }
 

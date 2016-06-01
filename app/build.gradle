@@ -33,4 +33,5 @@ dependencies {
     compile 'io.github.kexanie.library:MathView:0.0.6'
     compile 'com.koushikdutta.ion:ion:1.0.9'
     compile 'com.koushikdutta.ion:ion:2.+'
+    compile 'com.daimajia.numberprogressbar:library:1.2@aar'
 }

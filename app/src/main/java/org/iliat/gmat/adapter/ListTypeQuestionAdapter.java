@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.daimajia.numberprogressbar.NumberProgressBar;
+
 import org.iliat.gmat.R;
 import org.iliat.gmat.model.QuestionType;
 
@@ -54,11 +56,11 @@ public class ListTypeQuestionAdapter extends BaseAdapter {
         if (view != null && questionType != null) {
             TextView txtPackName = (TextView) view.findViewById(R.id.sumary_pack_name);
             TextView txtTotalQues = (TextView) view.findViewById(R.id.sumary_total_question);
-            ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.sumary_progress);
+            NumberProgressBar numberProgressBar = (NumberProgressBar) view.findViewById(R.id.sumary_progress);
             txtPackName.setText(questionType.getTypeName());
             txtTotalQues.setText(questionType.getTotalQuestion() + " questions");
-            progressBar.setMax(questionType.getTotalQuestion());
-            progressBar.setProgress(questionType.getTotalRightAnswer());
+            numberProgressBar.setMax(questionType.getTotalQuestion());
+            numberProgressBar.setProgress(questionType.getTotalAnswer());
         }
         return view;
     }
