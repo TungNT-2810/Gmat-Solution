@@ -40,7 +40,7 @@ public class AnswerQuestionActivity
     private long countTime = 0;
     private long timeQuestion = 0;
     private Realm realm;
-    private int countAnswer = 0;
+    private int countAnswer = 12;
     private int maxQuestion = 16;
     private TextView txtCountTime;
     private TextView progressText;
@@ -293,8 +293,8 @@ public class AnswerQuestionActivity
                 break;
             }
             case R.id.btn_next:{
-                questionViewModel.saveUserAnswer();
                 if (questionPackViewModel.isLastQuestionInPack(questionViewModel)) {
+                    questionPackViewModel.saveUserAnswers();
                     realm.beginTransaction();
                     questionViewModel.getQuestion().setTimeToFinish((int) timeQuestion);
                     realm.copyToRealmOrUpdate(questionViewModel.getQuestion());

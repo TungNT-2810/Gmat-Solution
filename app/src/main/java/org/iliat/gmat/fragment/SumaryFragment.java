@@ -159,9 +159,8 @@ public class SumaryFragment extends BaseFragment {
         query = realm.where(QuestionModel.class);
         results = query.findAll();
         totalQuestion = results.size();
-
         arcProgress.setMax(totalQuestion);
-        query.notEqualTo("userAnswer", 0);
+        query = realm.where(QuestionModel.class).notEqualTo("userAnswer", 0);
         results = query.findAll();
         totalAnswered = results.size();
         for (QuestionModel q : results) {
