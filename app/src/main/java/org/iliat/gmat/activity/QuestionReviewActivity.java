@@ -1,5 +1,9 @@
 package org.iliat.gmat.activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +22,7 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,13 +31,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.AnticipateInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import com.zyuternity.arclayout.ArcLayout;
 
 import org.iliat.gmat.R;
 
@@ -42,6 +52,7 @@ import org.iliat.gmat.interf.ScreenManager;
 import org.iliat.gmat.item_view.AnswerCRQuestionReview;
 import org.iliat.gmat.model.QuestionModel;
 import org.iliat.gmat.model.QuestionPackModel;
+import org.iliat.gmat.utils.AnimatorUtils;
 import org.iliat.gmat.view_model.QuestionPackViewModel;
 import org.iliat.gmat.view_model.QuestionViewModel;
 
@@ -49,6 +60,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.github.kexanie.library.MathView;
@@ -71,7 +83,6 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     private Button btnBack;
     private ImageButton btnShare;
     private ImageButton btnExpandStimulus;
-    private ImageButton btn_open;
     private Realm realm;
     private int currentItem;
     private int totalItem;
@@ -79,21 +90,11 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     private boolean isGone;
     private int position;
     private View view;
-    private ImageButton btn_tag_grey;
-    private ImageButton btn_tag_green;
-    private ImageButton btn_tag_yellow;
-    private ImageButton btn_tag_red;
-    private ImageButton btn_tag_star;
-    private ImageButton btn_share;
     private boolean isOpen = false;
-    private Animation fab_open,fab_close,rotate_forward,rotate_backward;
-    private TextView tv_grey;
-    private TextView tv_green;
-    private TextView tv_yellow;
-    private TextView tv_red;
-    private TextView tv_star;
-    private TextView tv_share;
-    private RelativeLayout layout_tag;
+    private View btn_open;
+    private View menuLayout;
+    private ArcLayout arcLayout;
+    private ImageButton btn;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -197,123 +198,29 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         txtProcess = (TextView) findViewById(R.id.txt_process);
         btnNext = (Button) findViewById(R.id.btn_next);
         btnBack = (Button) findViewById(R.id.btn_back);
-        btn_open = (ImageButton) findViewById(R.id.btn_open);
-        btn_tag_grey = (ImageButton) findViewById(R.id.btn_tag_grey);
-        btn_tag_green = (ImageButton) findViewById(R.id.btn_tag_green);
-        btn_tag_yellow = (ImageButton) findViewById(R.id.btn_tag_yellow);
-        btn_tag_red = (ImageButton) findViewById(R.id.btn_tag_red);
-        btn_tag_star = (ImageButton) findViewById(R.id.btn_tag_star);
-        btn_share = (ImageButton) findViewById(R.id.btn_share);
 
-        tv_grey = (TextView) findViewById(R.id.tv_grey);
-        tv_grey.setVisibility(View.INVISIBLE);
-        tv_green = (TextView) findViewById(R.id.tv_green);
-        tv_green.setVisibility(View.INVISIBLE);
-        tv_yellow = (TextView) findViewById(R.id.tv_yellow);
-        tv_yellow.setVisibility(View.INVISIBLE);
-        tv_red = (TextView) findViewById(R.id.tv_red);
-        tv_red.setVisibility(View.INVISIBLE);
-        tv_star = (TextView) findViewById(R.id.tv_star);
-        tv_star.setVisibility(View.INVISIBLE);
-        tv_share = (TextView) findViewById(R.id.tv_share);
-        tv_share.setVisibility(View.INVISIBLE);
-        layout_tag = (RelativeLayout) findViewById(R.id.layout_tag);
-        layout_tag.setVisibility(View.INVISIBLE);
-
+        btn_open = findViewById(R.id.btn_open);
+        btn_open.setOnClickListener(this);
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         PlaceholderFragment.context = this;
-        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
-        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
-        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_backward);
         btnNext.setOnClickListener(this);
         btnBack.setOnClickListener(this);
-        btn_open.setOnClickListener(this);
-        btn_tag_grey.setOnClickListener(this);
-        btn_tag_grey.setVisibility(View.INVISIBLE);
-        btn_tag_star.setOnClickListener(this);
-        btn_tag_star.setVisibility(View.INVISIBLE);
-        btn_tag_red.setOnClickListener(this);
-        btn_tag_red.setVisibility(View.INVISIBLE);
-        btn_tag_yellow.setOnClickListener(this);
-        btn_tag_yellow.setVisibility(View.INVISIBLE);
-        btn_tag_green.setOnClickListener(this);
-        btn_tag_green.setVisibility(View.INVISIBLE);
-        btn_share.setOnClickListener(this);
-        btn_share.setVisibility(View.INVISIBLE);
-        btnShare = (ImageButton) findViewById(R.id.btn_share);
+
+        menuLayout = findViewById(R.id.menu_layout);
+        arcLayout = (ArcLayout) findViewById(R.id.arc_layout);
+
         btnExpandStimulus = (ImageButton) findViewById(R.id.btnImgButton);
         btnExpandStimulus.setVisibility(View.GONE);
         btnBack = (Button) findViewById(R.id.btn_back);
         scrollView = (ScrollView) mViewPager.findViewById(R.id.scrollViewAnswer1);
         btnExpandStimulus.setOnClickListener(this);
-        btnShare.setOnClickListener(this);
+
         btnNext.setOnClickListener(this);
         btnBack.setOnClickListener(this);
         isGone = true;
     }
-
-    private void openButton(){
-        if (!isOpen){
-            layout_tag.setVisibility(View.VISIBLE);
-            btn_open.startAnimation(rotate_forward);
-            tv_grey.startAnimation(AnimationUtils.loadAnimation(QuestionReviewActivity.this, android.R.anim.slide_in_left));
-            tv_grey.setVisibility(View.VISIBLE);
-            btn_tag_grey.startAnimation(fab_open);
-            btn_tag_grey.setClickable(true);
-            tv_green.startAnimation(AnimationUtils.loadAnimation(QuestionReviewActivity.this, android.R.anim.slide_in_left));
-            tv_green.setVisibility(View.VISIBLE);
-            btn_tag_green.startAnimation(fab_open);
-            btn_tag_green.setClickable(true);
-            tv_yellow.startAnimation(AnimationUtils.loadAnimation(QuestionReviewActivity.this, android.R.anim.slide_in_left));
-            tv_yellow.setVisibility(View.VISIBLE);
-            btn_tag_yellow.startAnimation(fab_open);
-            btn_tag_yellow.setClickable(true);
-            tv_red.startAnimation(AnimationUtils.loadAnimation(QuestionReviewActivity.this, android.R.anim.slide_in_left));
-            tv_red.setVisibility(View.VISIBLE);
-            btn_tag_red.startAnimation(fab_open);
-            btn_tag_red.setClickable(true);
-            tv_star.startAnimation(AnimationUtils.loadAnimation(QuestionReviewActivity.this, android.R.anim.slide_in_left));
-            tv_star.setVisibility(View.VISIBLE);
-            btn_tag_star.startAnimation(fab_open);
-            btn_tag_star.setClickable(true);
-            tv_share.startAnimation(AnimationUtils.loadAnimation(QuestionReviewActivity.this, android.R.anim.slide_in_left));
-            tv_share.setVisibility(View.VISIBLE);
-            btn_share.startAnimation(fab_open);
-            btn_share.setClickable(true);
-            isOpen = true;
-        }
-        else {
-            layout_tag.setAnimation(AnimationUtils.loadAnimation(QuestionReviewActivity.this, R.anim.anim_down_gone));
-            layout_tag.setVisibility(View.INVISIBLE);
-            btn_open.startAnimation(rotate_backward);
-            btn_tag_grey.setClickable(false);
-            btn_tag_green.setClickable(false);
-            btn_tag_yellow.setClickable(false);
-            btn_tag_red.setClickable(false);
-            btn_tag_star.setClickable(false);
-            btn_share.setClickable(false);
-            isOpen = false;
-        }
-    }
-
-    private void closeButton(){
-        if (isOpen){
-            layout_tag.setAnimation(AnimationUtils.loadAnimation(QuestionReviewActivity.this, R.anim.anim_down_gone));
-            layout_tag.setVisibility(View.INVISIBLE);
-            btn_open.startAnimation(rotate_backward);
-            btn_tag_grey.setClickable(false);
-            btn_tag_green.setClickable(false);
-            btn_tag_yellow.setClickable(false);
-            btn_tag_red.setClickable(false);
-            btn_tag_star.setClickable(false);
-            btn_share.setClickable(false);
-            isOpen = false;
-        }
-    }
-
 
     private Bitmap screenShot(View view) {
         Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
@@ -375,7 +282,9 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 totalItem = mQuestionPack.getNumberOfQuestions();
-                closeButton();
+                if (isOpen){
+                    hideMenu();
+                }
                 if (position == 0) {
                     btnBack.setEnabled(false);
                 } else {
@@ -431,20 +340,25 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btnImgButton: {
-                Fragment fragment = mSectionsPagerAdapter.getFragment(this.mViewPager.getCurrentItem());
-                if (fragment instanceof PlaceholderFragmentRC) {
-                    isGone = !isGone;
-                    ((PlaceholderFragmentRC) fragment).showHideScrollView(isGone);
-                    if(!isGone){
-                        btnExpandStimulus.setImageResource(R.drawable.ic_vertical_align_top_white_24dp);
-                    }else{
-                        btnExpandStimulus.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
+        if (v.getId() == R.id.btn_open){
+            onFabClick(v);
+            return;
+        }
+        else {
+            switch (v.getId()) {
+                case R.id.btnImgButton: {
+                    Fragment fragment = mSectionsPagerAdapter.getFragment(this.mViewPager.getCurrentItem());
+                    if (fragment instanceof PlaceholderFragmentRC) {
+                        isGone = !isGone;
+                        ((PlaceholderFragmentRC) fragment).showHideScrollView(isGone);
+                        if(!isGone){
+                            btnExpandStimulus.setImageResource(R.drawable.ic_vertical_align_top_white_24dp);
+                        }else{
+                            btnExpandStimulus.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
+                        }
                     }
+                    break;
                 }
-                break;
-            }
             case R.id.btn_share: {
                 Bitmap bm = screenShot(QuestionReviewActivity.this.mViewPager);
                 File file = saveBitmap(bm, "mantis_image.png");
@@ -459,30 +373,32 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                 startActivity(Intent.createChooser(shareIntent, "share via"));
                 break;
             }
-            case R.id.btn_next: {
-                closeButton();
-                Log.d("position", position + "");
-                isGone = true;
-                btnExpandStimulus.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
-                if (mViewPager.getCurrentItem() + 1 < mQuestionPack.getQuestionViewModels().size()) {
-                    mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
+                case R.id.btn_next: {
+                    if (isOpen){
+                        hideMenu();
+                    }
+                    Log.d("position", position + "");
+                    isGone = true;
+                    btnExpandStimulus.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
+                    if (mViewPager.getCurrentItem() + 1 < mQuestionPack.getQuestionViewModels().size()) {
+                        mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
+                    }
+                    break;
                 }
-                break;
-            }
-            case R.id.btn_back: {
-                closeButton();
-                isGone = true;
-                btnExpandStimulus.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
-                if (mViewPager.getCurrentItem() - 1 >= 0) {
-                    mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
+                case R.id.btn_back: {
+                    if (isOpen){
+                        hideMenu();
+                    }
+                    isGone = true;
+                    btnExpandStimulus.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
+                    if (mViewPager.getCurrentItem() - 1 >= 0) {
+                        mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
+                    }
+                    break;
                 }
-                break;
+                default:
+                    break;
             }
-            case R.id.btn_open:
-                openButton();
-                break;
-            default:
-                break;
         }
     }
 
@@ -768,6 +684,112 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                 answerChoiseViewItemArrayList.add(answerChoiseViewItem4);
             }
         }
+    }
+
+
+
+
+    //Bên dưới là animation và chức năng của nút mở tag (làm ơn đừng sửa gì cả :(( )
+
+
+
+    private void onFabClick(View v) {
+        if (v.isSelected() && isOpen) {
+            hideMenu();
+        } else {
+            showMenu();
+        }
+        v.setSelected(!v.isSelected());
+    }
+
+    @SuppressWarnings("NewApi")
+    private void showMenu() {
+        menuLayout.setVisibility(View.VISIBLE);
+        isOpen = true;
+        btn_open.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward));
+        List<Animator> animList = new ArrayList<>();
+
+        for (int i = 0, len = arcLayout.getChildCount(); i < len; i++) {
+            animList.add(createShowItemAnimator(arcLayout.getChildAt(i)));
+        }
+
+        AnimatorSet animSet = new AnimatorSet();
+        animSet.setDuration(400);
+        animSet.setInterpolator(new OvershootInterpolator());
+        animSet.playTogether(animList);
+        animSet.start();
+    }
+
+    @SuppressWarnings("NewApi")
+    private void hideMenu() {
+        isOpen = false;
+        List<Animator> animList = new ArrayList<>();
+
+        btn_open.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_backward));
+        for (int i = arcLayout.getChildCount() - 1; i >= 0; i--) {
+            animList.add(createHideItemAnimator(arcLayout.getChildAt(i)));
+        }
+
+        AnimatorSet animSet = new AnimatorSet();
+        animSet.setDuration(400);
+        animSet.setInterpolator(new AnticipateInterpolator());
+        animSet.playTogether(animList);
+        animSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                menuLayout.setVisibility(View.INVISIBLE);
+            }
+        });
+        animSet.start();
 
     }
+
+    private Animator createShowItemAnimator(View item) {
+
+//        float dx = btn_open.getX() - item.getX();
+//        float dy = btn_open.getY() - item.getY();
+
+        float dx = -item.getX();
+        float dy = item.getY();
+
+        item.setRotation(0f);
+        item.setTranslationX(dx);
+        item.setTranslationY(dy);
+
+        Animator anim = ObjectAnimator.ofPropertyValuesHolder(
+                item,
+                AnimatorUtils.rotation(0f, 720f),
+                AnimatorUtils.translationX(dx, 0f),
+                AnimatorUtils.translationY(dy, 0f)
+        );
+
+        return anim;
+    }
+
+    private Animator createHideItemAnimator(final View item) {
+//        float dx = btn_open.getX() - item.getX();
+//        float dy = btn_open.getY() - item.getY();
+        float dx = -item.getX();
+        float dy = item.getY();
+
+        Animator anim = ObjectAnimator.ofPropertyValuesHolder(
+                item,
+                AnimatorUtils.rotation(720f, 0f),
+                AnimatorUtils.translationX(0f, dx),
+                AnimatorUtils.translationY(0f, dy)
+        );
+
+        anim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                item.setTranslationX(0f);
+                item.setTranslationY(0f);
+            }
+        });
+
+        return anim;
+    }
+
 }

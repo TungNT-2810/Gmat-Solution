@@ -61,7 +61,8 @@
                 android:layout_marginLeft="10dp"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:gravity="center_vertical|center_horizontal"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
                 android:background="@drawable/round_button"
                 android:src="@drawable/ic_add_white_24dp" />
         </LinearLayout>
@@ -119,151 +120,82 @@
                 android:src="@drawable/ic_vertical_align_bottom_white_24dp" />
         </LinearLayout>
     </LinearLayout>
-    
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="350dp"
+
+    <FrameLayout
+        android:id="@+id/menu_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_above="@id/bottom_controller"
-        android:layout_marginBottom="10dp"
-        android:id="@+id/layout_tag"
-        android:background="#FFFDE7">
+        android:visibility="invisible"
+        android:background="#80224b5f"
+        >
 
-        <ImageButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:src="@mipmap/grey"
-            android:background="@drawable/round_button_grey"
-            android:layout_marginLeft="10dp"
-            android:id="@+id/btn_tag_grey" />
+        <com.zyuternity.arclayout.ArcLayout
+            android:id="@+id/arc_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:arc_axisRadius="300dp"
+            app:arc_freeAngle="true"
+            app:arc_origin="bottom|left"
+            app:arc_radius="300dp"
+            >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_toRightOf="@id/btn_tag_grey"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="10dp"
-            android:textSize="15dp"
-            android:text="UNANSWERED"
-            android:textColor="#000000"
-            android:id="@+id/tv_grey"
-            />
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/round_button_grey"
+                android:src="@mipmap/grey"
+                app:arcLayout_angle="5"
+                android:id="@+id/btn_tag_grey"
+                />
 
-        <ImageButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_above="@id/btn_tag_grey"
-            android:src="@mipmap/green"
-            android:background="@drawable/round_button_green"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:id="@+id/btn_tag_green"/>
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/round_button_green"
+                android:src="@mipmap/green"
+                app:arcLayout_angle="21"
+                android:id="@+id/btn_tag_green"
+                />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_toRightOf="@id/btn_tag_green"
-            android:layout_above="@id/btn_tag_grey"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:textSize="15dp"
-            android:text="I UNDERSTOOD"
-            android:textColor="#000000"
-            android:id="@+id/tv_green"/>
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/round_button_yellow"
+                android:src="@mipmap/yellow"
+                app:arcLayout_angle="37"
+                android:id="@+id/btn_tag_yellow"
+                />
 
-        <ImageButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_above="@id/btn_tag_green"
-            android:src="@mipmap/yellow"
-            android:background="@drawable/round_button_yellow"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:id="@+id/btn_tag_yellow"/>
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/round_button_red"
+                android:src="@mipmap/red"
+                app:arcLayout_angle="53"
+                android:id="@+id/btn_tag_red"
+                />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_toRightOf="@id/btn_tag_yellow"
-            android:layout_above="@id/btn_tag_green"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:textSize="15dp"
-            android:text="I SOMEWHAT UNDERSTAND"
-            android:textColor="#000000"
-            android:id="@+id/tv_yellow"/>
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/round_button_star"
+                android:src="@mipmap/ic_star_black_24dp"
+                app:arcLayout_angle="69"
+                android:id="@+id/btn_tag_star"
+                />
 
-        <ImageButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_above="@id/btn_tag_yellow"
-            android:src="@mipmap/red"
-            android:background="@drawable/round_button_red"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:id="@+id/btn_tag_red"/>
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/round_button_share"
+                android:src="@mipmap/ic_share_white_24dp"
+                app:arcLayout_angle="85"
+                android:id="@+id/btn_share"
+                />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_toRightOf="@id/btn_tag_red"
-            android:layout_above="@id/btn_tag_yellow"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:textSize="15dp"
-            android:textColor="#000000"
-            android:text="I DON'T UNDERSTAND"
-            android:id="@+id/tv_red"/>
+        </com.zyuternity.arclayout.ArcLayout>
 
-        <ImageButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_above="@id/btn_tag_red"
-            android:src="@drawable/ic_star_white_24dp"
-            android:background="@drawable/round_button_star"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:id="@+id/btn_tag_star"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_toRightOf="@id/btn_tag_star"
-            android:layout_above="@id/btn_tag_red"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:textSize="15dp"
-            android:text="INTERESTING"
-            android:textColor="#000000"
-            android:id="@+id/tv_star"/>
-
-        <ImageButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_above="@id/btn_tag_star"
-            android:src="@mipmap/ic_share_white_24dp"
-            android:background="@drawable/round_button_share"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:id="@+id/btn_share"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_toRightOf="@id/btn_share"
-            android:layout_above="@id/btn_tag_star"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:textSize="15dp"
-            android:text="SHARE"
-            android:textColor="#000000"
-            android:id="@+id/tv_share"/>
-
-    </RelativeLayout>
-
-
-
-
+    </FrameLayout>
 
 </RelativeLayout>
