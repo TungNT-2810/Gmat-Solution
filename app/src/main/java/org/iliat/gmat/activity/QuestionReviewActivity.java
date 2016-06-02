@@ -174,7 +174,6 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         Log.d("TAG", mQuestionPack.getQuestionViewModels().get(0).getAnswerChoices().get(0).getChoise());
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), mQuestionPack);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        CubeOutTransformer cubeOutTransformer=new CubeOutTransformer();
         mViewPager.setPageTransformer(true,new CubeOutTransformer());
         Bundle bundle = getIntent().getBundleExtra(ScoreActivity.TAG_QUESTION_PACK_VIEW_MODEL);
         int position = bundle.getInt(ScoreActivity.SCOREACTIIVTY_POSITION);
@@ -208,6 +207,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         btnBack.setOnClickListener(this);
 
         menuLayout = findViewById(R.id.menu_layout);
+        menuLayout.setOnClickListener(this);
         arcLayout = (ArcLayout) findViewById(R.id.arc_layout);
 
         btnExpandStimulus = (ImageButton) findViewById(R.id.btnImgButton);
@@ -392,6 +392,12 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                     btnExpandStimulus.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
                     if (mViewPager.getCurrentItem() - 1 >= 0) {
                         mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
+                    }
+                    break;
+                }
+                case R.id.menu_layout: {
+                    if (isOpen){
+                        hideMenu();
                     }
                     break;
                 }
