@@ -174,7 +174,6 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         Log.d("TAG", mQuestionPack.getQuestionViewModels().get(0).getAnswerChoices().get(0).getChoise());
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), mQuestionPack);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        CubeOutTransformer cubeOutTransformer=new CubeOutTransformer();
         mViewPager.setPageTransformer(true,new CubeOutTransformer());
         Bundle bundle = getIntent().getBundleExtra(ScoreActivity.TAG_QUESTION_PACK_VIEW_MODEL);
         int position = bundle.getInt(ScoreActivity.SCOREACTIIVTY_POSITION);
