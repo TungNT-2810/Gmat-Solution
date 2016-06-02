@@ -65,6 +65,46 @@ public class QuestionPackViewModel implements Serializable {
         return null;
     }
 
+    public boolean isCompleted(){
+        if(questionViewModels.size()>0){
+            for(int i=0;i<questionViewModels.size();i++){
+                if(questionViewModels.get(i).getQuestion().getUserAnswer()==-1){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean isNew(){
+        if(questionViewModels.size()>0 && questionViewModels.get(0).getQuestion().getUserAnswer()==-1){
+            return true;
+        }
+        return false;
+    }
+
+    public QuestionViewModel getContinueQuestionViewModel(){
+        if(!isCompleted()){
+            for(int i=0;i<questionViewModels.size();i++){
+                if(questionViewModels.get(i).getQuestion().getUserAnswer()==-1){
+                    return questionViewModels.get(i);
+                }
+            }
+        }
+        return null;
+    }
+
+    public int getNumberQuestionAnswered(){
+        if(!isCompleted()){
+            for(int i=0;i<questionViewModels.size();i++){
+                if(questionViewModels.get(i).getQuestion().getUserAnswer()==-1){
+                    return i;
+                }
+            }
+        }
+        return 0;
+    }
+
     public QuestionViewModel getNextQuestionViewModel(QuestionViewModel questionViewModel) {
         int idx = questionViewModels.indexOf(questionViewModel);
         int nextIdx = idx + 1;
@@ -77,8 +117,10 @@ public class QuestionPackViewModel implements Serializable {
 
 
     public boolean isLastQuestionInPack(QuestionViewModel questionViewModel) {
-        Log.d("TAG222",questionViewModel.getStimulus());
-        return questionPack.isLastQuestionInPack(questionViewModel.getQuestion());
+        if(questionViewModel!=null) {
+            return questionPack.isLastQuestionInPack(questionViewModel.getQuestion());
+        }
+        return true;
     }
 
     public boolean isShowDetail() {

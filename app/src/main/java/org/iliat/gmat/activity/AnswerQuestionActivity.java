@@ -65,11 +65,13 @@ public class AnswerQuestionActivity
 //        setSupportActionBar(toolbar);
 //        setTitle("Quiz Test");
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getDataFromIntent();
         inits();
-        createTimer();
-        fillData();
-        openQuestionFragment();
+        getDataFromIntent();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -94,9 +96,70 @@ public class AnswerQuestionActivity
         realm = Realm.getDefaultInstance();
         QuestionPackModel questionPack = realm.where(QuestionPackModel.class).equalTo("id", questionPackId).findFirst();
         questionPackViewModel = new QuestionPackViewModel(questionPack, this);
-        questionViewModel = questionPackViewModel.getFirstQuestionViewModel();
-        countAnswer = 0;
         maxQuestion = questionPackViewModel.getNumberOfQuestions();
+        if (questionPackViewModel.isCompleted()) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Confirmation")
+                    .setMessage("You have finished this quiz! \n Are you want to do this again?")
+                    .setPositiveButton("Do again", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            questionPackViewModel.clearUserAnswers();
+                            questionViewModel = questionPackViewModel.getFirstQuestionViewModel();
+                            countAnswer = 0;
+                            createTimer();
+                            fillData();
+                            openQuestionFragment();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(AnswerQuestionActivity.this, MainActivity.class);
+                            startActivity(intent);
+                        }
+                    })
+                    .show();
+        } else {
+            if (!questionPackViewModel.isNew()){
+                new AlertDialog.Builder(this)
+                        .setTitle("Confirmation")
+                        .setMessage("Would you like to continue?")
+                        .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (questionPackViewModel.getContinueQuestionViewModel() != null) {
+                                    questionViewModel = questionPackViewModel.getContinueQuestionViewModel();
+                                    countAnswer = questionPackViewModel.getNumberQuestionAnswered();
+                                    createTimer();
+                                    fillData();
+                                    openQuestionFragment();
+                                } else {
+                                    Intent intent = new Intent(AnswerQuestionActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                }
+                            }
+                        })
+                        .setNegativeButton("Do again", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                questionPackViewModel.clearUserAnswers();
+                                questionViewModel = questionPackViewModel.getFirstQuestionViewModel();
+                                countAnswer = 0;
+                                createTimer();
+                                fillData();
+                                openQuestionFragment();
+                            }
+                        })
+                        .show();
+            }else{
+                questionViewModel = questionPackViewModel.getFirstQuestionViewModel();
+                countAnswer = 0;
+                createTimer();
+                fillData();
+                openQuestionFragment();
+            }
+        }
     }
 
     /**
@@ -105,30 +168,32 @@ public class AnswerQuestionActivity
      * else open SCQuestionFragment
      */
     private void openQuestionFragment() {
-        if (questionViewModel.getQuestion().getType().equalsIgnoreCase("RC")) {
-            this.setButtonHideState(false);
-            if (rcQuestionFragment == null) {
-                rcQuestionFragment = new RCQuestionFragment();
-                rcQuestionFragment.setButtonControl(this);
-                this.setButtonNextState(0);
-                rcQuestionFragment.setQuestion(this.questionViewModel);
-                openFragment(rcQuestionFragment, true);
-            } else {
-                if (rcQuestionFragment.getmQuestionCRModel().getStimulus().equalsIgnoreCase(questionViewModel.getStimulus())) {
-                    rcQuestionFragment.setStem(questionViewModel);
-                } else {
+        if (questionViewModel != null) {
+            if (questionViewModel.getQuestion().getType().equalsIgnoreCase("RC")) {
+                this.setButtonHideState(false);
+                if (rcQuestionFragment == null) {
+                    rcQuestionFragment = new RCQuestionFragment();
+                    rcQuestionFragment.setButtonControl(this);
+                    this.setButtonNextState(0);
                     rcQuestionFragment.setQuestion(this.questionViewModel);
                     openFragment(rcQuestionFragment, true);
+                } else {
+                    if (rcQuestionFragment.getmQuestionCRModel().getStimulus().equalsIgnoreCase(questionViewModel.getStimulus())) {
+                        rcQuestionFragment.setStem(questionViewModel);
+                    } else {
+                        rcQuestionFragment.setQuestion(this.questionViewModel);
+                        openFragment(rcQuestionFragment, true);
+                    }
                 }
+            } else {
+                this.setButtonHideState(true);
+                scQuestionFragment = new SCQuestionFragment();
+                scQuestionFragment.setButtonControl(this);
+                this.setButtonNextState(0);
+                scQuestionFragment.setQuestion(this.questionViewModel);
+                openFragment(scQuestionFragment, true);
+                rcQuestionFragment = null;
             }
-        } else {
-            this.setButtonHideState(true);
-            scQuestionFragment = new SCQuestionFragment();
-            scQuestionFragment.setButtonControl(this);
-            this.setButtonNextState(0);
-            scQuestionFragment.setQuestion(this.questionViewModel);
-            openFragment(scQuestionFragment, true);
-            rcQuestionFragment = null;
         }
     }
 
@@ -138,11 +203,12 @@ public class AnswerQuestionActivity
         progressBarDoing = (ProgressBar) this.findViewById(R.id.doing_progressBar);
         fragmentView = (FrameLayout) this.findViewById(R.id.fragment_view_of_answer_question);
         btnNext = (Button) findViewById(R.id.btn_next);
+        btnNext.setEnabled(false);
         mFragmentManager = getFragmentManager();
-        btnImage=(ImageButton)findViewById(R.id.btnImgButton);
+        btnImage = (ImageButton) findViewById(R.id.btnImgButton);
         btnImage.setVisibility(View.GONE);
-        btnExit =(ImageButton)findViewById(R.id.btnImgButtonExit);
-        isGone=true;
+        btnExit = (ImageButton) findViewById(R.id.btnImgButtonExit);
+        isGone = true;
         addListeners();
     }
 
@@ -267,25 +333,24 @@ public class AnswerQuestionActivity
 
     @Override
     public void setButtonHideState(boolean isGone) {
-        if(!isGone){
+        if (!isGone) {
             btnImage.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             btnImage.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btnImgButtonExit:{
+        switch (v.getId()) {
+            case R.id.btnImgButtonExit: {
                 new AlertDialog.Builder(this)
                         .setTitle("Finish Quiz")
                         .setMessage("Are you sure you want to finish?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                        {
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent intent=new Intent(AnswerQuestionActivity.this,MainActivity.class);
+                                Intent intent = new Intent(AnswerQuestionActivity.this, MainActivity.class);
                                 startActivity(intent);
                             }
                         })
@@ -293,8 +358,8 @@ public class AnswerQuestionActivity
                         .show();
                 break;
             }
-            case R.id.btn_next:{
-                Log.d("type Answer",questionViewModel.getQuestion().getType());
+            case R.id.btn_next: {
+                Log.d("type Answer", questionViewModel.getQuestion().getType());
                 questionViewModel.saveUserAnswer();
                 realm.beginTransaction();
                 questionViewModel.getQuestion().setTimeToFinish((int) timeQuestion);
@@ -315,7 +380,7 @@ public class AnswerQuestionActivity
                 updateSubmitButtonText();
                 break;
             }
-            case R.id.btnImgButton:{
+            case R.id.btnImgButton: {
                 rcQuestionFragment.setQuestionState(isGone);
                 if (isGone) {
                     btnImage.setImageResource(R.drawable.ic_vertical_align_top_white_24dp);
@@ -326,7 +391,8 @@ public class AnswerQuestionActivity
                 }
                 break;
             }
-            default:break;
+            default:
+                break;
         }
     }
 }
