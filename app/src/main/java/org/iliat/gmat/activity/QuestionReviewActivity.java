@@ -22,26 +22,24 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.AnticipateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
 import com.zyuternity.arclayout.ArcLayout;
 
 import org.iliat.gmat.R;
@@ -176,7 +174,8 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         Log.d("TAG", mQuestionPack.getQuestionViewModels().get(0).getAnswerChoices().get(0).getChoise());
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), mQuestionPack);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
+        CubeOutTransformer cubeOutTransformer=new CubeOutTransformer();
+        mViewPager.setPageTransformer(true,new CubeOutTransformer());
         Bundle bundle = getIntent().getBundleExtra(ScoreActivity.TAG_QUESTION_PACK_VIEW_MODEL);
         int position = bundle.getInt(ScoreActivity.SCOREACTIIVTY_POSITION);
         if (position != -1) {

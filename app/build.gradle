@@ -35,4 +35,5 @@ dependencies {
     compile 'com.koushikdutta.ion:ion:1.0.9'
     compile 'com.koushikdutta.ion:ion:2.+'
     compile 'com.daimajia.numberprogressbar:library:1.2@aar'
+    compile 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
 }

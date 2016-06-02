@@ -100,8 +100,8 @@ public class AnswerQuestionActivity
         if (questionPackViewModel.isCompleted()) {
             new AlertDialog.Builder(this)
                     .setTitle("Confirmation")
-                    .setMessage("You have finished this quiz! \n Are you want to do this again?")
-                    .setPositiveButton("Do again", new DialogInterface.OnClickListener() {
+                    .setMessage("Pack already answered! \n Do you want to start over?")
+                    .setPositiveButton("Start over", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             questionPackViewModel.clearUserAnswers();
