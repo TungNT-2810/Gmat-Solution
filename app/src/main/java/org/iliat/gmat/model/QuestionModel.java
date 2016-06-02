@@ -19,7 +19,7 @@ public class QuestionModel extends RealmObject {
     private String stem;
     private int timeToFinish=0;
     private int rightAnswerIndex;
-    private int userAnswer;
+    private int userAnswer=-1;
     private int tagId=0;
     private boolean isStar;
 

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -293,22 +294,20 @@ public class AnswerQuestionActivity
                 break;
             }
             case R.id.btn_next:{
+                Log.d("type Answer",questionViewModel.getQuestion().getType());
+                questionViewModel.saveUserAnswer();
+                realm.beginTransaction();
+                questionViewModel.getQuestion().setTimeToFinish((int) timeQuestion);
+                realm.copyToRealmOrUpdate(questionViewModel.getQuestion());
+                realm.commitTransaction();
                 if (questionPackViewModel.isLastQuestionInPack(questionViewModel)) {
-                    questionPackViewModel.saveUserAnswers();
-                    realm.beginTransaction();
-                    questionViewModel.getQuestion().setTimeToFinish((int) timeQuestion);
-                    realm.copyToRealmOrUpdate(questionViewModel.getQuestion());
-                    realm.commitTransaction();
+                    //questionPackViewModel.saveUserAnswers();
                     Bundle bundle = ScoreActivity.buildBundle(questionPackViewModel.getQuestionPack().getId());
                     bundle.putInt(KEY_TIME_AVERAGE, (int) (countTime / 10));
                     goToActivity(ScoreActivity.class, bundle);
                 } else {
                     countAnswer++;
                     fillData();
-                    realm.beginTransaction();
-                    questionViewModel.getQuestion().setTimeToFinish((int) timeQuestion);
-                    realm.copyToRealmOrUpdate(questionViewModel.getQuestion());
-                    realm.commitTransaction();
                     questionViewModel = questionPackViewModel.getNextQuestionViewModel(questionViewModel);
                     timeQuestion = 0;
                     openQuestionFragment();

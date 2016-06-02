@@ -35,7 +35,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener,L
     private Button btnMore;
     private ArcProgress arcProgress;
     private RealmResults<QuestionModel> results;
-    private RealmQuery<QuestionModel> query;
 
     @Nullable
     @Override
@@ -44,8 +43,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener,L
         getScreenManager().setTitleOfActionBar("GMAT");
         inits(view);
         loadQuestionPack(view);
-        getDataForArcProgress();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getDataForArcProgress();
     }
 
     public void inits(View view) {
@@ -74,12 +78,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener,L
     private void getDataForArcProgress() {
         int totalQuestion=0;
         int totalAnswered=0;
-        query = realm.where(QuestionModel.class);
-        results = query.findAll();
+        results = realm.where(QuestionModel.class).findAll().distinct("id");
         totalQuestion = results.size();
         arcProgress.setMax(totalQuestion);
-        query.notEqualTo("userAnswer", 0);
-        results = query.findAll();
+        results = realm.where(QuestionModel.class).notEqualTo("userAnswer",(-1)).findAll().distinct("id");
         totalAnswered = results.size();
         arcProgress.setProgress(totalAnswered);
     }

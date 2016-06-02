@@ -1,6 +1,7 @@
 package org.iliat.gmat.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +12,14 @@ import android.widget.TextView;
 import com.daimajia.numberprogressbar.NumberProgressBar;
 
 import org.iliat.gmat.R;
+import org.iliat.gmat.model.QuestionModel;
 import org.iliat.gmat.model.QuestionType;
+import org.iliat.gmat.model.QuestionTypeModel;
 
 import java.util.ArrayList;
+
+import io.realm.Realm;
+import io.realm.RealmQuery;
 
 /**
  * Created by MrBom on 5/13/2016.

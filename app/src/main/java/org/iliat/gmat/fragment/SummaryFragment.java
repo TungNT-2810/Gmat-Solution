@@ -107,7 +107,7 @@ public class SummaryFragment extends BaseFragment {
             Log.d("type",resultQTypes.get(i).getCode());
             for (int j = 0; j < results.size(); j++) {
                 //total answered
-                if (results.get(j).getUserAnswer() != 0) {
+                if (results.get(j).getUserAnswer() != -1) {
                     totalAnswered++;
                 }
                 //total correct
@@ -153,11 +153,10 @@ public class SummaryFragment extends BaseFragment {
     }
 
     private void getDataForSumary() {
-        query = realm.where(QuestionModel.class);
-        results = query.findAll();
+        results = realm.where(QuestionModel.class).findAll().distinct("id");
         totalQuestion = results.size();
         arcProgress.setMax(totalQuestion);
-        query = realm.where(QuestionModel.class).notEqualTo("userAnswer", 0);
+        query = realm.where(QuestionModel.class).notEqualTo("userAnswer",(-1));
         results = query.findAll();
         totalAnswered = results.size();
         for (QuestionModel q : results) {
