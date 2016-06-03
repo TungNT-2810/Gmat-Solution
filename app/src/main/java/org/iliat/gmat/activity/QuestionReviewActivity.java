@@ -369,16 +369,15 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                 break;
             }
             case R.id.menu_layout: {
-                if (isOpen){
+                if (isOpen) {
                     hideMenu();
                 }
                 break;
             }
-            default:break;
+            default:
+                break;
 
-            }
         }
-
     }
 
 
