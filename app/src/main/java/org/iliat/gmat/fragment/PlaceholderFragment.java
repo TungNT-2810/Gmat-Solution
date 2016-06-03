@@ -15,6 +15,7 @@ import android.webkit.WebView;
 import org.iliat.gmat.R;
 import org.iliat.gmat.constant.Constant;
 import org.iliat.gmat.item_view.AnswerCRQuestionReview;
+import org.iliat.gmat.model.QuestionModel;
 import org.iliat.gmat.view_model.QuestionPackViewModel;
 import org.iliat.gmat.view_model.QuestionViewModel;
 
@@ -100,6 +101,9 @@ public class PlaceholderFragment extends Fragment {
                 " $$cos^2θ+sin^2θ=1$$ </body></html>", "text/html; charset=utf-8", "UTF-8", null);
     }
 
+    public QuestionModel getQuestion(){
+        return mQuestionPack.getQuestionViewModels().get(position).getQuestion();
+    }
 
     private void getRefercence(View view) {
         cardAnswers = (CardView) view.findViewById(R.id.card_answer);

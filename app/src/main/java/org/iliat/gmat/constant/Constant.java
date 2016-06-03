@@ -13,6 +13,7 @@ public class Constant {
     public static final int TAG_GREEN = 2;
     public static final int TAG_YELLOW = 3;
     public static final int TAG_RED = 4;
+    public static final int TAG_STAR = 5;
     public static final String MIME_TYPE = "text/html; charset=utf-8";
     public static final String HTML_ENCODE = "UTF-8";
     public static final String TYPE_Q = "Q";

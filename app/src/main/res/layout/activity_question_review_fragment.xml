@@ -126,6 +126,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_controller"
+        android:layout_below="@id/top_controller"
         android:visibility="invisible"
         android:background="#80224b5f"
         >
@@ -144,7 +145,7 @@
                 android:layout_height="40dp"
                 android:background="@drawable/round_button_grey"
                 android:src="@mipmap/grey"
-                app:arcLayout_angle="85"
+                app:arcLayout_angle="84"
                 android:id="@+id/btn_tag_grey"
                 />
 
@@ -153,7 +154,7 @@
                 android:layout_height="40dp"
                 android:background="@drawable/round_button_green"
                 android:src="@mipmap/green"
-                app:arcLayout_angle="69"
+                app:arcLayout_angle="68.4"
                 android:id="@+id/btn_tag_green"
                 />
 
@@ -162,7 +163,7 @@
                 android:layout_height="40dp"
                 android:background="@drawable/round_button_yellow"
                 android:src="@mipmap/yellow"
-                app:arcLayout_angle="53"
+                app:arcLayout_angle="52.8"
                 android:id="@+id/btn_tag_yellow"
                 />
 
@@ -171,7 +172,7 @@
                 android:layout_height="40dp"
                 android:background="@drawable/round_button_red"
                 android:src="@mipmap/red"
-                app:arcLayout_angle="37"
+                app:arcLayout_angle="37.2"
                 android:id="@+id/btn_tag_red"
                 />
 
@@ -180,7 +181,7 @@
                 android:layout_height="40dp"
                 android:background="@drawable/round_button_star"
                 android:src="@mipmap/ic_star_black_24dp"
-                app:arcLayout_angle="21"
+                app:arcLayout_angle="21.6"
                 android:id="@+id/btn_tag_star"
                 />
 
@@ -189,7 +190,7 @@
                 android:layout_height="40dp"
                 android:background="@drawable/round_button_share"
                 android:src="@mipmap/ic_share_white_24dp"
-                app:arcLayout_angle="5"
+                app:arcLayout_angle="6"
                 android:id="@+id/btn_share"
                 />
 

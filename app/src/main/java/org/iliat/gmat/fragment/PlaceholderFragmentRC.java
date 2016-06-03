@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import org.iliat.gmat.R;
 import org.iliat.gmat.item_view.AnswerCRQuestionReview;
+import org.iliat.gmat.model.QuestionModel;
 import org.iliat.gmat.view_model.QuestionPackViewModel;
 import org.iliat.gmat.view_model.QuestionViewModel;
 
@@ -101,6 +102,10 @@ public class PlaceholderFragmentRC extends Fragment {
         txtReadingText.setText(questionViewModel.getStimulus());
         txtQuestion.setText(questionViewModel.getStem());
 
+    }
+
+    public QuestionModel getQuestion(){
+        return mQuestionPack.getQuestionViewModels().get(position).getQuestion();
     }
 
     private void getRefercence(View view) {

@@ -26,11 +26,6 @@ public class ScoreActivity extends AppCompatActivity{
 
     private int yourScore = 10;//so cau tra loi dung
     private int maxScore = 16;//so cau hoi toi da
-    private int countStar = 0;//so cau danh dau sao
-    private int countGreyTag = 0;//tam thoi truyen vao 0
-    private int countGreenTag = 0;//nhu tren
-    private int countYellowTag = 0;//nt
-    private int countRedTag = 0;//nt
     private int countTimeAverage = 0;//thoi gian lam trung binh 1 cau
 
     Realm realm;
@@ -121,11 +116,11 @@ public class ScoreActivity extends AppCompatActivity{
     private void fillData(){
         yourScore = questionPackViewModel.getNumberOfCorrectAnswers();
         maxScore = questionPackViewModel.getNumberOfQuestions();
-        txtCountStar.setText(String.valueOf(countStar));
-        txtCountGreyTag.setText(String.valueOf(countGreyTag));
-        txtCountGreenTag.setText(String.valueOf(countGreenTag));
-        txtCountRedTag.setText(String.valueOf(countRedTag));
-        txtCountYellowTag.setText(String.valueOf(countYellowTag));
+        txtCountStar.setText(String.valueOf(questionPackViewModel.getStarTag()));
+        txtCountGreyTag.setText(String.valueOf(questionPackViewModel.getGreyTag()));
+        txtCountGreenTag.setText(String.valueOf(questionPackViewModel.getGreenTag()));
+        txtCountRedTag.setText(String.valueOf(questionPackViewModel.getRedTag()));
+        txtCountYellowTag.setText(String.valueOf(questionPackViewModel.getYellowTag()));
         txtCountTimeAverage.setText(String.valueOf(countTimeAverage));
 
         arcProgress.setBottomText(String.format("%d / %d", yourScore, maxScore));
@@ -146,6 +141,10 @@ public class ScoreActivity extends AppCompatActivity{
                 startActivity(intent);
             }
         });
+    }
+
+    private void getTagFromQuestionPack(){
+
     }
 
     private static final String QUESTION_PACK_VIEW_MODEL_BUNDLE_STRING = "Question_pack_view_model";

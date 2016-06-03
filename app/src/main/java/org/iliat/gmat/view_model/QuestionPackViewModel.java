@@ -4,6 +4,7 @@ package org.iliat.gmat.view_model;
 import android.content.Context;
 import android.util.Log;
 
+import org.iliat.gmat.constant.Constant;
 import org.iliat.gmat.model.QuestionModel;
 import org.iliat.gmat.model.QuestionPackModel;
 
@@ -115,7 +116,6 @@ public class QuestionPackViewModel implements Serializable {
         return null;
     }
 
-
     public boolean isLastQuestionInPack(QuestionViewModel questionViewModel) {
         if(questionViewModel!=null) {
             return questionPack.isLastQuestionInPack(questionViewModel.getQuestion());
@@ -164,5 +164,45 @@ public class QuestionPackViewModel implements Serializable {
         for(QuestionViewModel questionViewModel : questionViewModels) {
             questionViewModel.clearUserAnswer();
         }
+    }
+
+    public int getGreyTag(){
+        int tag = 0;
+        for (int i = 0; i < questionViewModels.size(); i ++){
+            if (questionViewModels.get(i).getTag() == Constant.TAG_GREY) tag++;
+        }
+        return tag;
+    }
+
+    public int getGreenTag(){
+        int tag = 0;
+        for (int i = 0; i < questionViewModels.size(); i ++){
+            if (questionViewModels.get(i).getTag() == Constant.TAG_GREEN) tag++;
+        }
+        return tag;
+    }
+
+    public int getYellowTag(){
+        int tag = 0;
+        for (int i = 0; i < questionViewModels.size(); i ++){
+            if (questionViewModels.get(i).getTag() == Constant.TAG_YELLOW) tag++;
+        }
+        return tag;
+    }
+
+    public int getRedTag(){
+        int tag = 0;
+        for (int i = 0; i < questionViewModels.size(); i ++){
+            if (questionViewModels.get(i).getTag() == Constant.TAG_RED) tag++;
+        }
+        return tag;
+    }
+
+    public int getStarTag(){
+        int tag = 0;
+        for (int i = 0; i < questionViewModels.size(); i ++){
+            if (questionViewModels.get(i).isStar() == true) tag++;
+        }
+        return tag;
     }
 }

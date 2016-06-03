@@ -3,6 +3,8 @@ package org.iliat.gmat.model;
 
 import android.util.Log;
 
+import org.iliat.gmat.constant.Constant;
+
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;

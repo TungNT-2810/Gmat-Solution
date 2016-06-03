@@ -131,4 +131,17 @@ public class QuestionViewModel implements Serializable{
     public void setTimeToFinish(int time){
         question.setTimeToFinish(time);
     }
+
+    public void setTag(int tag){
+        question.setTagId(tag);
+    }
+
+    public int getTag(){
+        return question.getTagId();
+    }
+
+    public boolean isStar(){
+        return question.isStar();
+    }
+
 }

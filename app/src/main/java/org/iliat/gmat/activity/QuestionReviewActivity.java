@@ -35,12 +35,15 @@ import com.zyuternity.arclayout.ArcLayout;
 
 import org.iliat.gmat.R;
 import org.iliat.gmat.adapter.SectionsPagerAdapter;
+import org.iliat.gmat.constant.Constant;
 import org.iliat.gmat.fragment.PlaceholderFragment;
 import org.iliat.gmat.fragment.PlaceholderFragmentRC;
 import org.iliat.gmat.interf.ScreenManager;
+import org.iliat.gmat.model.QuestionModel;
 import org.iliat.gmat.model.QuestionPackModel;
 import org.iliat.gmat.utils.AnimatorUtils;
 import org.iliat.gmat.view_model.QuestionPackViewModel;
+import org.iliat.gmat.view_model.QuestionViewModel;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -48,6 +51,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 
 /**
@@ -74,6 +78,12 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     private View btn_open;
     private View menuLayout;
     private ArcLayout arcLayout;
+    private QuestionModel questionModel;
+    private static final int TAG_GREY = 1;
+    private static final int TAG_GREEN = 2;
+    private static final int TAG_YELLOW = 3;
+    private static final int TAG_RED = 4;
+
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -163,7 +173,6 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         isGone = true;
     }
 
-
     private void inits() {
         isCorrect = (TextView) findViewById(R.id.txt_correct);
         isCorrect.setTypeface(Typeface.DEFAULT_BOLD);
@@ -180,6 +189,12 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         btnBack = (Button) findViewById(R.id.btn_back);
         mFragmentManager = getFragmentManager();
         btnExpandStimulus.setVisibility(View.GONE);
+
+        for (int i = 0; i<arcLayout.getChildCount(); i++){
+            arcLayout.getChildAt(i).setOnClickListener(this);
+        }
+
+        menuLayout.setOnClickListener(this);
         PlaceholderFragment.context = this;
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -315,10 +330,17 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_open: {
-                onFabClick(v);
+                if (isOpen) {
+                    hideMenu();
+                } else {
+                    showMenu();
+                }
                 break;
             }
             case R.id.btnExpand: {
+                if (isOpen){
+                    hideMenu();
+                }
                 Fragment fragment = mSectionsPagerAdapter.getFragment(this.mViewPager.getCurrentItem());
                 if (fragment instanceof PlaceholderFragmentRC) {
                     isGone = !isGone;
@@ -375,22 +397,55 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                 break;
             }
             case R.id.btn_tag_grey:
+                addTag(Constant.TAG_GREY);
+                hideMenu();
                 break;
+            case R.id.btn_tag_green:
+                addTag(Constant.TAG_GREEN);
+                hideMenu();
+                break;
+            case R.id.btn_tag_yellow:
+                addTag(Constant.TAG_YELLOW);
+                hideMenu();
+                break;
+            case R.id.btn_tag_red:
+                addTag(Constant.TAG_RED);
+                hideMenu();
+                break;
+            case R.id.btn_tag_star:
+                addTag(Constant.TAG_STAR);
+                hideMenu();
             default:break;
 
             }
         }
 
+    private void addTag(int tag){
+        Fragment fragment = mSectionsPagerAdapter.getFragment(mViewPager.getCurrentItem());
+        QuestionModel questionModel;
+        if (fragment instanceof PlaceholderFragment){
+            PlaceholderFragment placeholderFragment = (PlaceholderFragment) fragment;
+            questionModel = placeholderFragment.getQuestion();
+        } else {
+            PlaceholderFragmentRC placeholderFragmentRC = (PlaceholderFragmentRC) fragment;
+            questionModel = placeholderFragmentRC.getQuestion();
+        }
+        if (tag == Constant.TAG_STAR){
+            realm.beginTransaction();
+            if (questionModel.isStar() == false) questionModel.setStar(true);
+            else questionModel.setStar(false);
+            realm.copyToRealmOrUpdate(questionModel);
+            realm.commitTransaction();
+        } else {
+            realm.beginTransaction();
+            questionModel.setTagId(tag);
+            realm.copyToRealmOrUpdate(questionModel);
+            realm.commitTransaction();
+        }
+    }
+
     //Bên dưới là animation và chức năng của nút mở tag (làm ơn đừng sửa gì cả :(( )
 
-    private void onFabClick(View v) {
-        if (v.isSelected() && isOpen) {
-            hideMenu();
-        } else {
-            showMenu();
-        }
-        v.setSelected(!v.isSelected());
-    }
 
     @SuppressWarnings("NewApi")
     private void showMenu() {
