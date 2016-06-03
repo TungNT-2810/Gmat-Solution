@@ -26,9 +26,10 @@ import io.realm.RealmResults;
 
 /**
  * Created by ZYuTernity on 5/16/2016.
- * Modified by LinhDQ on 26/05/2016
+ * Modified by LinhDQ
  */
-public class HomeFragment extends BaseFragment implements View.OnClickListener,ListQuestionPackAdapter.OnListQuestionPackListener {
+public class HomeFragment extends BaseFragment implements View.OnClickListener,
+        ListQuestionPackAdapter.OnListQuestionPackListener {
 
     private Realm realm;
     private RecyclerView recyclerView;
@@ -40,7 +41,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener,L
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_screen, container, false);
-        getScreenManager().setTitleOfActionBar("GMAT");
+        getScreenManager().setTitleOfActionBar(getResources().getString(R.string.string_title_GMAT));
         inits(view);
         loadQuestionPack(view);
         return view;

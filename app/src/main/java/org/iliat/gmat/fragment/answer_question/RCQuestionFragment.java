@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import org.iliat.gmat.R;
 import org.iliat.gmat.interf.ButtonControl;
+import org.iliat.gmat.interf.ChangeStateOfAnswerItemsInterface;
 import org.iliat.gmat.item_view.AnswerCRQuestion;
 import org.iliat.gmat.model.QuestionModel;
 import org.iliat.gmat.view_model.QuestionViewModel;
@@ -29,7 +30,6 @@ public class RCQuestionFragment extends Fragment
     private TextView txtReadingText;
     private ScrollView scrollView;
     private QuestionViewModel mQuestionCRModel;
-    private boolean isGone = false;
     private TextView txtQuestion;
     private QuestionModel question;
 
@@ -53,7 +53,10 @@ public class RCQuestionFragment extends Fragment
         mQuestionCRModel = question;
     }
 
-    //change question without change stimulus
+    /**change question without change stimulus
+     *
+     * @param questionViewModel
+     */
     public void setStem(QuestionViewModel questionViewModel) {
         this.mQuestionCRModel = questionViewModel;
         for (int i = 0; i < ANSWER_CHOICE_NUM; i++) {
@@ -93,20 +96,6 @@ public class RCQuestionFragment extends Fragment
             answerCRQuestionArrayList.add((AnswerCRQuestion) view.findViewById(R.id.answer_queston_3));
             answerCRQuestionArrayList.add((AnswerCRQuestion) view.findViewById(R.id.answer_queston_4));
             answerCRQuestionArrayList.add((AnswerCRQuestion) view.findViewById(R.id.answer_queston_5));
-//            imageButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (!isGone) {
-//                        scrollView.setVisibility(View.GONE);
-//                        imageButton.setImageResource(R.drawable.ic_vertical_align_top_white_24dp);
-//                        isGone = true;
-//                    } else {
-//                        scrollView.setVisibility(View.VISIBLE);
-//                        imageButton.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
-//                        isGone = false;
-//                    }
-//                }
-//            });
         }
     }
     public void setQuestionState(boolean isGone){

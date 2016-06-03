@@ -70,11 +70,13 @@ public class QuestionAnswerSummaryAdapter extends ArrayAdapter<QuestionViewModel
                     break;
                 case QuestionViewModel.ANSWER_INCORRECT:
                     imvStatus.setImageResource(R.drawable.ic_clear_black_24dp);
-                    imvStatus.setColorFilter(ContextCompat.getColor(QuestionAnswerSummaryAdapter.this.context,R.color.color_red_500));
+                    imvStatus.setColorFilter(ContextCompat.getColor(QuestionAnswerSummaryAdapter
+                            .this.context,R.color.color_red_500));
                     break;
                 case QuestionViewModel.ANSWER_CORRECT:
                     imvStatus.setImageResource(R.drawable.ic_done_black_24dp);
-                    imvStatus.setColorFilter(ContextCompat.getColor(QuestionAnswerSummaryAdapter.this.context,R.color.color_green_500));
+                    imvStatus.setColorFilter(ContextCompat.getColor(QuestionAnswerSummaryAdapter
+                            .this.context,R.color.color_green_500));
                     break;
             }
         }

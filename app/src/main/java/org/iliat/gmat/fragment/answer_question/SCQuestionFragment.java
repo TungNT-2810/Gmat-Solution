@@ -17,6 +17,7 @@ import org.iliat.gmat.R;
 import org.iliat.gmat.constant.Constant;
 import org.iliat.gmat.fragment.BaseFragment;
 import org.iliat.gmat.interf.ButtonControl;
+import org.iliat.gmat.interf.ChangeStateOfAnswerItemsInterface;
 import org.iliat.gmat.item_view.AnswerCRQuestion;
 import org.iliat.gmat.view_model.QuestionViewModel;
 
@@ -37,6 +38,7 @@ public class SCQuestionFragment extends BaseFragment
     private ArrayList<AnswerCRQuestion> answerCRQuestionArrayList;
     private WebView questionContent;
     private TextView questionContentText;
+    public static final String TYPE_Q = "Q";
 
 
     public void setButtonControl(ButtonControl buttonControl) {
@@ -72,12 +74,14 @@ public class SCQuestionFragment extends BaseFragment
     private void initLayout(View view) {
         if (answerCRQuestionArrayList == null) {
             questionContent = (WebView) view.findViewById(R.id.question_content);
-            questionContentText=(TextView)view.findViewById(R.id.question_content_text);
-
-            if(Build.VERSION.SDK_INT>=19){
-                questionContent.setLayerType(View.LAYER_TYPE_HARDWARE,null);
-            }else{
-                questionContent.setLayerType(View.LAYER_TYPE_SOFTWARE,null);
+            questionContentText = (TextView) view.findViewById(R.id.question_content_text);
+            /**
+             * Config web view
+             */
+            if (Build.VERSION.SDK_INT >= 19) {
+                questionContent.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+            } else {
+                questionContent.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             }
             questionContent.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 
@@ -91,15 +95,15 @@ public class SCQuestionFragment extends BaseFragment
     }
 
     private void fillData() {
-        if(mQuestionCRModel.getQuestion().getType().equals("Q")) {
-            questionContent.loadData(Constant.js + mQuestionCRModel.getStimulus(), "text/html; charset=utf-8", "UTF-8");
+        if (mQuestionCRModel.getQuestion().getType().equals(TYPE_Q)) {
+            questionContent.loadData(Constant.js + mQuestionCRModel.getStimulus(), Constant.MIME_TYPE, Constant.HTML_ENCODE);
             questionContent.clearHistory();
             questionContent.clearCache(true);
-        }else{
+        } else {
             questionContent.setVisibility(View.GONE);
             questionContentText.setVisibility(View.VISIBLE);
-            String stimulus=mQuestionCRModel.getStimulus();
-            stimulus=stimulus.replace("span style=\"text-decoration: underline;\"","u").replace("span","u");
+            String stimulus = mQuestionCRModel.getStimulus();
+            stimulus = stimulus.replace("span style=\"text-decoration: underline;\"", "u").replace("span", "u");
             questionContentText.setText(Html.fromHtml(stimulus));
         }
         for (int i = 0; i < ANSWER_CHOICE_NUM; i++) {

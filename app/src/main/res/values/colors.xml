@@ -27,4 +27,7 @@
     <color name="pack_locked_color">#dadada</color>
     <color name="red">#EF9A9A</color>
     <color name="green">#A5D6A7</color>
+    <color name="blue_beautiful">#BBDEFB</color>
+    <color name="red_beautiful">#FFCDD2</color>
+    <color name="green_beautiful">#C8E6C9</color>
 </resources>

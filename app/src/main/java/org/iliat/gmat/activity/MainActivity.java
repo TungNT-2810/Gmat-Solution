@@ -18,7 +18,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import org.iliat.gmat.R;
 import org.iliat.gmat.dialog.DownloadImageDialog;
@@ -35,10 +34,10 @@ import io.realm.RealmConfiguration;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ScreenManager, FragmentManager.OnBackStackChangedListener {
 
-    FragmentManager mFragmentManager;
-    QuestionPackFragment questionPackFragment;
-    HomeFragment homeFragment;
-    ActionBarDrawerToggle toggle;
+    private FragmentManager mFragmentManager;
+    private QuestionPackFragment questionPackFragment;
+    private HomeFragment homeFragment;
+    private ActionBarDrawerToggle toggle;
 
     public void goToActivity(Class activityClass, Bundle bundle) {
         Intent intent = new Intent(this, activityClass);
@@ -125,8 +124,8 @@ public class MainActivity extends AppCompatActivity
         } else {
             if (getFragmentManager().getBackStackEntryCount()<=1){
                 new AlertDialog.Builder(this)
-                        .setTitle("Exit GMAT")
-                        .setMessage("Are you sure you want to exit?")
+                        .setTitle(getString(R.string.string_title_exit_gmat))
+                        .setMessage(getString(R.string.string_message_exit_gmat))
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener()
                         {
                             @Override
@@ -176,7 +175,6 @@ public class MainActivity extends AppCompatActivity
         }
         if (item.getItemId() == android.R.id.home && getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStack();
-            Log.d("asdd", "sssss");
             return true;
         } else {
             return super.onOptionsItemSelected(item);

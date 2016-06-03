@@ -1,6 +1,5 @@
 package org.iliat.gmat.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,16 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.iliat.gmat.R;
-
 import org.iliat.gmat.activity.AnswerQuestionActivity;
 import org.iliat.gmat.adapter.ListQuestionPackAdapter;
-import org.iliat.gmat.database.QuestionPack;
 import org.iliat.gmat.model.QuestionPackModel;
 import org.iliat.gmat.view_model.QuestionPackViewModel;
-import org.iliat.gmat.view_model.QuestionViewModel;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 public class QuestionPackFragment extends BaseFragment
         implements

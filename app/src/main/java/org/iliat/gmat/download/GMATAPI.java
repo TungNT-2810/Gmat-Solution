@@ -1,4 +1,4 @@
-package org.iliat.gmat.dao;
+package org.iliat.gmat.download;
 
 /**
  * Created by hungtran on 3/12/16.

@@ -73,7 +73,6 @@ public class ScoreActivity extends AppCompatActivity{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_score);
         setSupportActionBar(toolbar);
         setTitle("Score review");
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         connectView();//ket noi xml voi java
     }
 
@@ -111,7 +110,6 @@ public class ScoreActivity extends AppCompatActivity{
         txtCountRedTag = (TextView) this.findViewById(R.id.txtCountRed);
         txtCountTimeAverage = (TextView) this.findViewById(R.id.txtTime);
         ltvQuestionAnswerSummary = (ListView) this.findViewById(R.id.ltv_score_question_answer_summary);
-
         arcProgress = (ArcProgress) this.findViewById(R.id.arc_progress);
 
     }
@@ -123,10 +121,6 @@ public class ScoreActivity extends AppCompatActivity{
     private void fillData(){
         yourScore = questionPackViewModel.getNumberOfCorrectAnswers();
         maxScore = questionPackViewModel.getNumberOfQuestions();
-        Log.d(TAG, "Your score"  + yourScore);
-        Log.d(TAG, "Max score"  + maxScore);
-
-
         txtCountStar.setText(String.valueOf(countStar));
         txtCountGreyTag.setText(String.valueOf(countGreyTag));
         txtCountGreenTag.setText(String.valueOf(countGreenTag));

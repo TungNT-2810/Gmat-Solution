@@ -13,12 +13,13 @@ import android.widget.TextView;
 
 import org.iliat.gmat.R;
 import org.iliat.gmat.constant.Constant;
-import org.iliat.gmat.fragment.answer_question.ChangeStateOfAnswerItemsInterface;
+import org.iliat.gmat.interf.ChangeStateOfAnswerItemsInterface;
 import org.iliat.gmat.interf.ButtonControl;
 import org.iliat.gmat.view_model.AnswerChoiceViewModel;
 
 /**
  * Created by hungtran on 5/2/16.
+ * Modified by Linh DQ
  */
 public class AnswerCRQuestion extends LinearLayout implements View.OnClickListener{
     private AnswerChoiceViewModel answerModel;
@@ -33,11 +34,10 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
     private boolean isUserChoise;
     private String strAnswer;
     private int index;
-    private int blue = Color.parseColor("#BBDEFB");
-    private int white = Color.parseColor("#FFFFFF");
     private int [] IMAGE_RESOURCE = {R.drawable.a,R.drawable.b,R.drawable.c,R.drawable.d,R.drawable.e};
     private String questionType;
     private LinearLayout layoutItem;
+
 
     public AnswerCRQuestion(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -76,12 +76,12 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
     public void fillData(){
         isUserChoise = false;
         imgChoise.setImageResource(IMAGE_RESOURCE[this.index]);
-        if(questionType!=null && questionType.equals("Q")) {
+        if(questionType!=null && questionType.equals(Constant.TYPE_Q)) {
             txtContentAnswer.setVisibility(VISIBLE);
             txtContenAnswerText.setVisibility(GONE);
             txtExplanation.setVisibility(GONE);
             txtExplanationText.setVisibility(GONE);
-            txtContentAnswer.loadData(Constant.js+this.strAnswer,"text/html; charset=utf-8","UTF-8");
+            txtContentAnswer.loadData(Constant.js+this.strAnswer,Constant.MIME_TYPE,Constant.HTML_ENCODE);
         }else{
             txtContentAnswer.setVisibility(GONE);
             txtExplanation.setVisibility(GONE);
@@ -90,15 +90,7 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
             txtContenAnswerText.setText(this.strAnswer);
         }
         if (isUserChoise) {
-//            if(questionType!=null && questionType.equals("Q")) {
-//                imgChoise.setColorFilter(ContextCompat.getColor(mContext, R.color.color_selected_answer));
-//                txtContentAnswer.setBackgroundColor(blue);
-//            }else{
-//                txtContentAnswer.setVisibility(GONE);
-//                imgChoise.setColorFilter(ContextCompat.getColor(mContext, R.color.color_selected_answer));
-//                txtContenAnswerText.setBackgroundColor(blue);
-//            }
-            layoutItem.setBackgroundColor(blue);
+            layoutItem.setBackgroundColor(getResources().getColor(R.color.blue_beautiful));
         }
     }
 
@@ -106,20 +98,10 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
         isUserChoise = userChoise;
         if (isUserChoise) {
             imgChoise.setColorFilter(ContextCompat.getColor(mContext, R.color.color_selected_answer));
-//            if(questionType!=null && questionType.equals("Q")) {
-//                txtContentAnswer.setBackgroundColor(blue);
-//            }else{
-//                txtContenAnswerText.setBackgroundColor(blue);
-//            }
-            layoutItem.setBackgroundColor(blue);
+            layoutItem.setBackgroundColor(getResources().getColor(R.color.blue_beautiful));
         } else {
             imgChoise.setColorFilter(ContextCompat.getColor(mContext, R.color.color_normal_answer));
-//            if(questionType!=null && questionType.equals("Q")) {
-//                txtContentAnswer.setBackgroundColor(white);
-//            }else{
-//                txtContenAnswerText.setBackgroundColor(white);
-//            }
-            layoutItem.setBackgroundColor(white);
+            layoutItem.setBackgroundColor(getResources().getColor(R.color.color_white));
         }
     }
 
