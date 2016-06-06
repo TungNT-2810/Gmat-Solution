@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
 import com.zyuternity.arclayout.ArcLayout;
@@ -67,13 +68,16 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     private android.app.FragmentManager mFragmentManager;
     private TextView isCorrect;
     private LinearLayout topController;
+    private LinearLayout layoutHelp;
     private TextView txtProcess;
     private Button btnNext;
     private Button btnBack;
     private ImageButton btnExpandStimulus;
+    private ImageButton btnHelp;
     private Realm realm;
     private int totalItem;
     private boolean isGone;
+    private boolean isHelping;
     private int position;
     private boolean isOpen = false;
     private View btn_open;
@@ -185,6 +189,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         menuLayout = findViewById(R.id.menu_layout);
         menuLayout.setOnClickListener(this);
         arcLayout = (ArcLayout) findViewById(R.id.arc_layout);
+        layoutHelp = (LinearLayout) findViewById(R.id.layout_help);
         btnExpandStimulus = (ImageButton) findViewById(R.id.btnExpand);
         btnBack = (Button) findViewById(R.id.btn_back);
         mFragmentManager = getFragmentManager();
@@ -194,6 +199,8 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
             arcLayout.getChildAt(i).setOnClickListener(this);
         }
 
+        btnHelp = (ImageButton) findViewById(R.id.btn_help);
+        btnHelp.setOnClickListener(this);
         imageTag = (ImageView) findViewById(R.id.image_tag);
         imageStar = (ImageView) findViewById(R.id.image_star);
         PlaceholderFragment.context = this;
@@ -357,6 +364,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                 }
                 break;
             }
+
             case R.id.btnExpand: {
                 if (isOpen) {
                     hideMenu();
@@ -371,6 +379,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                         btnExpandStimulus.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
                     }
                 }
+
                 break;
             }
             case R.id.btn_share: {
@@ -419,6 +428,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
             case R.id.btn_tag_grey:
                 updateTagToDatabase(Constant.TAG_GREY);
                 imageTag.setImageResource(R.mipmap.grey);
+                Toast.makeText(QuestionReviewActivity.this, "I DON'T KNOW", Toast.LENGTH_SHORT).show();
                 hideMenu();
                 break;
             case R.id.btn_tag_green:
@@ -444,6 +454,16 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                     imageStar.setColorFilter(getResources().getColor(R.color.color_white),PorterDuff.Mode.SRC_ATOP);
                 }
                 hideMenu();
+                break;
+            case R.id.btn_help:
+                if (!isHelping){
+                    layoutHelp.setVisibility(View.VISIBLE);
+                    isHelping = true;
+                } else {
+                    layoutHelp.setVisibility(View.INVISIBLE);
+                    isHelping = false;
+                }
+                break;
             default:
                 break;
         }
@@ -493,6 +513,10 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
 
     @SuppressWarnings("NewApi")
     private void hideMenu() {
+        if (isHelping){
+            layoutHelp.setVisibility(View.INVISIBLE);
+            isHelping = false;
+        }
         isOpen = false;
         List<Animator> animList = new ArrayList<>();
 
@@ -537,6 +561,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     private Animator createHideItemAnimator(final View item) {
         float dx = -item.getX();
         float dy = item.getY();
+
 
         Animator anim = ObjectAnimator.ofPropertyValuesHolder(
                 item,
