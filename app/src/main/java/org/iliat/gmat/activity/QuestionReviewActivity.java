@@ -8,6 +8,7 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,6 +28,8 @@ import android.view.animation.AnticipateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -43,7 +46,6 @@ import org.iliat.gmat.model.QuestionModel;
 import org.iliat.gmat.model.QuestionPackModel;
 import org.iliat.gmat.utils.AnimatorUtils;
 import org.iliat.gmat.view_model.QuestionPackViewModel;
-import org.iliat.gmat.view_model.QuestionViewModel;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -51,7 +53,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 
 /**
@@ -65,7 +66,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     QuestionPackModel questionPackModel;
     private android.app.FragmentManager mFragmentManager;
     private TextView isCorrect;
-    private RelativeLayout topController;
+    private LinearLayout topController;
     private TextView txtProcess;
     private Button btnNext;
     private Button btnBack;
@@ -78,11 +79,9 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     private View btn_open;
     private View menuLayout;
     private ArcLayout arcLayout;
+    private ImageView imageTag;
+    private ImageView imageStar;
     private QuestionModel questionModel;
-    private static final int TAG_GREY = 1;
-    private static final int TAG_GREEN = 2;
-    private static final int TAG_YELLOW = 3;
-    private static final int TAG_RED = 4;
 
 
     /**
@@ -177,24 +176,26 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         isCorrect = (TextView) findViewById(R.id.txt_correct);
         isCorrect.setTypeface(Typeface.DEFAULT_BOLD);
         mViewPager = (ViewPager) findViewById(R.id.container);
-        topController = (RelativeLayout) findViewById(R.id.top_controller);
+        topController = (LinearLayout) findViewById(R.id.top_controller);
         txtProcess = (TextView) findViewById(R.id.txt_process);
         btnNext = (Button) findViewById(R.id.btn_next);
         btnBack = (Button) findViewById(R.id.btn_back);
         btn_open = findViewById(R.id.btn_open);
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         menuLayout = findViewById(R.id.menu_layout);
+        menuLayout.setOnClickListener(this);
         arcLayout = (ArcLayout) findViewById(R.id.arc_layout);
         btnExpandStimulus = (ImageButton) findViewById(R.id.btnExpand);
         btnBack = (Button) findViewById(R.id.btn_back);
         mFragmentManager = getFragmentManager();
         btnExpandStimulus.setVisibility(View.GONE);
 
-        for (int i = 0; i<arcLayout.getChildCount(); i++){
+        for (int i = 0; i < arcLayout.getChildCount(); i++) {
             arcLayout.getChildAt(i).setOnClickListener(this);
         }
 
-        menuLayout.setOnClickListener(this);
+        imageTag = (ImageView) findViewById(R.id.image_tag);
+        imageStar = (ImageView) findViewById(R.id.image_star);
         PlaceholderFragment.context = this;
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -236,7 +237,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     }
 
     private void updateTopView(int position) {
-        String str = String.format("%d/%d | Time: %d:%d", position + 1, mQuestionPack.getQuestionViewModels().size(),
+        String str = String.format("%d/%d\nTime: %d:%d", position + 1, mQuestionPack.getQuestionViewModels().size(),
                 mQuestionPack.getQuestionViewModels().get(position).getTimeToFinish() / 60,
                 mQuestionPack.getQuestionViewModels().get(position).getTimeToFinish() % 60);
         txtProcess.setText(str);
@@ -251,6 +252,25 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
             txtProcess.setTextColor(getResources().getColor(R.color.color_red_500));
             isCorrect.setText("Incorrect");
             topController.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
+        }
+        switch (mQuestionPack.getQuestionViewModels().get(position).getTag()) {
+            case Constant.TAG_GREY:
+                imageTag.setImageResource(R.mipmap.grey);
+                break;
+            case Constant.TAG_GREEN:
+                imageTag.setImageResource(R.mipmap.green);
+                break;
+            case Constant.TAG_YELLOW:
+                imageTag.setImageResource(R.mipmap.yellow);
+                break;
+            case Constant.TAG_RED:
+                imageTag.setImageResource(R.mipmap.red);
+                break;
+        }
+        if (mQuestionPack.getQuestionViewModels().get(position).isStar()) {
+            imageStar.setColorFilter(getResources().getColor(R.color.yellow),PorterDuff.Mode.SRC_ATOP);
+        } else {
+            imageStar.setColorFilter(getResources().getColor(R.color.color_white),PorterDuff.Mode.SRC_ATOP);
         }
     }
 
@@ -338,7 +358,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                 break;
             }
             case R.id.btnExpand: {
-                if (isOpen){
+                if (isOpen) {
                     hideMenu();
                 }
                 Fragment fragment = mSectionsPagerAdapter.getFragment(this.mViewPager.getCurrentItem());
@@ -391,49 +411,55 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                 break;
             }
             case R.id.menu_layout: {
-                if (isOpen){
+                if (isOpen) {
                     hideMenu();
                 }
                 break;
             }
             case R.id.btn_tag_grey:
-                addTag(Constant.TAG_GREY);
+                updateTagToDatabase(Constant.TAG_GREY);
+                imageTag.setImageResource(R.mipmap.grey);
                 hideMenu();
                 break;
             case R.id.btn_tag_green:
-                addTag(Constant.TAG_GREEN);
+                updateTagToDatabase(Constant.TAG_GREEN);
+                imageTag.setImageResource(R.mipmap.green);
                 hideMenu();
                 break;
             case R.id.btn_tag_yellow:
-                addTag(Constant.TAG_YELLOW);
+                updateTagToDatabase(Constant.TAG_YELLOW);
+                imageTag.setImageResource(R.mipmap.yellow);
                 hideMenu();
                 break;
             case R.id.btn_tag_red:
-                addTag(Constant.TAG_RED);
+                updateTagToDatabase(Constant.TAG_RED);
+                imageTag.setImageResource(R.mipmap.red);
                 hideMenu();
                 break;
             case R.id.btn_tag_star:
-                addTag(Constant.TAG_STAR);
+                updateTagToDatabase(Constant.TAG_STAR);
+                if(questionModel.isStar()){
+                    imageStar.setColorFilter(getResources().getColor(R.color.yellow),PorterDuff.Mode.SRC_ATOP);
+                }else{
+                    imageStar.setColorFilter(getResources().getColor(R.color.color_white),PorterDuff.Mode.SRC_ATOP);
+                }
                 hideMenu();
-            default:break;
-
-            }
+            default:
+                break;
         }
+    }
 
-    private void addTag(int tag){
-        Fragment fragment = mSectionsPagerAdapter.getFragment(mViewPager.getCurrentItem());
-        QuestionModel questionModel;
-        if (fragment instanceof PlaceholderFragment){
-            PlaceholderFragment placeholderFragment = (PlaceholderFragment) fragment;
-            questionModel = placeholderFragment.getQuestion();
+    private void updateTagToDatabase(int tag) {
+        int currentPossition=mViewPager.getCurrentItem();
+        Fragment fragment = mSectionsPagerAdapter.getFragment(currentPossition);
+        if (fragment instanceof PlaceholderFragment) {
+            questionModel = ((PlaceholderFragment) fragment).getQuestion();
         } else {
-            PlaceholderFragmentRC placeholderFragmentRC = (PlaceholderFragmentRC) fragment;
-            questionModel = placeholderFragmentRC.getQuestion();
+            questionModel = ((PlaceholderFragmentRC) fragment).getQuestion();
         }
-        if (tag == Constant.TAG_STAR){
+        if (tag == Constant.TAG_STAR) {
             realm.beginTransaction();
-            if (questionModel.isStar() == false) questionModel.setStar(true);
-            else questionModel.setStar(false);
+            questionModel.setStar(!questionModel.isStar());
             realm.copyToRealmOrUpdate(questionModel);
             realm.commitTransaction();
         } else {

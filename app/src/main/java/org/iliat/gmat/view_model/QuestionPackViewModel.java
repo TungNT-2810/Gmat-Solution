@@ -40,6 +40,14 @@ public class QuestionPackViewModel implements Serializable {
         }
     }
 
+    public void updateTag(int possition, int tag){
+        questionViewModels.get(possition).setTag(tag);
+    }
+
+    public void updateStar(int possition, boolean isStar){
+        questionViewModels.get(possition).getQuestion().setStar(isStar);
+    }
+
     public QuestionPackViewModel(QuestionPackModel questionPack, Context mContext) {
         this.questionPack = questionPack;
         questionViewModels = new ArrayList<QuestionViewModel>();

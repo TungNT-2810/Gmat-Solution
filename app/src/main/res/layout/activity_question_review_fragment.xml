@@ -12,30 +12,57 @@
         layout="@layout/activity_review_tool_bar">
     </include>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_below="@id/tool_bar"
         android:id="@+id/top_controller"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#00E676"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:minHeight="45dp">
         <TextView
             android:layout_marginLeft="10dp"
             android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Correct"
             android:id="@+id/txt_correct"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/image_star"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_star_white_24dp"
+                android:tint="#FFF176"/>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_centerVertical="true"
+                android:id="@+id/image_tag" />
+        </LinearLayout>
+
         <TextView
             android:id="@+id/txt_process"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:textAlignment="viewEnd"
             android:text="Time: 1:00"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"/>
-    </RelativeLayout>
+    </LinearLayout>
     <android.support.v4.view.ViewPager
         android:layout_above="@+id/bottom_controller"
         android:layout_below="@id/top_controller"
@@ -128,7 +155,7 @@
         android:layout_above="@id/bottom_controller"
         android:layout_below="@id/top_controller"
         android:visibility="invisible"
-        android:background="#80224b5f"
+        android:background="@color/color_background_tag"
         >
 
         <com.zyuternity.arclayout.ArcLayout
