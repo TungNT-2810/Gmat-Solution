@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -68,7 +67,7 @@ public class ScoreActivity extends AppCompatActivity{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_score);
         setSupportActionBar(toolbar);
         setTitle("Score review");
-        connectView();//ket noi xml voi java
+        init();//ket noi xml voi java
     }
 
     @Override
@@ -91,13 +90,9 @@ public class ScoreActivity extends AppCompatActivity{
         QuestionPackModel questionPack = realm.where(QuestionPackModel.class).equalTo("id",questionPackId).findFirst();
         questionPackViewModel = new QuestionPackViewModel(questionPack, this);
         countTimeAverage = bundle.getInt(AnswerQuestionActivity.KEY_TIME_AVERAGE);
-        for (int i = 0; i < questionPackViewModel.getQuestionViewModels().size(); i++){
-            Log.d("HungTD","" + questionPackViewModel.getQuestionViewModels().get(i).getUserAnswerIndex());
-        }
-
     }
 
-    private void connectView(){
+    private void init(){
         txtCountStar = (TextView) this.findViewById(R.id.txtCountStar);
         txtCountGreyTag = (TextView) this.findViewById(R.id.txtCountGrey);
         txtCountGreenTag = (TextView) this.findViewById(R.id.txtCountGreen);
@@ -121,7 +116,7 @@ public class ScoreActivity extends AppCompatActivity{
         txtCountGreenTag.setText(String.valueOf(questionPackViewModel.getGreenTag()));
         txtCountRedTag.setText(String.valueOf(questionPackViewModel.getRedTag()));
         txtCountYellowTag.setText(String.valueOf(questionPackViewModel.getYellowTag()));
-        txtCountTimeAverage.setText(String.valueOf(countTimeAverage));
+        txtCountTimeAverage.setText(String.format("%dm %ds",countTimeAverage/60,countTimeAverage%60));
 
         arcProgress.setBottomText(String.format("%d / %d", yourScore, maxScore));
         arcProgress.setProgress((int) (yourScore * 100.0f / maxScore));

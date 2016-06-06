@@ -4,13 +4,16 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="50dp"
+    android:minHeight="60dp"
+    android:id="@+id/item_list_answer"
+    android:background="@color/color_white"
+    android:gravity="center_vertical"
     android:padding="@dimen/question_answer_summary_padding">
     <TextView
         android:id="@+id/txv_index"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
         android:textSize="@dimen/question_text_size"
         android:layout_marginRight="@dimen/question_margin"
         android:textStyle="bold"/>
@@ -19,17 +22,36 @@
         android:layout_width="0dp"
         android:layout_weight="6"
         android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
         android:textSize="@dimen/question_text_size"
-        android:layout_marginRight="@dimen/question_margin"
         android:singleLine="true"
         android:ellipsize="end"
         />
-    <ImageView
-        android:id="@+id/imv_status"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:scaleType="center"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
+        <ImageView
+            android:id="@+id/imv_star"
+            android:layout_width="match_parent"
+            android:scaleType="center"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_star_white_24dp"
+            android:tint="#FFF176"
+            />
+        <ImageView
+            android:id="@+id/imv_tag"
+            android:layout_width="match_parent"
+            android:scaleType="center"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:src="@mipmap/grey"
+            />
+    </LinearLayout>
+
 </LinearLayout>
 

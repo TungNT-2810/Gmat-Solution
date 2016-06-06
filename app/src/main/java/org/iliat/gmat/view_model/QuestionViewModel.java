@@ -55,6 +55,13 @@ public class QuestionViewModel implements Serializable{
         return answerChoices;
     }
 
+    public boolean isCorrect(){
+        if(question.getUserAnswer()==question.getRightAnswerIndex()){
+            return true;
+        }
+        return false;
+    }
+
     public List<AnswerChoiceViewModel> getAnswerChoisesViewModel(){
         if(answerChoices == null){
             Log.d(TAG, "getAnswerChoices NULL");

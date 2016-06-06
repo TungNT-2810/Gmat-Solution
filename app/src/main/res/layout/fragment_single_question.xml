@@ -2,13 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".activity.QuestionReviewActivity$PlaceholderFragment">
+    tools:context=".activity.QuestionReviewActivity">
     <ScrollView
-        android:background="#FAFAFA"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:background="@color/color_white"
+        >
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -16,23 +16,23 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                >
                 <WebView
-                    android:layout_margin="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/question_content"
                     android:textSize="18sp"
-                    android:padding="16dp"
+                    android:padding="10dp"
                     />
                 <TextView
-                    android:layout_margin="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/question_content_text"
                     android:textColor="#212121"
                     android:textSize="18sp"
-                    android:padding="16dp"
+                    android:padding="10dp"
                     android:visibility="gone"
                     />
             </LinearLayout>

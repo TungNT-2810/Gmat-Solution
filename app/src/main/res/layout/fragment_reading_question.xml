@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.QuestionReviewActivity$PlaceholderFragment">
+    tools:context=".activity.QuestionReviewActivity">
 
 
     <LinearLayout
@@ -14,7 +14,9 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@color/color_white"
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -36,7 +38,9 @@ In 1649, the Maryland Toleration Act was passed which guaranteed religious toler
 
 By the 1700's, Maryland and Virginia became plantation economies, and grew tobacco as the cash crop. Up to 40 percent of Maryland's population were slaves or convicts who worked in the tobacco fields. Soon, Baltimore, a large port on the Chesapeake Bay, became an important center for tobacco export."
                     android:textColor="#212121"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+
+                    />
 
             </LinearLayout>
 

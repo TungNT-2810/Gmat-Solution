@@ -2,15 +2,20 @@ package org.iliat.gmat.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.support.v4.content.ContextCompat;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.iliat.gmat.R;
+import org.iliat.gmat.constant.Constant;
 import org.iliat.gmat.view_model.QuestionViewModel;
 
 import java.lang.reflect.AccessibleObject;
@@ -18,6 +23,7 @@ import java.util.List;
 
 /**
  * Created by qhuydtvt on 4/6/2016.
+ * Modified by Linh DQ on 6/6/2016
  */
 public class QuestionAnswerSummaryAdapter extends ArrayAdapter<QuestionViewModel> {
     private LayoutInflater mLayoutInflater;
@@ -48,36 +54,60 @@ public class QuestionAnswerSummaryAdapter extends ArrayAdapter<QuestionViewModel
     private class ViewHolder {
         private TextView txvIndex;
         private TextView txvPreview;
-        private ImageView imvStatus;
+        private ImageView imvStar;
+        private ImageView imvTag;
         private QuestionViewModel questionViewModel;
+        private LinearLayout linearLayout;
         private int position;
+        private Context context;
 
         public ViewHolder(View view,QuestionViewModel questionViewModel, int position) {
             txvIndex = (TextView)view.findViewById(R.id.txv_index);
             txvPreview = (TextView)view.findViewById(R.id.txv_preview);
-            imvStatus = (ImageView)view.findViewById(R.id.imv_status);
+            imvStar = (ImageView)view.findViewById(R.id.imv_star);
+            imvTag = (ImageView)view.findViewById(R.id.imv_tag);
+            linearLayout=(LinearLayout) view.findViewById(R.id.item_list_answer);
             this.questionViewModel = questionViewModel;
             this.position = position;
+            context=view.getContext();
         }
 
         public void update() {
             txvIndex.setText(String.valueOf(position + 1) + ".");
-            txvPreview.setText(questionViewModel.getStimulus());
 
-            switch (questionViewModel.getAnswerStatus()) {
-                case QuestionViewModel.ANSWER_NOT_DONE:
-                    imvStatus.setImageResource(R.drawable.ic_warning_black_24dp);
+            String stimulus = questionViewModel.getStimulus();
+            stimulus = stimulus.replace("span style=\"text-decoration: underline;\"", "u").replace("span", "u");
+            txvPreview.setText(Html.fromHtml(stimulus));
+
+            if(questionViewModel.isStar()){
+                imvStar.setColorFilter(context.getResources().getColor(R.color.yellow), PorterDuff.Mode.SRC_ATOP);
+            }else{
+                imvStar.setColorFilter(context.getResources().getColor(R.color.color_white), PorterDuff.Mode.SRC_ATOP);
+            }
+
+            switch (questionViewModel.getTag()) {
+                case Constant.TAG_GREY:
+                    imvTag.setImageResource(R.mipmap.grey);
                     break;
-                case QuestionViewModel.ANSWER_INCORRECT:
-                    imvStatus.setImageResource(R.drawable.ic_clear_black_24dp);
-                    imvStatus.setColorFilter(ContextCompat.getColor(QuestionAnswerSummaryAdapter
-                            .this.context,R.color.color_red_500));
+                case Constant.TAG_GREEN:
+                    imvTag.setImageResource(R.mipmap.green);
                     break;
-                case QuestionViewModel.ANSWER_CORRECT:
-                    imvStatus.setImageResource(R.drawable.ic_done_black_24dp);
-                    imvStatus.setColorFilter(ContextCompat.getColor(QuestionAnswerSummaryAdapter
-                            .this.context,R.color.color_green_500));
+                case Constant.TAG_YELLOW:
+                    imvTag.setImageResource(R.mipmap.yellow);
                     break;
+                case Constant.TAG_RED:
+                    imvTag.setImageResource(R.mipmap.red);
+                    break;
+            }
+
+            if(questionViewModel.isCorrect()){
+                txvIndex.setTextColor(context.getResources().getColor(R.color.color_green_500));
+                txvPreview.setTextColor(context.getResources().getColor(R.color.color_green_500));
+                linearLayout.setBackgroundColor(getContext().getResources().getColor(R.color.green_beautiful));
+            }else{
+                txvIndex.setTextColor(context.getResources().getColor(R.color.color_red_500));
+                txvPreview.setTextColor(context.getResources().getColor(R.color.color_red_500));
+                linearLayout.setBackgroundColor(getContext().getResources().getColor(R.color.red_beautiful));
             }
         }
     }

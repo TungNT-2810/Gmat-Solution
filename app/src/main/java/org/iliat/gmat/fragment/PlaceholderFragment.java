@@ -97,11 +97,14 @@ public class PlaceholderFragment extends Fragment {
 
     private void fillData() {
         final QuestionViewModel questionViewModel = (mQuestionPack.getQuestionViewModels().get(position));
-        contentQuestion.loadDataWithBaseURL("file:///android_asset/mathscribe", Constant.js + questionViewModel.getStimulus() +
-                " $$cos^2θ+sin^2θ=1$$ </body></html>", "text/html; charset=utf-8", "UTF-8", null);
+        if (questionViewModel != null) {
+            contentQuestion.loadDataWithBaseURL("file:///android_asset/mathscribe",
+                    Constant.js + questionViewModel.getStimulus() +
+                            " $$cos^2θ+sin^2θ=1$$ </body></html>", "text/html; charset=utf-8", "UTF-8", null);
+        }
     }
 
-    public QuestionModel getQuestion(){
+    public QuestionModel getQuestion() {
         return mQuestionPack.getQuestionViewModels().get(position).getQuestion();
     }
 

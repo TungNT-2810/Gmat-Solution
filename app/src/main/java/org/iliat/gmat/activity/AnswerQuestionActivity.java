@@ -106,14 +106,14 @@ public class AnswerQuestionActivity
      * if isCompleted() == true then show a dialog to confirm that user want to startOver or No,
      * if user choose startOver then clear all userAnswer in this pack and start over this quiz.
      * if No then come back home screen.
-     * <p>
+     * <p/>
      * If isCompleteed()==false then check isNew() function. this function will return True if
      * current pack is new.
      * show a dialog and provide functions do continue and do again if isNew return False
      * else start quiz from first question in this pack.
      */
     private void getDataFromIntent() {
-        Log.d(LOG_TAG,"getDataFromIntent");
+        Log.d(LOG_TAG, "getDataFromIntent");
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
         String questionPackId = getQuestionPackFromBundle(bundle);
@@ -185,7 +185,7 @@ public class AnswerQuestionActivity
      * else open SCQuestionFragment
      */
     private void openQuestionFragment() {
-        Log.d(LOG_TAG,"openQuestionFragment");
+        Log.d(LOG_TAG, "openQuestionFragment");
         if (questionViewModel != null) {
             if (questionViewModel.getQuestion().getType().equalsIgnoreCase(Constant.TYPE_RC)) {
                 this.setButtonHideState(false);
@@ -382,6 +382,9 @@ public class AnswerQuestionActivity
                 questionViewModel.saveUserAnswer();
                 realm.beginTransaction();
                 questionViewModel.getQuestion().setTimeToFinish((int) timeQuestion);
+                if (questionViewModel.getQuestion().getTagId() == 0) {
+                    questionViewModel.getQuestion().setTagId(Constant.TAG_GREY);
+                }
                 realm.copyToRealmOrUpdate(questionViewModel.getQuestion());
                 realm.commitTransaction();
                 if (questionPackViewModel.isLastQuestionInPack(questionViewModel)) {
