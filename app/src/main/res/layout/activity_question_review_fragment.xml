@@ -225,8 +225,8 @@
         </com.zyuternity.arclayout.ArcLayout>
 
         <ImageButton
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="bottom|left"
             android:src="@drawable/ic_help_white_48px"
             android:scaleType="fitXY"
@@ -271,7 +271,7 @@
                     android:layout_height="wrap_content"
                     android:text="Don't know"
                     android:layout_marginLeft="5dp"
-                    android:textSize="20dp"
+                    android:textSize="18sp"
                     android:textColor="#FFFFFF" />
 
             </LinearLayout>
@@ -295,7 +295,7 @@
                     android:layout_height="wrap_content"
                     android:text="Understood"
                     android:layout_marginLeft="5dp"
-                    android:textSize="20dp"
+                    android:textSize="18sp"
                     android:textColor="#FFFFFF" />
 
             </LinearLayout>
@@ -320,7 +320,7 @@
                     android:layout_height="wrap_content"
                     android:text="Somewhat understand"
                     android:layout_marginLeft="5dp"
-                    android:textSize="20dp"
+                    android:textSize="18sp"
                     android:textColor="#FFFFFF" />
 
             </LinearLayout>
@@ -352,7 +352,7 @@
                     android:layout_height="wrap_content"
                     android:text="Don't understand"
                     android:layout_marginLeft="5dp"
-                    android:textSize="20dp"
+                    android:textSize="18sp"
                     android:textColor="#FFFFFF" />
 
             </LinearLayout>
@@ -376,7 +376,7 @@
                     android:layout_height="wrap_content"
                     android:text="Interesting"
                     android:layout_marginLeft="5dp"
-                    android:textSize="20dp"
+                    android:textSize="18sp"
                     android:textColor="#FFFFFF" />
 
             </LinearLayout>
@@ -401,7 +401,7 @@
                     android:layout_height="wrap_content"
                     android:text="Share"
                     android:layout_marginLeft="5dp"
-                    android:textSize="20dp"
+                    android:textSize="18sp"
                     android:textColor="#FFFFFF" />
 
             </LinearLayout>
