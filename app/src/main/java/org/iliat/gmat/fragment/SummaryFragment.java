@@ -166,7 +166,10 @@ public class SummaryFragment extends BaseFragment {
             txtAverageTime.setText("0m 0s");
         }
         arcProgress.setMax(100);
-        arcProgress.setProgress(totalAnswered*100/totalQuestion);
-        Log.d("DDDD",totalAnswered+":"+totalQuestion);
+        if(totalQuestion!=0) {
+            arcProgress.setProgress(totalAnswered * 100 / totalQuestion);
+        }else{
+            arcProgress.setProgress(0);
+        }
     }
 }

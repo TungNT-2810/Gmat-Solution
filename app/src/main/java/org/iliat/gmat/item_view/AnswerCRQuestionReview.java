@@ -26,6 +26,7 @@ import org.iliat.gmat.constant.Constant;
 import org.iliat.gmat.model.AnswerModel;
 import org.iliat.gmat.model.QuestionType;
 import org.iliat.gmat.view_model.AnswerChoiceViewModel;
+import org.iliat.gmat.view_model.QuestionViewModel;
 
 import io.github.kexanie.library.MathView;
 
@@ -148,13 +149,6 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
         }
     }
 
-    public WebView getTxtContentAnswer() {
-        return txtContentAnswer;
-    }
-
-    public void setTxtContentAnswer(WebView txtContentAnswer) {
-        this.txtContentAnswer = txtContentAnswer;
-    }
 
     @Override
     public void onClick(View v) {
@@ -194,6 +188,7 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
         bundle.putInt("index", this.index);
         bundle.putBoolean("isUserChoise", isUserChoise);
         bundle.putBoolean("isRightAnswer", isRightAnswer);
+        bundle.putString("questionType",this.questionType);
         return bundle;
     }
 
@@ -210,6 +205,7 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
             state = bundle.getParcelable("superState");
             isUserChoise = bundle.getBoolean("isUserChoise");
             isRightAnswer = bundle.getBoolean("isRightAnswer");
+            this.questionType=bundle.getString("questionType");
             fillData();
         }
         super.onRestoreInstanceState(state);

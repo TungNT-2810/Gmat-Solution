@@ -409,9 +409,8 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                 }
                 isGone = true;
                 btnExpandStimulus.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
-                int possititon=mViewPager.getCurrentItem()-1;
-                if (possititon >= 0) {
-                    mViewPager.setCurrentItem(possititon);
+                if (mViewPager.getCurrentItem()>0) {
+                    mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
                 }
                 break;
             }

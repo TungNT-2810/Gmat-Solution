@@ -85,7 +85,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener,
         results = realm.where(QuestionModel.class).notEqualTo("userAnswer",(-1)).findAll().distinct("id");
         totalAnswered = results.size();
         arcProgress.setMax(100);
-        arcProgress.setProgress(totalAnswered*100/totalQuestion);
+        if(totalQuestion!=0) {
+            arcProgress.setProgress(totalAnswered * 100 / totalQuestion);
+        }else{
+            arcProgress.setProgress(0);
+        }
     }
 
     @Override

@@ -74,6 +74,10 @@ public class QuestionViewModel implements Serializable{
         return arr;
     }
 
+    public String getTypeQuestion(){
+        return this.question.getType();
+    }
+
     public void setAnswerChoices(List<AnswerModel> answerChoices) {
         this.answerChoices = answerChoices;
     }

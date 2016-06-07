@@ -55,13 +55,14 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     }
 
     private Fragment createFragment(int position) {
+
         QuestionModel question = questionPack.getQuestionViewModels().get(position).getQuestion();
         if (question.getType().equals(Question.TYPE_RC)) {
-            PlaceholderFragmentRC placeholderFragmentRc = PlaceholderFragmentRC.newInstance(position + 1);
+            PlaceholderFragmentRC placeholderFragmentRc = PlaceholderFragmentRC.newInstance(position+1);
             placeholderFragmentRc.setQuestionPack(questionPack);
             return placeholderFragmentRc;
         } else {
-            PlaceholderFragment fragment = PlaceholderFragment.newInstance(position + 1);
+            PlaceholderFragment fragment = PlaceholderFragment.newInstance(position+1);
             fragment.setQuestionPack(questionPack, position);
             return fragment;
         }

@@ -31,7 +31,7 @@ public class PlaceholderFragment extends Fragment {
 
     public void setQuestionPack(QuestionPackViewModel mQuestionPack, int position) {
         this.mQuestionPack = mQuestionPack;
-        this.position=position;
+        this.position = position;
     }
 
 
@@ -47,6 +47,7 @@ public class PlaceholderFragment extends Fragment {
     private ArrayList<AnswerCRQuestionReview> answerChoiseViewItemArrayList;
     private View contentView;
     public static Context context;
+    private QuestionViewModel questionViewModel;
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
@@ -59,7 +60,7 @@ public class PlaceholderFragment extends Fragment {
      * number.
      */
     public static PlaceholderFragment newInstance(int sectionNumber) {
-        Log.d("PlaceholderFragment", "newInstance"+sectionNumber);
+        Log.d("PlaceholderFragment", "newInstance" + sectionNumber);
         PlaceholderFragment fragment = new PlaceholderFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
@@ -73,28 +74,27 @@ public class PlaceholderFragment extends Fragment {
         Log.d("PlaceholderFragment", "onCreateView");
         View rootView = inflater.inflate(R.layout.fragment_question_review, container, false);
         getRefercence(rootView);
+        fillData();
         this.contentView = rootView;
         return rootView;
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        fillData();
     }
 
     private void fillData() {
-        QuestionViewModel questionViewModel = (mQuestionPack.getQuestionViewModels().get(position));
+        questionViewModel = mQuestionPack.getQuestionViewModel(position);
         if (questionViewModel != null) {
-            if(questionViewModel.getQuestion().getType().equals(Constant.TYPE_Q)) {
+            if (questionViewModel.getTypeQuestion().equals(Constant.TYPE_Q)) {
                 contentQuestion.setVisibility(View.VISIBLE);
                 contentQuestionText.setVisibility(View.GONE);
                 contentQuestion.loadDataWithBaseURL("file:///android_asset/mathscribe",
                         Constant.JS + questionViewModel.getStimulus() +
                                 " $$cos^2θ+sin^2θ=1$$ </body></html>",
                         Constant.MIME_TYPE, Constant.HTML_ENCODE, null);
-            }else{
+            } else {
                 contentQuestion.setVisibility(View.GONE);
                 contentQuestionText.setVisibility(View.VISIBLE);
                 contentQuestionText.setText(questionViewModel.getStimulus());
@@ -108,8 +108,8 @@ public class PlaceholderFragment extends Fragment {
                 if (questionViewModel.getQuestion().getRightAnswerIndex() == i) {
                     answerChoiseViewItemArrayList.get(i).setRightAnswer(true);
                 }
-                Log.d("DMMM",questionViewModel.getQuestion().getType());
-                answerChoiseViewItemArrayList.get(i).setQuestionType(questionViewModel.getQuestion().getType());
+                answerChoiseViewItemArrayList.get(i)
+                        .setQuestionType(questionViewModel.getTypeQuestion());
                 answerChoiseViewItemArrayList.get(i).fillData();
             }
         }
@@ -121,6 +121,7 @@ public class PlaceholderFragment extends Fragment {
     }
 
     private void getRefercence(View view) {
+
         cardAnswers = (CardView) view.findViewById(R.id.card_answer);
         contentQuestion = (WebView) view.findViewById(R.id.question_content);
 
@@ -128,7 +129,7 @@ public class PlaceholderFragment extends Fragment {
         contentQuestion.getSettings().setJavaScriptEnabled(true);
         contentQuestion.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 
-        contentQuestionText=(TextView)view.findViewById(R.id.question_content_txt);
+        contentQuestionText = (TextView) view.findViewById(R.id.question_content_txt);
         if (answerChoiseViewItemArrayList == null) {
             answerChoiseViewItemArrayList = new ArrayList<AnswerCRQuestionReview>();
             AnswerCRQuestionReview answerChoiseViewItem0 = (AnswerCRQuestionReview) view.findViewById(R.id.answer_queston_review_1);

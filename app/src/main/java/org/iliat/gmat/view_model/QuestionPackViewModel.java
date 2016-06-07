@@ -44,6 +44,10 @@ public class QuestionPackViewModel implements Serializable {
         }
     }
 
+    public QuestionViewModel getQuestionViewModel(int index){
+        return questionViewModels.get(index);
+    }
+
     public boolean isUnpack(int possition) {
         String curDate = simpleDateFormat.format(new Date());
         try {

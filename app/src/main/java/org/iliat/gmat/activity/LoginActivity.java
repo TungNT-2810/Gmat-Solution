@@ -348,7 +348,6 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
     }
 
     private void saveQuestionPacks(JSONQuestionPackList jsonQuestionPackList) {
-        Log.d(TAG, "JSONQuestionPackSize: " + String.valueOf(jsonQuestionPackList.getList().size()));
         for (JSONQuestionPack jsonQuestionPack : jsonQuestionPackList.getList()) {
             realm = Realm.getDefaultInstance();
             realm.beginTransaction();
