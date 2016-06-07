@@ -40,7 +40,6 @@ public class PlaceholderFragment extends Fragment {
     private int position;
     private QuestionPackViewModel mQuestionPack;
     private WebView contentQuestion;
-    private MathView stemQuestion;
     private CardView cardAnswers;
     private ArrayList<AnswerCRQuestionReview> answerChoiseViewItemArrayList;
     private View contentView;
@@ -81,7 +80,15 @@ public class PlaceholderFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        QuestionViewModel questionViewModel =mQuestionPack.getQuestionViewModels().get(position);
+    }
+
+    private void fillData() {
+        final QuestionViewModel questionViewModel = (mQuestionPack.getQuestionViewModels().get(position));
+        if (questionViewModel != null) {
+            contentQuestion.loadDataWithBaseURL("file:///android_asset/mathscribe",
+                    Constant.JS + questionViewModel.getStimulus() +
+                            " $$cos^2θ+sin^2θ=1$$ </body></html>", "text/html; charset=utf-8", "UTF-8", null);
+        }
         for (int i = 0; i < 5; i++) {
             answerChoiseViewItemArrayList.get(i)
                     .setAnswerModel(questionViewModel.getAnswerChoiceViewModel(i));
@@ -96,15 +103,6 @@ public class PlaceholderFragment extends Fragment {
         }
     }
 
-    private void fillData() {
-        final QuestionViewModel questionViewModel = (mQuestionPack.getQuestionViewModels().get(position));
-        if (questionViewModel != null) {
-            contentQuestion.loadDataWithBaseURL("file:///android_asset/mathscribe",
-                    Constant.JS + questionViewModel.getStimulus() +
-                            " $$cos^2θ+sin^2θ=1$$ </body></html>", "text/html; charset=utf-8", "UTF-8", null);
-        }
-    }
-
     public QuestionModel getQuestion() {
         return mQuestionPack.getQuestionViewModels().get(position).getQuestion();
     }
@@ -112,7 +110,7 @@ public class PlaceholderFragment extends Fragment {
     private void getRefercence(View view) {
         cardAnswers = (CardView) view.findViewById(R.id.card_answer);
         contentQuestion = (WebView) view.findViewById(R.id.question_content);
-        if (Build.VERSION.SDK_INT >= 19) {
+        if (Build.VERSION.SDK_INT > 19) {
             contentQuestion.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         } else {
             contentQuestion.setLayerType(View.LAYER_TYPE_SOFTWARE, null);

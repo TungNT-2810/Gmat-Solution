@@ -71,7 +71,7 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
             this.imgChoise = (ImageView) view.findViewById(R.id.img_icon_answer);
             this.txtContentAnswer = (WebView) view.findViewById(R.id.txt_content_answer);
             this.txtExplanation = (WebView) view.findViewById(R.id.txt_explanation);
-            if (Build.VERSION.SDK_INT >= 19) {
+            if (Build.VERSION.SDK_INT > 19) {
                 this.txtContentAnswer.setLayerType(View.LAYER_TYPE_HARDWARE, null);
                 this.txtExplanation.setLayerType(View.LAYER_TYPE_HARDWARE, null);
             } else {

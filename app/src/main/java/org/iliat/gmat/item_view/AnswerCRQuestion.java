@@ -71,7 +71,7 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
             this.txtContentAnswer = (WebView) view.findViewById(R.id.txt_content_answer);
             this.txtExplanation = (WebView) view.findViewById(R.id.txt_explanation);
 
-            if(Build.VERSION.SDK_INT>=19){
+            if(Build.VERSION.SDK_INT>19){
                 this.txtContentAnswer.setLayerType(View.LAYER_TYPE_HARDWARE,null);
                 this.txtExplanation.setLayerType(View.LAYER_TYPE_HARDWARE,null);
             }else{
@@ -81,14 +81,8 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
             WebSettings webSettings1 = this.txtContentAnswer.getSettings();
             WebSettings webSettings2 = this.txtExplanation.getSettings();
             webSettings1.setJavaScriptEnabled(true);
-            webSettings1.setDatabaseEnabled(true);
-            webSettings1.setDomStorageEnabled(true);
-            webSettings1.setAppCacheEnabled(true);
             webSettings1.setCacheMode(WebSettings.LOAD_NO_CACHE);
             webSettings2.setJavaScriptEnabled(true);
-            webSettings2.setDatabaseEnabled(true);
-            webSettings2.setDomStorageEnabled(true);
-            webSettings2.setAppCacheEnabled(true);
             webSettings2.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
             this.txtContenAnswerText=(TextView)view.findViewById(R.id.txt_content_answer_text);
