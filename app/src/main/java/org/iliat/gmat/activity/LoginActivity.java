@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
         setContentView(R.layout.activity_login);
         SharedPreferences sharedPreferences = getSharedPreferences(GMATApplication.SHARE_PREFERENCES, MODE_PRIVATE);
         boolean isLogged = sharedPreferences.getBoolean(GMATApplication.LOGIN_SHARE_PREFERENCES, false);
-
+        overridePendingTransition(R.anim.trans_in, R.anim.trans_out);
         if (!isLogged) {
             Log.d(TAG, "ACBSDE");
             this.initUtils();
@@ -204,6 +204,12 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
         }
 
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.trans_back_in, R.anim.trans_back_out);
     }
 
     private static boolean isValidEmail(String email) {

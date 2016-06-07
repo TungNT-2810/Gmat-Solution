@@ -73,6 +73,7 @@ public class AnswerQuestionActivity
         setContentView(R.layout.activity_answer_question);
         inits();
         getDataFromIntent();
+        overridePendingTransition(R.anim.trans_in, R.anim.trans_out);
     }
 
     @Override
@@ -140,6 +141,7 @@ public class AnswerQuestionActivity
                         public void onClick(DialogInterface dialog, int which) {
                             Intent intent = new Intent(AnswerQuestionActivity.this, MainActivity.class);
                             startActivity(intent);
+                            overridePendingTransition(R.anim.trans_back_in,R.anim.trans_back_out);
                         }
                     })
                     .show();
@@ -158,6 +160,7 @@ public class AnswerQuestionActivity
                                 } else {
                                     Intent intent = new Intent(AnswerQuestionActivity.this, MainActivity.class);
                                     startActivity(intent);
+                                    overridePendingTransition(R.anim.trans_back_in,R.anim.trans_back_out);
                                 }
                             }
                         })
@@ -371,6 +374,7 @@ public class AnswerQuestionActivity
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent intent = new Intent(AnswerQuestionActivity.this, MainActivity.class);
                                 startActivity(intent);
+                                overridePendingTransition(R.anim.trans_back_in, R.anim.trans_back_out);
                             }
                         })
                         .setNegativeButton("No", null)
@@ -391,6 +395,7 @@ public class AnswerQuestionActivity
                     Bundle bundle = ScoreActivity.buildBundle(questionPackViewModel.getQuestionPack().getId());
                     bundle.putInt(KEY_TIME_AVERAGE, (int) (countTime / 10));
                     goToActivity(ScoreActivity.class, bundle);
+                    overridePendingTransition(R.anim.trans_in, R.anim.trans_out);
                 } else {
                     countAnswer++;
                     fillData();

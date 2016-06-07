@@ -37,6 +37,7 @@ public class ListQuestionPackAdapter extends
     private OnListQuestionPackListener mQuestionPackListener;
     private MultipleSelectAdapterCallback mMultipleSelectAdapterCallback;
     private Context mContext;
+    private Toast toast;
 
     public void setContext(Context context) {
         this.mContext = context;
@@ -62,6 +63,8 @@ public class ListQuestionPackAdapter extends
                 inflate(R.layout.list_item_card_question_pack,
                         parent, false);
         QuestionPackViewHolder questionPackViewHolder = new QuestionPackViewHolder(v);
+        toast=Toast.makeText(v.getContext(), "This package is not available for today!",
+                Toast.LENGTH_SHORT);
         return questionPackViewHolder;
     }
 
@@ -154,7 +157,9 @@ public class ListQuestionPackAdapter extends
             animationOut.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-
+                    if(toast!=null){
+                        toast.cancel();
+                    }
                 }
 
                 @Override
@@ -169,8 +174,7 @@ public class ListQuestionPackAdapter extends
                             mMultipleSelectAdapterCallback.itemClicked(selectedItem.getCount(), selectedItem.getSelectedItemIds());
                         }
                     } else {
-                        Toast.makeText(v.getContext(), "This package is not available for today!",
-                                Toast.LENGTH_LONG).show();
+                        toast.show();
                     }
                 }
 
@@ -187,7 +191,6 @@ public class ListQuestionPackAdapter extends
     public interface MultipleSelectAdapterCallback {
         void itemClicked(int count, List<String> selectedItemId);
     }
-
 
 
     public interface OnListQuestionPackListener {

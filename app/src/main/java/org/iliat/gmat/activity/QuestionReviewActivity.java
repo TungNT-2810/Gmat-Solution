@@ -116,6 +116,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         PlaceholderFragment.context = this;
         inits();
         addListenerForTabChange();
+        overridePendingTransition(R.anim.trans_in, R.anim.trans_out);
     }
 
 
@@ -569,4 +570,9 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         return anim;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.trans_back_in, R.anim.trans_back_out);
+    }
 }

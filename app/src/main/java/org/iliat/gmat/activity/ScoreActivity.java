@@ -68,6 +68,7 @@ public class ScoreActivity extends AppCompatActivity{
         setSupportActionBar(toolbar);
         setTitle("Score review");
         init();//ket noi xml voi java
+        overridePendingTransition(R.anim.trans_in, R.anim.trans_out);
     }
 
     @Override
@@ -152,5 +153,11 @@ public class ScoreActivity extends AppCompatActivity{
 
     public static String getDataFromBundle(Bundle bundle) {
         return (String)bundle.getSerializable(QUESTION_PACK_VIEW_MODEL_BUNDLE_STRING);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.trans_back_in, R.anim.trans_back_out);
     }
 }
