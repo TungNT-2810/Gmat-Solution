@@ -82,6 +82,7 @@ public class SCQuestionFragment extends BaseFragment
             questionContent.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             questionContent.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
             questionContent.getSettings().setJavaScriptEnabled(true);
+            questionContent.setBackgroundColor(0x00000000);
 
 
             answerCRQuestionArrayList = new ArrayList<>();

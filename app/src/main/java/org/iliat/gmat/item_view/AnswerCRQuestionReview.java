@@ -34,23 +34,23 @@ import io.github.kexanie.library.MathView;
  * Modified by Linh DQ
  */
 public class AnswerCRQuestionReview extends LinearLayout implements View.OnClickListener, View.OnTouchListener {
-    private boolean isClick = false;
-    private boolean isTouch = false;
-    private AnswerChoiceViewModel answerModel;
     private WebView txtContentAnswer;
     private WebView txtExplanation;
     private TextView txtContenAnswerText;
     private TextView txtExplanationText;
     private ImageView imgChoise;
     private View line;
+    private Context mContext;
+    private LinearLayout layoutItem;
+
+    private boolean isClick = false;
+    private AnswerChoiceViewModel answerModel;
     private boolean isUserChoise;
     private boolean isRightAnswer;
     private String strAnswer;
     private String explanation;
     private int index;
     private String questionType;
-    private Context mContext;
-    private LinearLayout layoutItem;
     private int[] IMAGE_RESOURCE = {R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e};
 
     public AnswerCRQuestionReview(Context context, AttributeSet attrs) {
@@ -83,6 +83,8 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
             this.txtContentAnswer.getSettings().setJavaScriptEnabled(true);
             this.txtExplanation.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
             this.txtContentAnswer.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+            this.txtExplanation.setBackgroundColor(0x00000000);
+            this.txtContentAnswer.setBackgroundColor(0x00000000);
 
             this.txtContenAnswerText = (TextView) view.findViewById(R.id.txt_content_answer_text);
             this.txtExplanationText = (TextView) view.findViewById(R.id.txt_explanation_text);
@@ -116,9 +118,6 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
 
         if (isUserChoise) {
             imgChoise.setColorFilter(getResources().getColor(R.color.color_red_500));
-
-            txtContentAnswer.setBackgroundColor(getResources().getColor(R.color.red_beautiful));
-            txtExplanation.setBackgroundColor(getResources().getColor(R.color.red_beautiful));
             layoutItem.setBackgroundColor(getResources().getColor(R.color.red_beautiful));
             if (questionType != null && questionType.equals(Constant.TYPE_Q)) {
                 txtContenAnswerText.setVisibility(GONE);
@@ -134,9 +133,6 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
         }
         if (isRightAnswer) {
             imgChoise.setColorFilter(getResources().getColor(R.color.color_green_500));
-
-            txtContentAnswer.setBackgroundColor(getResources().getColor(R.color.green_beautiful));
-            txtExplanation.setBackgroundColor(getResources().getColor(R.color.green_beautiful));
             layoutItem.setBackgroundColor(getResources().getColor(R.color.green_beautiful));
             if (questionType != null && questionType.equals(Constant.TYPE_Q)) {
                 txtContenAnswerText.setVisibility(GONE);

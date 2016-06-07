@@ -80,6 +80,8 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
             webSettings1.setCacheMode(WebSettings.LOAD_NO_CACHE);
             webSettings2.setJavaScriptEnabled(true);
             webSettings2.setCacheMode(WebSettings.LOAD_NO_CACHE);
+            this.txtContentAnswer.setBackgroundColor(0x00000000);
+            this.txtExplanation.setBackgroundColor(0x00000000);
 
             this.txtContenAnswerText=(TextView)view.findViewById(R.id.txt_content_answer_text);
             this.txtExplanationText=(TextView)view.findViewById(R.id.txt_explanation_text);
@@ -116,11 +118,9 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
         isUserChoise = userChoise;
         if (isUserChoise) {
             imgChoise.setColorFilter(ContextCompat.getColor(mContext, R.color.color_selected_answer));
-            txtContentAnswer.setBackgroundColor(getResources().getColor(R.color.blue_beautiful));
             layoutItem.setBackgroundColor(getResources().getColor(R.color.blue_beautiful));
         } else {
             imgChoise.setColorFilter(ContextCompat.getColor(mContext, R.color.color_normal_answer));
-            txtContentAnswer.setBackgroundColor(getResources().getColor(R.color.color_white));
             layoutItem.setBackgroundColor(getResources().getColor(R.color.color_white));
         }
     }
