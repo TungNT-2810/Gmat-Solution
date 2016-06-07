@@ -25,7 +25,7 @@ public class Constant {
             Color.parseColor("#6b573c"), Color.parseColor("#6b3c56")};
     public static final int[] PICTURES = {R.drawable.pic1, R.drawable.pic2, R.drawable.pic3, R.drawable.pic4, R.drawable.pic5};
     public static final int[] STARS = {R.drawable.star0, R.drawable.star1, R.drawable.stars2, R.drawable.stars3};
-    public static final String js = "<html><head>"
+    public static final String JS = "<html><head>"
             + "<link rel='stylesheet' href='file:///android_asset/mathscribe/jqmath-0.4.3.css'>"
             + "<script src = 'file:///android_asset/mathscribe/jquery-1.4.3.min.js'></script>"
             + "<script src = 'file:///android_asset/mathscribe/jqmath-etc-0.4.3.min.js'></script>"

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,6 +85,8 @@ public class SCQuestionFragment extends BaseFragment
                 questionContent.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             }
             questionContent.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+            questionContent.getSettings().setJavaScriptEnabled(true);
+
 
             answerCRQuestionArrayList = new ArrayList<>();
             answerCRQuestionArrayList.add((AnswerCRQuestion) view.findViewById(R.id.answer_queston_1));
@@ -96,7 +99,7 @@ public class SCQuestionFragment extends BaseFragment
 
     private void fillData() {
         if (mQuestionCRModel.getQuestion().getType().equals(TYPE_Q)) {
-            questionContent.loadData(Constant.js + mQuestionCRModel.getStimulus(), Constant.MIME_TYPE, Constant.HTML_ENCODE);
+            questionContent.loadData(Constant.JS + mQuestionCRModel.getStimulus(), Constant.MIME_TYPE, Constant.HTML_ENCODE);
             questionContent.clearHistory();
             questionContent.clearCache(true);
         } else {
@@ -106,13 +109,14 @@ public class SCQuestionFragment extends BaseFragment
             stimulus = stimulus.replace("span style=\"text-decoration: underline;\"", "u").replace("span", "u");
             questionContentText.setText(Html.fromHtml(stimulus));
         }
+        Log.d("Type1",mQuestionCRModel.getQuestion().getType());
         for (int i = 0; i < ANSWER_CHOICE_NUM; i++) {
             answerCRQuestionArrayList.get(i).setAnswerModel(mQuestionCRModel.getAnswerChoiceViewModel(i));
             answerCRQuestionArrayList.get(i).setmContext(getActivity());
             answerCRQuestionArrayList.get(i).setButtonControl(buttonControl);
             answerCRQuestionArrayList.get(i).setChangeStateOfAnswerItemsInterface(this);
-            answerCRQuestionArrayList.get(i).fillData();
             answerCRQuestionArrayList.get(i).setQuestionType(mQuestionCRModel.getQuestion().getType());
+            answerCRQuestionArrayList.get(i).fillData();
         }
 
     }

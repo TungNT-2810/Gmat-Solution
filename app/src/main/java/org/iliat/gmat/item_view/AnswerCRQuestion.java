@@ -2,10 +2,13 @@ package org.iliat.gmat.item_view;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -67,6 +70,27 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
             this.imgChoise = (ImageView)view.findViewById(R.id.img_icon_answer);
             this.txtContentAnswer = (WebView) view.findViewById(R.id.txt_content_answer);
             this.txtExplanation = (WebView) view.findViewById(R.id.txt_explanation);
+
+            if(Build.VERSION.SDK_INT>=19){
+                this.txtContentAnswer.setLayerType(View.LAYER_TYPE_HARDWARE,null);
+                this.txtExplanation.setLayerType(View.LAYER_TYPE_HARDWARE,null);
+            }else{
+                this.txtContentAnswer.setLayerType(View.LAYER_TYPE_SOFTWARE,null);
+                this.txtExplanation.setLayerType(View.LAYER_TYPE_SOFTWARE,null);
+            }
+            WebSettings webSettings1 = this.txtContentAnswer.getSettings();
+            WebSettings webSettings2 = this.txtExplanation.getSettings();
+            webSettings1.setJavaScriptEnabled(true);
+            webSettings1.setDatabaseEnabled(true);
+            webSettings1.setDomStorageEnabled(true);
+            webSettings1.setAppCacheEnabled(true);
+            webSettings1.setCacheMode(WebSettings.LOAD_NO_CACHE);
+            webSettings2.setJavaScriptEnabled(true);
+            webSettings2.setDatabaseEnabled(true);
+            webSettings2.setDomStorageEnabled(true);
+            webSettings2.setAppCacheEnabled(true);
+            webSettings2.setCacheMode(WebSettings.LOAD_NO_CACHE);
+
             this.txtContenAnswerText=(TextView)view.findViewById(R.id.txt_content_answer_text);
             this.txtExplanationText=(TextView)view.findViewById(R.id.txt_explanation_text);
             this.layoutItem=(LinearLayout)view.findViewById(R.id.layout_item);
@@ -81,13 +105,15 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
             txtContenAnswerText.setVisibility(GONE);
             txtExplanation.setVisibility(GONE);
             txtExplanationText.setVisibility(GONE);
-            txtContentAnswer.loadData(Constant.js+this.strAnswer,Constant.MIME_TYPE,Constant.HTML_ENCODE);
+            txtContentAnswer.loadData(Constant.JS+this.strAnswer,Constant.MIME_TYPE,Constant.HTML_ENCODE);
+            Log.d("DM","Q day");
         }else{
             txtContentAnswer.setVisibility(GONE);
             txtExplanation.setVisibility(GONE);
             txtExplanationText.setVisibility(GONE);
             txtContenAnswerText.setVisibility(VISIBLE);
             txtContenAnswerText.setText(this.strAnswer);
+            Log.d("DM","SC day");
         }
         if (isUserChoise) {
             layoutItem.setBackgroundColor(getResources().getColor(R.color.blue_beautiful));

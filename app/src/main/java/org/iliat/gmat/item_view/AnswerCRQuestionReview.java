@@ -13,6 +13,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -70,6 +71,18 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
             this.imgChoise = (ImageView) view.findViewById(R.id.img_icon_answer);
             this.txtContentAnswer = (WebView) view.findViewById(R.id.txt_content_answer);
             this.txtExplanation = (WebView) view.findViewById(R.id.txt_explanation);
+            if (Build.VERSION.SDK_INT >= 19) {
+                this.txtContentAnswer.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+                this.txtExplanation.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+            } else {
+                this.txtContentAnswer.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+                this.txtExplanation.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+            }
+            this.txtExplanation.getSettings().setJavaScriptEnabled(true);
+            this.txtContentAnswer.getSettings().setJavaScriptEnabled(true);
+            this.txtExplanation.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+            this.txtContentAnswer.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+
             this.txtContenAnswerText = (TextView) view.findViewById(R.id.txt_content_answer_text);
             this.txtExplanationText = (TextView) view.findViewById(R.id.txt_explanation_text);
             this.line = view.findViewById(R.id.line_between_question_explanation);
@@ -88,7 +101,7 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
             txtContentAnswer.setVisibility(VISIBLE);
             txtExplanationText.setVisibility(GONE);
             txtExplanation.setVisibility(GONE);
-            txtContentAnswer.loadData(Constant.js + this.strAnswer, Constant.MIME_TYPE, Constant.HTML_ENCODE);
+            txtContentAnswer.loadData(Constant.JS + this.strAnswer, Constant.MIME_TYPE, Constant.HTML_ENCODE);
         } else {
             txtContenAnswerText.setVisibility(VISIBLE);
             txtContentAnswer.setVisibility(GONE);
@@ -145,7 +158,7 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
             if (questionType != null && questionType.equals(Constant.TYPE_Q)) {
                 txtExplanationText.setVisibility(GONE);
                 txtExplanation.setVisibility(VISIBLE);
-                txtExplanation.loadData(this.explanation, Constant.MIME_TYPE, Constant.HTML_ENCODE);
+                txtExplanation.loadData(Constant.JS + this.explanation, Constant.MIME_TYPE, Constant.HTML_ENCODE);
             } else {
                 txtExplanationText.setVisibility(VISIBLE);
                 txtExplanation.setVisibility(GONE);

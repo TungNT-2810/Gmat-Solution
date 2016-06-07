@@ -72,6 +72,7 @@ public class PlaceholderFragment extends Fragment {
         Log.d("PlaceholderFragment", "onCreateView");
         View rootView = inflater.inflate(R.layout.fragment_question_review, container, false);
         getRefercence(rootView);
+        fillData();
         this.contentView = rootView;
         return rootView;
 
@@ -80,17 +81,17 @@ public class PlaceholderFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        fillData();
+        QuestionViewModel questionViewModel =mQuestionPack.getQuestionViewModels().get(position);
         for (int i = 0; i < 5; i++) {
             answerChoiseViewItemArrayList.get(i)
-                    .setAnswerModel(mQuestionPack.getQuestionViewModels().get(position).getAnswerChoiceViewModel(i));
-            if (mQuestionPack.getQuestionViewModels().get(position).getUserChoise() == i) {
+                    .setAnswerModel(questionViewModel.getAnswerChoiceViewModel(i));
+            if (questionViewModel.getUserChoise() == i) {
                 answerChoiseViewItemArrayList.get(i).setUserChoise(true);
             }
-            if (mQuestionPack.getQuestionViewModels().get(position).getQuestion().getRightAnswerIndex() == i) {
+            if (getQuestion().getRightAnswerIndex() == i) {
                 answerChoiseViewItemArrayList.get(i).setRightAnswer(true);
             }
-            answerChoiseViewItemArrayList.get(i).setQuestionType(mQuestionPack.getQuestionViewModels().get(position).getQuestion().getType());
+            answerChoiseViewItemArrayList.get(i).setQuestionType(getQuestion().getType());
             answerChoiseViewItemArrayList.get(i).fillData();
         }
     }
@@ -99,7 +100,7 @@ public class PlaceholderFragment extends Fragment {
         final QuestionViewModel questionViewModel = (mQuestionPack.getQuestionViewModels().get(position));
         if (questionViewModel != null) {
             contentQuestion.loadDataWithBaseURL("file:///android_asset/mathscribe",
-                    Constant.js + questionViewModel.getStimulus() +
+                    Constant.JS + questionViewModel.getStimulus() +
                             " $$cos^2θ+sin^2θ=1$$ </body></html>", "text/html; charset=utf-8", "UTF-8", null);
         }
     }
@@ -116,8 +117,8 @@ public class PlaceholderFragment extends Fragment {
         } else {
             contentQuestion.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
-        contentQuestion.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         contentQuestion.getSettings().setJavaScriptEnabled(true);
+        contentQuestion.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 
         if (answerChoiseViewItemArrayList == null) {
             answerChoiseViewItemArrayList = new ArrayList<AnswerCRQuestionReview>();
