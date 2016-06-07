@@ -155,10 +155,7 @@ public class SummaryFragment extends BaseFragment {
     private void getDataForSumary() {
         results = realm.where(QuestionModel.class).findAll().distinct("id");
         totalQuestion = results.size();
-        arcProgress.setMax(totalQuestion);
-        query = realm.where(QuestionModel.class).notEqualTo("userAnswer",(-1));
-        results = query.findAll();
-        totalAnswered = results.size();
+        totalAnswered = realm.where(QuestionModel.class).notEqualTo("userAnswer",(-1)).findAll().size();
         for (QuestionModel q : results) {
             averageTime += q.getTimeToFinish();
         }
@@ -168,6 +165,8 @@ public class SummaryFragment extends BaseFragment {
         } else {
             txtAverageTime.setText("0m 0s");
         }
-        arcProgress.setProgress(totalAnswered);
+        arcProgress.setMax(100);
+        arcProgress.setProgress(totalAnswered*100/totalQuestion);
+        Log.d("DDDD",totalAnswered+":"+totalQuestion);
     }
 }
