@@ -68,16 +68,18 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     private android.app.FragmentManager mFragmentManager;
     private TextView isCorrect;
     private LinearLayout topController;
-    private LinearLayout layoutHelp;
     private TextView txtProcess;
     private Button btnNext;
     private Button btnBack;
     private ImageButton btnExpandStimulus;
-    private ImageButton btnHelp;
+    private ImageButton btnShare;
+    private ImageButton btnStar;
+    private ImageButton btnGreen;
+    private ImageButton btnYellow;
+    private ImageButton btnRed;
     private Realm realm;
     private int totalItem;
     private boolean isGone;
-    private boolean isHelping;
     private int position;
     private boolean isOpen = false;
     private View btn_open;
@@ -189,21 +191,17 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         menuLayout = findViewById(R.id.menu_layout);
         menuLayout.setOnClickListener(this);
         arcLayout = (ArcLayout) findViewById(R.id.arc_layout);
-        layoutHelp = (LinearLayout) findViewById(R.id.layout_help);
         btnExpandStimulus = (ImageButton) findViewById(R.id.btnExpand);
         btnBack = (Button) findViewById(R.id.btn_back);
         mFragmentManager = getFragmentManager();
         btnExpandStimulus.setVisibility(View.GONE);
-
-        for (int i = 0; i < arcLayout.getChildCount(); i++) {
-            arcLayout.getChildAt(i).setOnClickListener(this);
-        }
-
-        btnHelp = (ImageButton) findViewById(R.id.btn_help);
-        btnHelp.setOnClickListener(this);
+        btnShare = (ImageButton) findViewById(R.id.btn_share);
+        btnStar = (ImageButton) findViewById(R.id.btn_tag_star);
+        btnGreen = (ImageButton) findViewById(R.id.btn_tag_green);
+        btnYellow = (ImageButton) findViewById(R.id.btn_tag_yellow);
+        btnRed = (ImageButton) findViewById(R.id.btn_tag_red);
         imageTag = (ImageView) findViewById(R.id.image_tag);
         imageStar = (ImageView) findViewById(R.id.image_star);
-        PlaceholderFragment.context = this;
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         isGone = true;
@@ -217,6 +215,15 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         btnNext.setOnClickListener(this);
         btnBack.setOnClickListener(this);
         btn_open.setOnClickListener(this);
+        btnShare.setOnClickListener(this);
+        btnStar.setOnClickListener(this);
+        btnRed.setOnClickListener(this);
+        btnYellow.setOnClickListener(this);
+        btnGreen.setOnClickListener(this);
+        PlaceholderFragment.context = this;
+        for (int i = 0; i < arcLayout.getChildCount(); i++) {
+            arcLayout.getChildAt(i).setOnClickListener(this);
+        }
     }
 
     private Bitmap screenShot(View view) {
@@ -425,28 +432,26 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                 }
                 break;
             }
-            case R.id.btn_tag_grey:
-                updateTagToDatabase(Constant.TAG_GREY);
-                imageTag.setImageResource(R.mipmap.grey);
-                Toast.makeText(QuestionReviewActivity.this, "I DON'T KNOW", Toast.LENGTH_SHORT).show();
-                hideMenu();
-                break;
             case R.id.btn_tag_green:
+            case R.id.layout_tag_green:
                 updateTagToDatabase(Constant.TAG_GREEN);
                 imageTag.setImageResource(R.mipmap.green);
                 hideMenu();
                 break;
             case R.id.btn_tag_yellow:
+            case R.id.layout_tag_yellow:
                 updateTagToDatabase(Constant.TAG_YELLOW);
                 imageTag.setImageResource(R.mipmap.yellow);
                 hideMenu();
                 break;
             case R.id.btn_tag_red:
+            case R.id.layout_tag_red:
                 updateTagToDatabase(Constant.TAG_RED);
                 imageTag.setImageResource(R.mipmap.red);
                 hideMenu();
                 break;
             case R.id.btn_tag_star:
+            case R.id.layout_tag_star:
                 updateTagToDatabase(Constant.TAG_STAR);
                 if(questionModel.isStar()){
                     imageStar.setColorFilter(getResources().getColor(R.color.yellow),PorterDuff.Mode.SRC_ATOP);
@@ -454,15 +459,6 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                     imageStar.setColorFilter(getResources().getColor(R.color.color_white),PorterDuff.Mode.SRC_ATOP);
                 }
                 hideMenu();
-                break;
-            case R.id.btn_help:
-                if (!isHelping){
-                    layoutHelp.setVisibility(View.VISIBLE);
-                    isHelping = true;
-                } else {
-                    layoutHelp.setVisibility(View.INVISIBLE);
-                    isHelping = false;
-                }
                 break;
             default:
                 break;
@@ -498,6 +494,8 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         menuLayout.setVisibility(View.VISIBLE);
         isOpen = true;
         btn_open.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward));
+        btnShare.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open));
+        btnStar.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open));
         List<Animator> animList = new ArrayList<>();
 
         for (int i = 0, len = arcLayout.getChildCount(); i < len; i++) {
@@ -513,14 +511,12 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
 
     @SuppressWarnings("NewApi")
     private void hideMenu() {
-        if (isHelping){
-            layoutHelp.setVisibility(View.INVISIBLE);
-            isHelping = false;
-        }
         isOpen = false;
         List<Animator> animList = new ArrayList<>();
 
         btn_open.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward));
+        btnShare.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close));
+        btnStar.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close));
         for (int i = arcLayout.getChildCount() - 1; i >= 0; i--) {
             animList.add(createHideItemAnimator(arcLayout.getChildAt(i)));
         }
