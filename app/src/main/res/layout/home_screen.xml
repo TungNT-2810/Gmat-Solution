@@ -30,14 +30,13 @@
 
             <com.github.lzyzsd.circleprogress.ArcProgress
                 android:id="@+id/home_arc_progress"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 custom:arc_progress="80"
                 custom:arc_text_color="@color/color_white"
-                custom:arc_text_size="20sp"
-                custom:arc_stroke_width="8dp"
-                custom:arc_suffix_text_padding="-5dp"
-                custom:arc_bottom_text_size="15sp"
+                custom:arc_text_size="18sp"
+                custom:arc_stroke_width="7dp"
+                custom:arc_suffix_text_padding="-6dp"
                 custom:arc_finished_color="#ff7f00"
                 custom:arc_unfinished_color="@color/color_white"
                 android:layout_centerHorizontal="true"
@@ -108,11 +107,11 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="30dp"
-            android:layout_weight="3"
+            android:layout_weight="5"
             android:text="Swipe to choose Q packs!"
-            android:textAlignment="center"
+            android:gravity="center"
             android:textColor="@color/color_white"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <ImageView
             android:layout_width="0dp"
