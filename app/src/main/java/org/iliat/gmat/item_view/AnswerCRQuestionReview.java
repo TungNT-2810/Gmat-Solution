@@ -7,11 +7,13 @@ import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.provider.ContactsContract;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -31,8 +33,9 @@ import io.github.kexanie.library.MathView;
  * Created by hungtran on 4/25/16.
  * Modified by Linh DQ
  */
-public class AnswerCRQuestionReview extends LinearLayout implements View.OnClickListener {
+public class AnswerCRQuestionReview extends LinearLayout implements View.OnClickListener, View.OnTouchListener {
     private boolean isClick = false;
+    private boolean isTouch = false;
     private AnswerChoiceViewModel answerModel;
     private WebView txtContentAnswer;
     private WebView txtExplanation;
@@ -71,6 +74,8 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
             this.imgChoise = (ImageView) view.findViewById(R.id.img_icon_answer);
             this.txtContentAnswer = (WebView) view.findViewById(R.id.txt_content_answer);
             this.txtExplanation = (WebView) view.findViewById(R.id.txt_explanation);
+            this.txtContentAnswer.setOnTouchListener(this);
+            this.txtExplanation.setOnTouchListener(this);
 
             this.txtContentAnswer.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             this.txtExplanation.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
@@ -92,12 +97,15 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
 
     public void fillData() {
         imgChoise.setImageResource(IMAGE_RESOURCE[this.index]);
-        if (questionType != null && questionType.equals("Q")) {
+        if (questionType != null && questionType.equals(Constant.TYPE_Q)) {
             txtContenAnswerText.setVisibility(GONE);
             txtContentAnswer.setVisibility(VISIBLE);
             txtExplanationText.setVisibility(GONE);
             txtExplanation.setVisibility(GONE);
-            txtContentAnswer.loadData(Constant.JS + this.strAnswer, Constant.MIME_TYPE, Constant.HTML_ENCODE);
+            txtContentAnswer.loadDataWithBaseURL("file:///android_asset/mathscribe",
+                    Constant.JS + this.strAnswer +
+                            " $$cos^2θ+sin^2θ=1$$ </body></html>",
+                    Constant.MIME_TYPE, Constant.HTML_ENCODE, null);
         } else {
             txtContenAnswerText.setVisibility(VISIBLE);
             txtContentAnswer.setVisibility(GONE);
@@ -108,8 +116,11 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
 
         if (isUserChoise) {
             imgChoise.setColorFilter(getResources().getColor(R.color.color_red_500));
+
+            txtContentAnswer.setBackgroundColor(getResources().getColor(R.color.red_beautiful));
+            txtExplanation.setBackgroundColor(getResources().getColor(R.color.red_beautiful));
             layoutItem.setBackgroundColor(getResources().getColor(R.color.red_beautiful));
-            if (questionType != null && questionType.equals("Q")) {
+            if (questionType != null && questionType.equals(Constant.TYPE_Q)) {
                 txtContenAnswerText.setVisibility(GONE);
                 txtContentAnswer.setVisibility(VISIBLE);
                 txtExplanationText.setVisibility(GONE);
@@ -123,6 +134,10 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
         }
         if (isRightAnswer) {
             imgChoise.setColorFilter(getResources().getColor(R.color.color_green_500));
+
+            txtContentAnswer.setBackgroundColor(getResources().getColor(R.color.green_beautiful));
+            txtExplanation.setBackgroundColor(getResources().getColor(R.color.green_beautiful));
+            layoutItem.setBackgroundColor(getResources().getColor(R.color.green_beautiful));
             if (questionType != null && questionType.equals(Constant.TYPE_Q)) {
                 txtContenAnswerText.setVisibility(GONE);
                 txtContentAnswer.setVisibility(VISIBLE);
@@ -134,7 +149,6 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
                 txtExplanationText.setVisibility(GONE);
                 txtExplanation.setVisibility(GONE);
             }
-            layoutItem.setBackgroundColor(getResources().getColor(R.color.green_beautiful));
         }
     }
 
@@ -148,13 +162,20 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
 
     @Override
     public void onClick(View v) {
+        getActionClick();
+    }
+
+    private void getActionClick() {
         if (!isClick) {
             isClick = true;
             line.setVisibility(View.VISIBLE);
             if (questionType != null && questionType.equals(Constant.TYPE_Q)) {
                 txtExplanationText.setVisibility(GONE);
                 txtExplanation.setVisibility(VISIBLE);
-                txtExplanation.loadData(Constant.JS + this.explanation, Constant.MIME_TYPE, Constant.HTML_ENCODE);
+                txtExplanation.loadDataWithBaseURL("file:///android_asset/mathscribe",
+                        Constant.JS + this.explanation +
+                                " $$cos^2θ+sin^2θ=1$$ </body></html>",
+                        Constant.MIME_TYPE, Constant.HTML_ENCODE, null);
             } else {
                 txtExplanationText.setVisibility(VISIBLE);
                 txtExplanation.setVisibility(GONE);
@@ -223,5 +244,17 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
         index = answerModel.getIndex();
         strAnswer = answerModel.getChoice();
         explanation = answerModel.getExplanation();
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_UP: {
+                getActionClick();
+                break;
+            }
+        }
+
+        return true;
     }
 }

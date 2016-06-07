@@ -307,25 +307,13 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                 if (isOpen) {
                     hideMenu();
                 }
-                if (position == 0) {
-                    btnBack.setEnabled(false);
-                } else {
-                    btnBack.setEnabled(true);
-                }
-                if (position == totalItem - 1) {
-                    btnNext.setEnabled(false);
-                    btnBack.setEnabled(true);
-                }
-                if (position > 0 && position < totalItem - 1) {
-                    btnBack.setEnabled(true);
-                    btnNext.setEnabled(true);
-                }
+                btnBack.setEnabled(position>0 && totalItem>0);
+                btnNext.setEnabled(totalItem>0 && position<totalItem-1);
             }
 
             @Override
             public void onPageSelected(int position) {
                 updateTopView(position);
-                Log.d("pos", mViewPager.getCurrentItem() + "");
                 setImageButtonState(position);
             }
 
@@ -421,8 +409,9 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                 }
                 isGone = true;
                 btnExpandStimulus.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
-                if (mViewPager.getCurrentItem() - 1 >= 0) {
-                    mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
+                int possititon=mViewPager.getCurrentItem()-1;
+                if (possititon >= 0) {
+                    mViewPager.setCurrentItem(possititon);
                 }
                 break;
             }

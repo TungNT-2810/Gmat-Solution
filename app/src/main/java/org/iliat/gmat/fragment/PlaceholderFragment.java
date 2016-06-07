@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.TextView;
 
 import org.iliat.gmat.R;
 import org.iliat.gmat.constant.Constant;
@@ -28,8 +29,9 @@ import io.github.kexanie.library.MathView;
  */
 public class PlaceholderFragment extends Fragment {
 
-    public void setQuestionPack(QuestionPackViewModel mQuestionPack) {
+    public void setQuestionPack(QuestionPackViewModel mQuestionPack, int position) {
         this.mQuestionPack = mQuestionPack;
+        this.position=position;
     }
 
 
@@ -40,6 +42,7 @@ public class PlaceholderFragment extends Fragment {
     private int position;
     private QuestionPackViewModel mQuestionPack;
     private WebView contentQuestion;
+    private TextView contentQuestionText;
     private CardView cardAnswers;
     private ArrayList<AnswerCRQuestionReview> answerChoiseViewItemArrayList;
     private View contentView;
@@ -56,9 +59,8 @@ public class PlaceholderFragment extends Fragment {
      * number.
      */
     public static PlaceholderFragment newInstance(int sectionNumber) {
-        Log.d("PlaceholderFragment", "newInstance");
+        Log.d("PlaceholderFragment", "newInstance"+sectionNumber);
         PlaceholderFragment fragment = new PlaceholderFragment();
-        fragment.position = sectionNumber - 1;
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
@@ -71,7 +73,6 @@ public class PlaceholderFragment extends Fragment {
         Log.d("PlaceholderFragment", "onCreateView");
         View rootView = inflater.inflate(R.layout.fragment_question_review, container, false);
         getRefercence(rootView);
-        fillData();
         this.contentView = rootView;
         return rootView;
 
@@ -80,27 +81,39 @@ public class PlaceholderFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        fillData();
     }
 
     private void fillData() {
-        final QuestionViewModel questionViewModel = (mQuestionPack.getQuestionViewModels().get(position));
+        QuestionViewModel questionViewModel = (mQuestionPack.getQuestionViewModels().get(position));
         if (questionViewModel != null) {
-            contentQuestion.loadDataWithBaseURL("file:///android_asset/mathscribe",
-                    Constant.JS + questionViewModel.getStimulus() +
-                            " $$cos^2θ+sin^2θ=1$$ </body></html>", "text/html; charset=utf-8", "UTF-8", null);
-        }
-        for (int i = 0; i < 5; i++) {
-            answerChoiseViewItemArrayList.get(i)
-                    .setAnswerModel(questionViewModel.getAnswerChoiceViewModel(i));
-            if (questionViewModel.getUserChoise() == i) {
-                answerChoiseViewItemArrayList.get(i).setUserChoise(true);
+            if(questionViewModel.getQuestion().getType().equals(Constant.TYPE_Q)) {
+                contentQuestion.setVisibility(View.VISIBLE);
+                contentQuestionText.setVisibility(View.GONE);
+                contentQuestion.loadDataWithBaseURL("file:///android_asset/mathscribe",
+                        Constant.JS + questionViewModel.getStimulus() +
+                                " $$cos^2θ+sin^2θ=1$$ </body></html>",
+                        Constant.MIME_TYPE, Constant.HTML_ENCODE, null);
+            }else{
+                contentQuestion.setVisibility(View.GONE);
+                contentQuestionText.setVisibility(View.VISIBLE);
+                contentQuestionText.setText(questionViewModel.getStimulus());
             }
-            if (getQuestion().getRightAnswerIndex() == i) {
-                answerChoiseViewItemArrayList.get(i).setRightAnswer(true);
+            for (int i = 0; i < 5; i++) {
+                answerChoiseViewItemArrayList.get(i)
+                        .setAnswerModel(questionViewModel.getAnswerChoiceViewModel(i));
+                if (questionViewModel.getUserChoise() == i) {
+                    answerChoiseViewItemArrayList.get(i).setUserChoise(true);
+                }
+                if (questionViewModel.getQuestion().getRightAnswerIndex() == i) {
+                    answerChoiseViewItemArrayList.get(i).setRightAnswer(true);
+                }
+                Log.d("DMMM",questionViewModel.getQuestion().getType());
+                answerChoiseViewItemArrayList.get(i).setQuestionType(questionViewModel.getQuestion().getType());
+                answerChoiseViewItemArrayList.get(i).fillData();
             }
-            answerChoiseViewItemArrayList.get(i).setQuestionType(getQuestion().getType());
-            answerChoiseViewItemArrayList.get(i).fillData();
         }
+
     }
 
     public QuestionModel getQuestion() {
@@ -115,6 +128,7 @@ public class PlaceholderFragment extends Fragment {
         contentQuestion.getSettings().setJavaScriptEnabled(true);
         contentQuestion.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 
+        contentQuestionText=(TextView)view.findViewById(R.id.question_content_txt);
         if (answerChoiseViewItemArrayList == null) {
             answerChoiseViewItemArrayList = new ArrayList<AnswerCRQuestionReview>();
             AnswerCRQuestionReview answerChoiseViewItem0 = (AnswerCRQuestionReview) view.findViewById(R.id.answer_queston_review_1);

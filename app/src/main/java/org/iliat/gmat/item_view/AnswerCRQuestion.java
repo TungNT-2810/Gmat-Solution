@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -24,7 +25,7 @@ import org.iliat.gmat.view_model.AnswerChoiceViewModel;
  * Created by hungtran on 5/2/16.
  * Modified by Linh DQ
  */
-public class AnswerCRQuestion extends LinearLayout implements View.OnClickListener{
+public class AnswerCRQuestion extends LinearLayout implements View.OnClickListener, View.OnTouchListener{
     private AnswerChoiceViewModel answerModel;
     private ChangeStateOfAnswerItemsInterface changeStateOfAnswerItemsInterface;
     private WebView txtContentAnswer;
@@ -70,7 +71,7 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
             this.imgChoise = (ImageView)view.findViewById(R.id.img_icon_answer);
             this.txtContentAnswer = (WebView) view.findViewById(R.id.txt_content_answer);
             this.txtExplanation = (WebView) view.findViewById(R.id.txt_explanation);
-
+            this.txtContentAnswer.setOnTouchListener(this);
             this.txtContentAnswer.setLayerType(View.LAYER_TYPE_SOFTWARE,null);
             this.txtExplanation.setLayerType(View.LAYER_TYPE_SOFTWARE,null);
             WebSettings webSettings1 = this.txtContentAnswer.getSettings();
@@ -94,7 +95,9 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
             txtContenAnswerText.setVisibility(GONE);
             txtExplanation.setVisibility(GONE);
             txtExplanationText.setVisibility(GONE);
-            txtContentAnswer.loadData(Constant.JS+this.strAnswer,Constant.MIME_TYPE,Constant.HTML_ENCODE);
+            txtContentAnswer.loadDataWithBaseURL("file:///android_asset/mathscribe",
+                    Constant.JS + this.strAnswer ,
+                    Constant.MIME_TYPE, Constant.HTML_ENCODE, null);
             Log.d("DM","Q day");
         }else{
             txtContentAnswer.setVisibility(GONE);
@@ -113,9 +116,11 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
         isUserChoise = userChoise;
         if (isUserChoise) {
             imgChoise.setColorFilter(ContextCompat.getColor(mContext, R.color.color_selected_answer));
+            txtContentAnswer.setBackgroundColor(getResources().getColor(R.color.blue_beautiful));
             layoutItem.setBackgroundColor(getResources().getColor(R.color.blue_beautiful));
         } else {
             imgChoise.setColorFilter(ContextCompat.getColor(mContext, R.color.color_normal_answer));
+            txtContentAnswer.setBackgroundColor(getResources().getColor(R.color.color_white));
             layoutItem.setBackgroundColor(getResources().getColor(R.color.color_white));
         }
     }
@@ -131,5 +136,13 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
         this.answerModel = answerModel;
         index = answerModel.getIndex();
         strAnswer = answerModel.getChoice();
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        isUserChoise = true;
+        changeStateOfAnswerItemsInterface.changeState(index);
+        buttonControl.setButtonNextState(1);
+        return true;
     }
 }

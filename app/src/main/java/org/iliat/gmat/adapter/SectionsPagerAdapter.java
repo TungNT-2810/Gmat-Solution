@@ -36,7 +36,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        currentFragment = this.crateFragment(position);
+        currentFragment = this.createFragment(position);
         return currentFragment;
     }
 
@@ -54,16 +54,15 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         return fragmentManager.findFragmentByTag(tag);
     }
 
-    private Fragment crateFragment(int position) {
+    private Fragment createFragment(int position) {
         QuestionModel question = questionPack.getQuestionViewModels().get(position).getQuestion();
         if (question.getType().equals(Question.TYPE_RC)) {
             PlaceholderFragmentRC placeholderFragmentRc = PlaceholderFragmentRC.newInstance(position + 1);
             placeholderFragmentRc.setQuestionPack(questionPack);
-            Log.d(TAG, "RC fragment created");
             return placeholderFragmentRc;
         } else {
             PlaceholderFragment fragment = PlaceholderFragment.newInstance(position + 1);
-            fragment.setQuestionPack(questionPack);
+            fragment.setQuestionPack(questionPack, position);
             return fragment;
         }
     }
