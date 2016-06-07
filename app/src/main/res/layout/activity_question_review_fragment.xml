@@ -261,6 +261,7 @@
                     android:layout_height="50dp"
                     android:background="@drawable/round_button_star"
                     android:src="@mipmap/ic_star_black_24dp"
+                    android:tint="#FFF176"
                     android:id="@+id/btn_tag_star"
                     />
 
