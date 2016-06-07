@@ -110,11 +110,8 @@ public class PlaceholderFragment extends Fragment {
     private void getRefercence(View view) {
         cardAnswers = (CardView) view.findViewById(R.id.card_answer);
         contentQuestion = (WebView) view.findViewById(R.id.question_content);
-        if (Build.VERSION.SDK_INT > 19) {
-            contentQuestion.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        } else {
-            contentQuestion.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        }
+
+        contentQuestion.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         contentQuestion.getSettings().setJavaScriptEnabled(true);
         contentQuestion.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 

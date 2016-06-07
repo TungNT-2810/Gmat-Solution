@@ -71,13 +71,8 @@ public class AnswerCRQuestion extends LinearLayout implements View.OnClickListen
             this.txtContentAnswer = (WebView) view.findViewById(R.id.txt_content_answer);
             this.txtExplanation = (WebView) view.findViewById(R.id.txt_explanation);
 
-            if(Build.VERSION.SDK_INT>19){
-                this.txtContentAnswer.setLayerType(View.LAYER_TYPE_HARDWARE,null);
-                this.txtExplanation.setLayerType(View.LAYER_TYPE_HARDWARE,null);
-            }else{
-                this.txtContentAnswer.setLayerType(View.LAYER_TYPE_SOFTWARE,null);
-                this.txtExplanation.setLayerType(View.LAYER_TYPE_SOFTWARE,null);
-            }
+            this.txtContentAnswer.setLayerType(View.LAYER_TYPE_SOFTWARE,null);
+            this.txtExplanation.setLayerType(View.LAYER_TYPE_SOFTWARE,null);
             WebSettings webSettings1 = this.txtContentAnswer.getSettings();
             WebSettings webSettings2 = this.txtExplanation.getSettings();
             webSettings1.setJavaScriptEnabled(true);

@@ -79,11 +79,7 @@ public class SCQuestionFragment extends BaseFragment
             /**
              * Config web view
              */
-            if (Build.VERSION.SDK_INT > 19) {
-                questionContent.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-            } else {
-                questionContent.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-            }
+            questionContent.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             questionContent.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
             questionContent.getSettings().setJavaScriptEnabled(true);
 
