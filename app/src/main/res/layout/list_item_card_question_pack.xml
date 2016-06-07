@@ -7,7 +7,7 @@
     android:layout_height="200dp"
     android:layout_margin="4dp"
     android:fitsSystemWindows="true"
-    cardview:cardBackgroundColor="#2c5038"
+    cardview:cardBackgroundColor="#9E9E9E"
     cardview:cardCornerRadius="5dp">
 
     <LinearLayout
@@ -28,30 +28,97 @@
             android:textSize="25sp"
             android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/imgContent"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3.5"
-            android:background="#80FFFFFF"
-            android:scaleType="fitXY"
-            />
+            android:background="#40FFFFFF"
+            android:orientation="vertical"
+            android:gravity="center"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="5/10"
+                android:textColor="@color/color_white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:id="@+id/txt_answered"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.8"
+                android:text="Completed"
+                android:textColor="@color/color_white"
+                android:textSize="15sp"
+                android:gravity="center_horizontal"
+                android:id="@+id/txt_status"
+                android:layout_marginBottom="5dp"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="3.8 %"
+                android:textColor="@color/color_white"
+                android:textSize="25sp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:id="@+id/txt_correct"
+                android:layout_marginTop="5dp"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.8"
+                android:text="Correct"
+                android:textColor="@color/color_white"
+                android:textSize="15sp"
+                android:gravity="center_horizontal"
+                android:id="@+id/txt_status_correct"
+                />
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/status_lock"
+                android:src="@drawable/ic_lock_black_48px"
+                android:tint="#212121"
+                android:visibility="gone"
+                />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:gravity="center_vertical|right"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             >
             <ImageView
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="2"
                 android:layout_height="match_parent"
                 android:src="@drawable/star1"
                 android:id="@+id/imgRateStar"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
+                android:layout_marginLeft="5dp"
+                />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:text="1/6"
+                android:textColor="@color/color_white"
+                android:textSize="18sp"
+                android:id="@+id/txt_pack_index"
+                android:gravity="center_vertical|right"
+                android:layout_marginRight="5dp"
                 />
         </LinearLayout>
     </LinearLayout>

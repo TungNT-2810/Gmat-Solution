@@ -114,7 +114,7 @@ public class QuestionPackFragment extends BaseFragment
 
     @Override
     public void onQuestionPackInteraction(QuestionPackViewModel item) {
-        Log.d(TAG, "Item click " + item.getQuestionPack().getAvainableTime());
+        Log.d(TAG, "Item click " + item.getQuestionPack().getAvailableTime());
         //item.clearUserAnswers();
         getScreenManager().goToActivity(AnswerQuestionActivity.class,
                 AnswerQuestionActivity.buildBundle(item.getQuestionPack().getId()));

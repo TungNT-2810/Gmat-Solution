@@ -36,20 +36,21 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener,
     private Button btnMore;
     private ArcProgress arcProgress;
     private RealmResults<QuestionModel> results;
+    private View view;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.home_screen, container, false);
+        view = inflater.inflate(R.layout.home_screen, container, false);
         getScreenManager().setTitleOfActionBar(getResources().getString(R.string.string_title_GMAT));
         inits(view);
-        loadQuestionPack(view);
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        loadQuestionPack(view);
         getDataForArcProgress();
     }
 

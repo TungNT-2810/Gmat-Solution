@@ -3,12 +3,9 @@ package org.iliat.gmat.model;
 
 import android.util.Log;
 
-import org.iliat.gmat.constant.Constant;
-
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
-import io.realm.annotations.Required;
 
 /**
  * Created by hungtran on 4/17/16.
@@ -16,7 +13,7 @@ import io.realm.annotations.Required;
 public class QuestionPackModel extends RealmObject {
     @PrimaryKey
     private String id;
-    private String avainableTime;
+    private String availableTime;
     private RealmList<QuestionModel> questionList;
 
     public String getId() {
@@ -27,12 +24,12 @@ public class QuestionPackModel extends RealmObject {
         this.id = id;
     }
 
-    public String getAvainableTime() {
-        return avainableTime;
+    public String getAvailableTime() {
+        return availableTime;
     }
 
     public void setAvainableTime(String avainableTime) {
-        this.avainableTime = avainableTime;
+        this.availableTime = avainableTime;
     }
 
     public RealmList<QuestionModel> getQuestionList() {
@@ -53,5 +50,15 @@ public class QuestionPackModel extends RealmObject {
 
     public int getNumberOfQuestions() {
         return this.getQuestionList().size();
+    }
+
+    public int getNumberOfQuestionAnswered(){
+        int count=0;
+        for(int i=0;i<questionList.size();i++){
+            if(questionList.get(i).getUserAnswer()!=-1){
+                count++;
+            }
+        }
+        return count;
     }
 }

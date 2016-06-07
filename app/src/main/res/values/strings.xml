@@ -124,7 +124,7 @@
     <string name="string_title_finish_quiz">Finish Quiz</string>
     <string name="string_message_finish_quiz">Are you sure you want to finish?</string>
     <string name="string_title_confirmation">Confirmation</string>
-    <string name="string_message_pack_already_done">Pack already answered! \n Do you want to start over?</string>
+    <string name="string_message_pack_already_done">Pack already answered! \nDo you want to start over?</string>
     <string name="string_message_pack_not_done">Would you like to continue?</string>
     <string name="string_title_exit_gmat">Exit GMAT</string>
     <string name="string_message_exit_gmat">Are you sure you want to exit?</string>
