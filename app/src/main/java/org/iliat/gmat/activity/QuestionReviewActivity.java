@@ -189,7 +189,6 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         btn_open = findViewById(R.id.btn_open);
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         menuLayout = findViewById(R.id.menu_layout);
-        menuLayout.setOnClickListener(this);
         arcLayout = (ArcLayout) findViewById(R.id.arc_layout);
         btnExpandStimulus = (ImageButton) findViewById(R.id.btnExpand);
         btnBack = (Button) findViewById(R.id.btn_back);
@@ -210,6 +209,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
 
     private void addListener() {
         btnExpandStimulus.setOnClickListener(this);
+        menuLayout.setOnClickListener(this);
         btnNext.setOnClickListener(this);
         btnBack.setOnClickListener(this);
         btnNext.setOnClickListener(this);
@@ -374,9 +374,9 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                         btnExpandStimulus.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
                     }
                 }
-
                 break;
             }
+
             case R.id.btn_share: {
                 Bitmap bm = screenShot(QuestionReviewActivity.this.mViewPager);
                 File file = saveBitmap(bm, "mantis_image.png");
@@ -401,6 +401,8 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                 if (mViewPager.getCurrentItem() + 1 < mQuestionPack.getQuestionViewModels().size()) {
                     mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
                 }
+
+                Log.d("questiontype",""+mQuestionPack.getQuestionViewModels().get(mViewPager.getCurrentItem()).getType());
                 break;
             }
             case R.id.btn_back: {
@@ -412,6 +414,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                 if (mViewPager.getCurrentItem()>0) {
                     mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
                 }
+                Log.d("questiontype",""+mQuestionPack.getQuestionViewModels().get(mViewPager.getCurrentItem()).getType());
                 break;
             }
             case R.id.menu_layout: {

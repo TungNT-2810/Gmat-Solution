@@ -155,4 +155,6 @@ public class QuestionViewModel implements Serializable{
         return question.isStar();
     }
 
+    public String getType(){return question.getType();}
+
 }
