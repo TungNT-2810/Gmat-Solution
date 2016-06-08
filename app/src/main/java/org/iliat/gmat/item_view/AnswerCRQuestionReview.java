@@ -106,8 +106,7 @@ public class AnswerCRQuestionReview extends LinearLayout implements View.OnClick
             txtExplanationText.setVisibility(GONE);
             txtExplanation.setVisibility(GONE);
             txtContentAnswer.loadDataWithBaseURL("file:///android_asset/mathscribe",
-                    Constant.JS + this.strAnswer +
-                            " $$cos^2θ+sin^2θ=1$$ </body></html>",
+                    Constant.JS + this.strAnswer,
                     Constant.MIME_TYPE, Constant.HTML_ENCODE, null);
         } else {
             txtContenAnswerText.setVisibility(VISIBLE);
