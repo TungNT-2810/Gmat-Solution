@@ -86,7 +86,7 @@ public class ListQuestionPackAdapter extends
             holder.txtStatusCorrect.setVisibility(View.VISIBLE);
 
             if (questionPack.isNew() && !questionPack.haveAnyTag()) {
-                holder.txtStatusCorrect.setVisibility(View.GONE);
+                holder.txtStatusCorrect.setVisibility(View.INVISIBLE);
                 holder.txtAnswered.setText(String.valueOf(questionPack.getNumberOfQuestions()));
                 holder.txtCorrect.setText("New");
                 holder.txtStatus.setText("Questions");
