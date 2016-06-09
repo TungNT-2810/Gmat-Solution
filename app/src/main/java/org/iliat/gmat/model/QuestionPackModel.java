@@ -9,13 +9,23 @@ import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by hungtran on 4/17/16.
+ * Modified by LinhDQ on 9/6/2016
  */
 public class QuestionPackModel extends RealmObject {
     @PrimaryKey
     private String id;
     private String availableTime;
     private RealmList<QuestionModel> questionList;
+    private int level=0;
     private long totalTimeToFinish = 0;
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
 
     public long getTotalTimeToFinish() {
         return totalTimeToFinish;

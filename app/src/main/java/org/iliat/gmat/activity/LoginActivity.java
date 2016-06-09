@@ -85,7 +85,6 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
         boolean isLogged = sharedPreferences.getBoolean(GMATApplication.LOGIN_SHARE_PREFERENCES, false);
         overridePendingTransition(R.anim.trans_in, R.anim.trans_out);
         if (!isLogged) {
-            Log.d(TAG, "ACBSDE");
             this.initUtils();
             this.initLayout();
             this.registerEvents();
@@ -361,6 +360,7 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
             questionPackModel.setAvainableTime(jsonQuestionPack.getAvailableTime());
             questionPackModel.setId(jsonQuestionPack.getId());
             questionPackModel.setQuestionList(new RealmList<QuestionModel>());
+            questionPackModel.setLevel(jsonQuestionPack.getLevel());
             for (String id : jsonQuestionPack.getQuestionIds()) {
                 QuestionModel questionModel = realm.where(QuestionModel.class).equalTo("idInServer", id).findFirst();
                 questionPackModel.getQuestionList().add(questionModel);

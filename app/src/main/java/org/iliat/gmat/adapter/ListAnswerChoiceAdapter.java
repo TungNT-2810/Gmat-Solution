@@ -7,13 +7,10 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import org.iliat.gmat.R;
-import org.iliat.gmat.database.AnswerChoice;
-import org.iliat.gmat.database.Question;
 import org.iliat.gmat.model.QuestionModel;
 import org.iliat.gmat.view_model.AnswerChoiceViewModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by hungtran on 3/13/16.
@@ -29,11 +26,6 @@ public class ListAnswerChoiceAdapter extends BaseAdapter {
         this.mQuestion = question;
 
         answerChoiceViewModelList = new ArrayList<>();
-
-//        List<AnswerChoice> answer_choices = mQuestion.getAnswerChoiceList();
-//        for(int idx = 0; idx < answer_choices.size(); idx++) {
-//            answerChoiceViewModelList.add(new AnswerChoiceViewModel(answer_choices.get(idx)));
-//        }
     }
 
     @Override
@@ -66,5 +58,4 @@ public class ListAnswerChoiceAdapter extends BaseAdapter {
 
         return convertView;
     }
-
 }

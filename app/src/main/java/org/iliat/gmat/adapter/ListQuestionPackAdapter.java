@@ -75,7 +75,7 @@ public class ListQuestionPackAdapter extends
         if(questionPack!=null) {
             holder.cardMain.setCardBackgroundColor(Constant.COLOR_PICKER[position % Constant.COLOR_PICKER.length]);
             holder.txtDateOfPack.setText(questionPack.getAvailableTime());
-            holder.imgRateStar.setImageResource(Constant.STARS[position % Constant.STARS.length]);
+            holder.imgRateStar.setImageResource(Constant.STARS[questionPack.getQuestionPack().getLevel()]);
             holder.txtPackIndex.setText(String.format("%d/%d", (position + 1), mQuestionPackVIewModels.size()));
             holder.questionPack = questionPack;
 

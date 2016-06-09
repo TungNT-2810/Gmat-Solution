@@ -1,18 +1,13 @@
 package org.iliat.gmat.view_model;
 
-import android.content.Context;
 import android.util.Log;
 
-import org.iliat.gmat.database.UserAnswer;
 import org.iliat.gmat.model.AnswerModel;
 import org.iliat.gmat.model.QuestionModel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 
 public class QuestionViewModel implements Serializable{
@@ -25,7 +20,6 @@ public class QuestionViewModel implements Serializable{
     private static final String TAG = QuestionViewModel.class.toString();
 
     private QuestionModel question;
-    //private UserAnswer userAnswer;
     private List<AnswerModel> answerChoices = null;
 
     public QuestionViewModel(QuestionModel question) {

@@ -1,7 +1,6 @@
 package org.iliat.gmat.view_model;
 
 
-import org.iliat.gmat.database.AnswerChoice;
 import org.iliat.gmat.model.AnswerModel;
 
 import java.io.Serializable;

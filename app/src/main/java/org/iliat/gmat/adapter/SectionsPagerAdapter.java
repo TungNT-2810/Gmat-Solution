@@ -3,10 +3,9 @@ package org.iliat.gmat.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
 import android.view.ViewGroup;
 
-import org.iliat.gmat.database.Question;
+import org.iliat.gmat.constant.Constant;
 import org.iliat.gmat.fragment.PlaceholderFragment;
 import org.iliat.gmat.fragment.PlaceholderFragmentRC;
 import org.iliat.gmat.model.QuestionModel;
@@ -57,7 +56,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     private Fragment createFragment(int position) {
 
         QuestionModel question = questionPack.getQuestionViewModels().get(position).getQuestion();
-        if (question.getType().equals(Question.TYPE_RC)) {
+        if (question.getType().equals(Constant.TYPE_RC)) {
             PlaceholderFragmentRC placeholderFragmentRc = PlaceholderFragmentRC.newInstance(position+1);
             placeholderFragmentRc.setQuestionPack(questionPack);
             return placeholderFragmentRc;
