@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,10 +17,13 @@ import org.iliat.gmat.R;
 import org.iliat.gmat.adapter.ListTypeQuestionAdapter;
 import org.iliat.gmat.constant.Constant;
 import org.iliat.gmat.model.QuestionModel;
+import org.iliat.gmat.model.QuestionSubTypeModel;
 import org.iliat.gmat.model.QuestionType;
 import org.iliat.gmat.model.QuestionTypeModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -36,6 +40,7 @@ public class SummaryFragment extends BaseFragment {
     private RealmQuery<QuestionModel> query;
     private RealmResults<QuestionTypeModel> resultQTypes;
     private RealmQuery<QuestionTypeModel> queryType;
+    private ListTypeQuestionAdapter listTypeQuestionAdapter;
     private int totalAnswered;
     private int totalRightAnswer;
     private int totalQuestion;
@@ -59,15 +64,17 @@ public class SummaryFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        if(view==null){
-            view=inflater.inflate(R.layout.fragment_sumary,container,false);
-        }else{
+        if (view == null) {
+            view = inflater.inflate(R.layout.fragment_sumary, container, false);
+        } else {
             container.removeView(view);
         }
         initControl(view);
+        addListener();
         getDataForSumary();
         getSumaryTypeOfQuestion();
-        listTypeQuestion.setAdapter(new ListTypeQuestionAdapter(view.getContext(), arrayList));
+        listTypeQuestionAdapter = new ListTypeQuestionAdapter(view.getContext(), arrayList);
+        listTypeQuestion.setAdapter(listTypeQuestionAdapter);
         return view;
     }
 
@@ -77,6 +84,7 @@ public class SummaryFragment extends BaseFragment {
         super.onStart();
 
     }
+
 
     private void initControl(View view) {
         listTypeQuestion = (ListView) view.findViewById(R.id.ltv_type_question);
@@ -93,6 +101,18 @@ public class SummaryFragment extends BaseFragment {
         totalTagGreen = totalTagGrey = totalTagYellow = totalTagStar = totalTagRed = 0;
     }
 
+    private void addListener() {
+        listTypeQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (arrayList != null) {
+
+                }
+            }
+        });
+    }
+
+
     private void getSumaryTypeOfQuestion() {
         queryType = realm.where(QuestionTypeModel.class);
         resultQTypes = queryType.findAll();
@@ -102,9 +122,9 @@ public class SummaryFragment extends BaseFragment {
             String code = resultQTypes.get(i).getCode();
             query.equalTo("type", code);
             results = query.findAll();
-            Log.d(TAG, code + " "+results.size());
+            Log.d(TAG, code + " " + results.size());
             totalAnswered = totalRightAnswer = 0;
-            Log.d("type",resultQTypes.get(i).getCode());
+            Log.d("type", resultQTypes.get(i).getCode());
             for (int j = 0; j < results.size(); j++) {
                 //total answered
                 if (results.get(j).getUserAnswer() != -1) {
@@ -142,7 +162,7 @@ public class SummaryFragment extends BaseFragment {
 
             }
             arrayList.add(new QuestionType(resultQTypes.get(i).getCode(), resultQTypes.get(i).getDetail(),
-                    results.size(), totalAnswered, totalRightAnswer));
+                    null, results.size(), totalAnswered, totalRightAnswer));
             //push data
             txtTagGrey.setText(String.valueOf(totalTagGrey));
             txtTagGreen.setText(String.valueOf(totalTagGreen));
@@ -155,7 +175,7 @@ public class SummaryFragment extends BaseFragment {
     private void getDataForSumary() {
         results = realm.where(QuestionModel.class).findAll().distinct("id");
         totalQuestion = results.size();
-        totalAnswered = realm.where(QuestionModel.class).notEqualTo("userAnswer",(-1)).findAll().size();
+        totalAnswered = realm.where(QuestionModel.class).notEqualTo("userAnswer", (-1)).findAll().size();
         for (QuestionModel q : results) {
             averageTime += q.getTimeToFinish();
         }
@@ -166,9 +186,9 @@ public class SummaryFragment extends BaseFragment {
             txtAverageTime.setText("0m 0s");
         }
         arcProgress.setMax(100);
-        if(totalQuestion!=0) {
+        if (totalQuestion != 0) {
             arcProgress.setProgress(totalAnswered * 100 / totalQuestion);
-        }else{
+        } else {
             arcProgress.setProgress(0);
         }
     }

@@ -27,6 +27,7 @@ import org.iliat.gmat.enitity.JSONPreDownloadHandler;
 import org.iliat.gmat.model.AnswerModel;
 import org.iliat.gmat.model.QuestionModel;
 import org.iliat.gmat.model.QuestionPackModel;
+import org.iliat.gmat.model.QuestionSubTypeModel;
 import org.iliat.gmat.model.QuestionTypeModel;
 import org.iliat.gmat.network.APIUrls;
 import org.iliat.gmat.network.JSONAnswerChoice;
@@ -35,11 +36,15 @@ import org.iliat.gmat.network.JSONQuestion;
 import org.iliat.gmat.network.JSONQuestionList;
 import org.iliat.gmat.network.JSONQuestionPack;
 import org.iliat.gmat.network.JSONQuestionPackList;
+import org.iliat.gmat.network.JSONQuestionSubType;
+import org.iliat.gmat.network.JSONQuestionType;
 import org.iliat.gmat.network.JSONQuestionTypeList;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmList;
@@ -311,15 +316,25 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
 
     private void saveQuestionType(JSONQuestionTypeList jsonQuestionTypeList) {
         realm = Realm.getDefaultInstance();
-        for (int i = 0; i < jsonQuestionTypeList.getList().size(); i++) {
-            {
-                realm.beginTransaction();
-                QuestionTypeModel questionTypeModel = new QuestionTypeModel();
-                questionTypeModel.setCode(jsonQuestionTypeList.getList().get(i).getCode());
-                questionTypeModel.setDetail(jsonQuestionTypeList.getList().get(i).getDetail());
-                realm.copyToRealmOrUpdate(questionTypeModel);
-                realm.commitTransaction();
+        RealmList<QuestionSubTypeModel> subTypeList = new RealmList<>();
+        for (JSONQuestionType jsonQuestionType : jsonQuestionTypeList.getList()) {
+            subTypeList.clear();
+            realm.beginTransaction();
+            List<JSONQuestionSubType> jsonQuestionSubTypeList = jsonQuestionType.getSubTypeList();
+            if (jsonQuestionSubTypeList != null && jsonQuestionSubTypeList.size() > 0) {
+                for (JSONQuestionSubType jsonQuestionSubType : jsonQuestionSubTypeList) {
+                    QuestionSubTypeModel questionSubTypeModel = new QuestionSubTypeModel();
+                    questionSubTypeModel.setCode(jsonQuestionSubType.getCode());
+                    questionSubTypeModel.setDetail(jsonQuestionSubType.getDetail());
+                    subTypeList.add(questionSubTypeModel);
+                }
             }
+            QuestionTypeModel questionTypeModel = new QuestionTypeModel();
+            questionTypeModel.setCode(jsonQuestionType.getCode());
+            questionTypeModel.setDetail(jsonQuestionType.getDetail());
+            questionTypeModel.setListSubType(subTypeList);
+            realm.copyToRealmOrUpdate(questionTypeModel);
+            realm.commitTransaction();
         }
     }
 

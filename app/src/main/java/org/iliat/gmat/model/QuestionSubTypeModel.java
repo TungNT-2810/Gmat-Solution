@@ -1,27 +1,19 @@
 package org.iliat.gmat.model;
 
-import io.realm.RealmList;
+import java.io.Serializable;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
 
 /**
- * Created by MrBom on 5/16/2016.
+ * Created by MrBom on 6/9/2016.
  */
-public class QuestionTypeModel extends RealmObject {
+public class QuestionSubTypeModel extends RealmObject implements Serializable{
     @PrimaryKey
     private String code;
     @Required
     private String detail;
-    private RealmList<QuestionSubTypeModel> listSubType;
-
-    public RealmList<QuestionSubTypeModel> getListSubType() {
-        return listSubType;
-    }
-
-    public void setListSubType(RealmList<QuestionSubTypeModel> listSubType) {
-        this.listSubType = listSubType;
-    }
 
     public String getCode() {
         return code;

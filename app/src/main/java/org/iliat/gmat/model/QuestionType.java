@@ -2,6 +2,7 @@ package org.iliat.gmat.model;
 
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by MrBom on 5/13/2016.
@@ -9,16 +10,27 @@ import java.io.Serializable;
 public class QuestionType implements Serializable {
     private String code;
     private String typeName;
+    private List<QuestionSubTypeModel> subTypeList;
     private int totalQuestion;
     private int totalRightAnswer;
     private int totalAnswer;
 
-    public QuestionType(String code, String typeName, int totalQuestion, int totalAnswer, int totalRightAnswer) {
+    public QuestionType(String code, String typeName, List<QuestionSubTypeModel> subTypeList,
+                        int totalQuestion, int totalRightAnswer, int totalAnswer) {
         this.code = code;
         this.typeName = typeName;
+        this.subTypeList = subTypeList;
         this.totalQuestion = totalQuestion;
         this.totalRightAnswer = totalRightAnswer;
         this.totalAnswer = totalAnswer;
+    }
+
+    public List<QuestionSubTypeModel> getSubTypeList() {
+        return subTypeList;
+    }
+
+    public void setSubTypeList(List<QuestionSubTypeModel> subTypeList) {
+        this.subTypeList = subTypeList;
     }
 
     public String getCode() {

@@ -22,6 +22,7 @@ public class QuestionModel extends RealmObject {
     private int userAnswer=-1;
     private int tagId=0;
     private boolean isStar;
+    private RealmList<AnswerModel> answerList;
 
     public boolean isStar() {
         return isStar;
@@ -38,8 +39,6 @@ public class QuestionModel extends RealmObject {
     public void setTagId(int tagId) {
         this.tagId = tagId;
     }
-
-    private RealmList<AnswerModel> answerList;
 
     public String getId() {
         return id;

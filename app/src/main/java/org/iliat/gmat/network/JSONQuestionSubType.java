@@ -2,31 +2,17 @@ package org.iliat.gmat.network;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 /**
- * Created by MrBom on 5/16/2016.
+ * Created by MrBom on 9/6/2016.
  */
-public class JSONQuestionType {
+public class JSONQuestionSubType {
     private static final String CODE = "code";
     private static final String DETAIL = "detail";
-    private static final String SUB_TYPE = "sub_types";
     @SerializedName(DETAIL)
     private String detail;
 
     @SerializedName(CODE)
     private String code;
-
-    @SerializedName(SUB_TYPE)
-    private List<JSONQuestionSubType> subTypeList;
-
-    public List<JSONQuestionSubType> getSubTypeList() {
-        return subTypeList;
-    }
-
-    public void setSubTypeList(List<JSONQuestionSubType> subTypeList) {
-        this.subTypeList = subTypeList;
-    }
 
     public String getCode() {
         return code;
