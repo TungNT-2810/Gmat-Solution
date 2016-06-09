@@ -45,8 +45,8 @@ public class AnswerQuestionActivity
     public static final String KEY_TIME_AVERAGE = "ANSWER_QUESTION_KEY_TIME_AVERAGE";
     private static final String QUESTION_PACK_BUNDLE_STRING = "question pack";
     private static final String LOG_TAG = AnswerQuestionActivity.class.getSimpleName();
-    private long countTime = 0;
-    private long timeQuestion = 0;
+    private long totalTime = 0;
+    private long timeForEachQuestion = 0;
     private Realm realm;
     private int countAnswer = 12;
     private int maxQuestion = 16;
@@ -119,7 +119,7 @@ public class AnswerQuestionActivity
         Bundle bundle = intent.getExtras();
         String questionPackId = getQuestionPackFromBundle(bundle);
         realm = Realm.getDefaultInstance();
-        QuestionPackModel questionPack = realm.where(QuestionPackModel.class).equalTo("id", questionPackId).findFirst();
+        final QuestionPackModel questionPack = realm.where(QuestionPackModel.class).equalTo("id", questionPackId).findFirst();
         questionPackViewModel = new QuestionPackViewModel(questionPack, this);
         maxQuestion = questionPackViewModel.getNumberOfQuestions();
 
@@ -130,6 +130,7 @@ public class AnswerQuestionActivity
                     .setPositiveButton("Start over", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            saveTotalTimeToFinish(0);
                             questionPackViewModel.clearUserAnswers();
                             questionViewModel = questionPackViewModel.getFirstQuestionViewModel();
                             countAnswer = 0;
@@ -154,6 +155,7 @@ public class AnswerQuestionActivity
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 if (questionPackViewModel.getContinueQuestionViewModel() != null) {
+                                    totalTime=questionPack.getTotalTimeToFinish();
                                     questionViewModel = questionPackViewModel.getContinueQuestionViewModel();
                                     countAnswer = questionPackViewModel.getNumberQuestionAnswered();
                                     startProcess();
@@ -167,6 +169,7 @@ public class AnswerQuestionActivity
                         .setNegativeButton("Do again", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                saveTotalTimeToFinish(0);
                                 questionPackViewModel.clearUserAnswers();
                                 questionViewModel = questionPackViewModel.getFirstQuestionViewModel();
                                 countAnswer = 0;
@@ -277,13 +280,13 @@ public class AnswerQuestionActivity
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (countTime / 3600 >= 1) {
-                            txtCountTime.setText(String.format("%02d:%02d:%02d | Total: %02d:%02d:%02d", timeQuestion / 3600, (timeQuestion % 3600) / 60, timeQuestion % 60, countTime / 3600, (countTime % 3600) / 60, countTime % 60));
+                        if (totalTime / 3600 >= 1) {
+                            txtCountTime.setText(String.format("Total: %02d:%02d:%02d", timeForEachQuestion % 60, totalTime / 3600, (totalTime % 3600) / 60, totalTime % 60));
                         } else {
-                            txtCountTime.setText(String.format("%02d:%02d | Total: %02d:%02d", timeQuestion / 60, timeQuestion % 60, countTime / 60, countTime % 60));
+                            txtCountTime.setText(String.format("Total: %02d:%02d", totalTime / 60, totalTime % 60));
                         }
-                        countTime++;
-                        timeQuestion++;
+                        totalTime++;
+                        timeForEachQuestion++;
                     }
                 });
             }
@@ -362,6 +365,14 @@ public class AnswerQuestionActivity
         }
     }
 
+    public void saveTotalTimeToFinish(long totalTime){
+        realm.beginTransaction();
+        questionPackViewModel.setTotalTimeToFinish(totalTime);
+        realm.copyToRealmOrUpdate(questionPackViewModel.getQuestionPack());
+        realm.commitTransaction();
+    }
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -372,6 +383,9 @@ public class AnswerQuestionActivity
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+
+                                saveTotalTimeToFinish(totalTime);
+
                                 Intent intent = new Intent(AnswerQuestionActivity.this, MainActivity.class);
                                 startActivity(intent);
                                 overridePendingTransition(R.anim.trans_back_in, R.anim.trans_back_out);
@@ -385,22 +399,26 @@ public class AnswerQuestionActivity
                 //save user answer and time to finish to db when button Next is clicked
                 questionViewModel.saveUserAnswer();
                 realm.beginTransaction();
-                questionViewModel.getQuestion().setTimeToFinish((int) timeQuestion);
+                questionViewModel.getQuestion().setTimeToFinish((int) timeForEachQuestion);
+
                 if (questionViewModel.getQuestion().getTagId() == 0) {
                     questionViewModel.getQuestion().setTagId(Constant.TAG_GREY);
                 }
                 realm.copyToRealmOrUpdate(questionViewModel.getQuestion());
                 realm.commitTransaction();
                 if (questionPackViewModel.isLastQuestionInPack(questionViewModel)) {
+
+                    saveTotalTimeToFinish(totalTime);
+
                     Bundle bundle = ScoreActivity.buildBundle(questionPackViewModel.getQuestionPack().getId());
-                    bundle.putInt(KEY_TIME_AVERAGE, (int) (countTime / 10));
+                    bundle.putInt(KEY_TIME_AVERAGE, (int) (totalTime / 10));
                     goToActivity(ScoreActivity.class, bundle);
                     overridePendingTransition(R.anim.trans_in, R.anim.trans_out);
                 } else {
                     countAnswer++;
                     fillData();
                     questionViewModel = questionPackViewModel.getNextQuestionViewModel(questionViewModel);
-                    timeQuestion = 0;
+                    timeForEachQuestion = 0;
                     openQuestionFragment();
                 }
                 updateSubmitButtonText();

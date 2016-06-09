@@ -15,6 +15,15 @@ public class QuestionPackModel extends RealmObject {
     private String id;
     private String availableTime;
     private RealmList<QuestionModel> questionList;
+    private long totalTimeToFinish = 0;
+
+    public long getTotalTimeToFinish() {
+        return totalTimeToFinish;
+    }
+
+    public void setTotalTimeToFinish(long totalTimeToFinish) {
+        this.totalTimeToFinish = totalTimeToFinish;
+    }
 
     public String getId() {
         return id;
@@ -41,8 +50,8 @@ public class QuestionPackModel extends RealmObject {
     }
 
     public boolean isLastQuestionInPack(QuestionModel question) {
-        if(question.getIdInServer().equals(questionList.get(questionList.size() - 1).getIdInServer())){
-            Log.d("questionList.size() - 1",String.valueOf(questionList.size() - 1));
+        if (question.getIdInServer().equals(questionList.get(questionList.size() - 1).getIdInServer())) {
+            Log.d("questionList.size() - 1", String.valueOf(questionList.size() - 1));
             return true;
         }
         return false;
@@ -52,10 +61,10 @@ public class QuestionPackModel extends RealmObject {
         return this.getQuestionList().size();
     }
 
-    public int getNumberOfQuestionAnswered(){
-        int count=0;
-        for(int i=0;i<questionList.size();i++){
-            if(questionList.get(i).getUserAnswer()!=-1){
+    public int getNumberOfQuestionAnswered() {
+        int count = 0;
+        for (int i = 0; i < questionList.size(); i++) {
+            if (questionList.get(i).getUserAnswer() != -1) {
                 count++;
             }
         }

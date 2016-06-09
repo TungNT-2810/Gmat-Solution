@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.github.lzyzsd.circleprogress.ArcProgress;
 
@@ -21,7 +22,6 @@ import org.iliat.gmat.model.QuestionPackModel;
 import org.iliat.gmat.view_model.QuestionPackViewModel;
 
 import io.realm.Realm;
-import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 /**
@@ -37,13 +37,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener,
     private ArcProgress arcProgress;
     private RealmResults<QuestionModel> results;
     private View view;
+    private TextView txtSkillLevel;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.home_screen, container, false);
         getScreenManager().setTitleOfActionBar(getResources().getString(R.string.string_title_GMAT));
-        inits(view);
+        init(view);
         return view;
     }
 
@@ -54,11 +55,26 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener,
         getDataForArcProgress();
     }
 
-    public void inits(View view) {
+    public void init(View view) {
         recyclerView = (RecyclerView) view.findViewById(R.id.list_pack_question);
         btnMore=(Button)view.findViewById(R.id.btnMore);
         btnMore.setOnClickListener(this);
         arcProgress=(ArcProgress)view.findViewById(R.id.home_arc_progress);
+        txtSkillLevel=(TextView)view.findViewById(R.id.txt_skill_leel);
+    }
+
+    private void calculateSkillLevel(int totalRightAnswer, int totalQuestion){
+        float rate=0;
+        if(totalQuestion>0){
+            rate=(float)totalRightAnswer/totalQuestion;
+            if(rate<70){
+                txtSkillLevel.setText("Newbie");
+            }else if(rate>=70 && rate<90){
+                txtSkillLevel.setText("Intermediate");
+            }else{
+                txtSkillLevel.setText("Master");
+            }
+        }
     }
 
     private void loadQuestionPack(View view) {
@@ -80,6 +96,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener,
     private void getDataForArcProgress() {
         int totalQuestion=0;
         int totalAnswered=0;
+        int totalRightAnswer=0;
         results = realm.where(QuestionModel.class).findAll().distinct("id");
         totalQuestion = results.size();
         results = realm.where(QuestionModel.class).notEqualTo("userAnswer",(-1)).findAll().distinct("id");
@@ -90,6 +107,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener,
         }else{
             arcProgress.setProgress(0);
         }
+        for(int i=0;i<results.size();i++){
+            if(results.get(i).getUserAnswer()==results.get(i).getRightAnswerIndex()){
+                totalRightAnswer++;
+            }
+        }
+        calculateSkillLevel(totalRightAnswer,totalQuestion);
     }
 
     @Override

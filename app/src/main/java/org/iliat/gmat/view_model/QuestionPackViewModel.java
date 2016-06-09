@@ -61,6 +61,10 @@ public class QuestionPackViewModel implements Serializable {
         return false;
     }
 
+    public void setTotalTimeToFinish(long totalTime){
+        questionPack.setTotalTimeToFinish(totalTime);
+    }
+
     public boolean haveAnyTag() {
         if (questionViewModels.size() > 0) {
             for (int i = 0; i < questionViewModels.size(); i++) {
