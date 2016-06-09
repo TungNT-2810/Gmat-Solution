@@ -162,7 +162,7 @@ public class SummaryFragment extends BaseFragment {
 
             }
             arrayList.add(new QuestionType(resultQTypes.get(i).getCode(), resultQTypes.get(i).getDetail(),
-                    null, results.size(), totalAnswered, totalRightAnswer));
+                    results.size(),totalRightAnswer,totalAnswered));
             //push data
             txtTagGrey.setText(String.valueOf(totalTagGrey));
             txtTagGreen.setText(String.valueOf(totalTagGreen));

@@ -15,11 +15,10 @@ public class QuestionType implements Serializable {
     private int totalRightAnswer;
     private int totalAnswer;
 
-    public QuestionType(String code, String typeName, List<QuestionSubTypeModel> subTypeList,
+    public QuestionType(String code, String typeName,
                         int totalQuestion, int totalRightAnswer, int totalAnswer) {
         this.code = code;
         this.typeName = typeName;
-        this.subTypeList = subTypeList;
         this.totalQuestion = totalQuestion;
         this.totalRightAnswer = totalRightAnswer;
         this.totalAnswer = totalAnswer;
