@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="5dp"
+    android:background="#E0F2F1"
+    tools:context="org.iliat.gmat.activity.SubTypeSumaryActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Question type"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:layout_marginBottom="5dp"
+        android:layout_alignParentTop="true"
+        android:textColor="#009688"
+        android:textAllCaps="true"
+        android:id="@+id/txtTitle"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_close"
+        android:text="Close"
+        android:textColor="#004D40"
+        android:textSize="16sp"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"
+        android:background="@drawable/custom_button"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@id/txtTitle"
+        android:layout_above="@id/btn_close"
+        >
+        <com.github.mikephil.charting.charts.HorizontalBarChart
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:layout_marginBottom="5dp"
+            android:id="@+id/sub_type_chart"
+            />
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:layout_marginTop="5dp"
+            android:id="@+id/list_sub_type"
+            android:dividerHeight="1dp"
+            android:divider="#B2DFDB"
+            />
+    </LinearLayout>
+
+
+</RelativeLayout>

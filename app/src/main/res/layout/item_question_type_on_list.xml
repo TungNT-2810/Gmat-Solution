@@ -1,61 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+        android:layout_marginRight="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_weight="9"
             android:gravity="center_vertical"
-            android:layout_weight="9">
+            android:orientation="vertical">
+
             <TextView
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/sumary_pack_name"
-                android:textSize="18dp"
-                android:textColor="@color/color_white"
-                android:text="Hello everyone"
-                />
-            <TextView
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/sumary_total_question"
-                android:textSize="14dp"
-                android:textColor="#607D8B"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
                 android:text="Hello everyone"
-                />
+                android:textColor="@color/color_white"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/sumary_total_question"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:text="Hello everyone"
+                android:textColor="#607D8B"
+                android:textSize="14dp" />
         </LinearLayout>
+
         <ImageView
+            android:id="@+id/sumary_pack_icon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/sumary_pack_icon"
             android:layout_weight="1"
-            android:src="@drawable/ic_keyboard_arrow_right_white_24dp"
-            />
+            android:src="@drawable/ic_keyboard_arrow_right_white_24dp" />
     </LinearLayout>
+
     <com.daimajia.numberprogressbar.NumberProgressBar
         android:id="@+id/sumary_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:progress_text_color="#607D8B"
-        app:progress_unreached_color="#607D8B"
-        app:progress_reached_color="#ff7f00"
-        android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
-        />
-
+        android:layout_marginRight="5dp"
+        app:progress_reached_color="#ff7f00"
+        app:progress_text_color="#607D8B"
+        app:progress_unreached_color="#607D8B" />
 </LinearLayout>

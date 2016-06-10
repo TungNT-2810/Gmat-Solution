@@ -1,5 +1,6 @@
 package org.iliat.gmat.fragment;
 
+import android.content.Intent;
 import android.support.annotation.Nullable;
 
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.github.lzyzsd.circleprogress.ArcProgress;
 
 import org.iliat.gmat.R;
+import org.iliat.gmat.activity.SubTypeSumaryActivity;
 import org.iliat.gmat.adapter.ListTypeQuestionAdapter;
 import org.iliat.gmat.constant.Constant;
 import org.iliat.gmat.model.QuestionModel;
@@ -105,8 +107,12 @@ public class SummaryFragment extends BaseFragment {
         listTypeQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (arrayList != null) {
-
+                if(arrayList!=null){
+                    Intent intent=new Intent(view.getContext(), SubTypeSumaryActivity.class);
+                    Bundle bundle=new Bundle();
+                    bundle.putString("type",arrayList.get(position).getCode());
+                    intent.putExtras(bundle);
+                    startActivity(intent);
                 }
             }
         });
@@ -162,7 +168,7 @@ public class SummaryFragment extends BaseFragment {
 
             }
             arrayList.add(new QuestionType(resultQTypes.get(i).getCode(), resultQTypes.get(i).getDetail(),
-                    results.size(),totalRightAnswer,totalAnswered));
+                    results.size(),totalRightAnswer,totalAnswered,resultQTypes.get(i).getListSubType()));
             //push data
             txtTagGrey.setText(String.valueOf(totalTagGrey));
             txtTagGreen.setText(String.valueOf(totalTagGreen));

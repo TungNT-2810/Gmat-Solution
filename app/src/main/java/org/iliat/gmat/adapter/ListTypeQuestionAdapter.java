@@ -6,20 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ProgressBar;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
 
 import org.iliat.gmat.R;
-import org.iliat.gmat.model.QuestionModel;
+import org.iliat.gmat.model.QuestionSubTypeModel;
 import org.iliat.gmat.model.QuestionType;
-import org.iliat.gmat.model.QuestionTypeModel;
 
 import java.util.ArrayList;
-
-import io.realm.Realm;
-import io.realm.RealmQuery;
 
 /**
  * Created by MrBom on 5/13/2016.
@@ -59,15 +55,24 @@ public class ListTypeQuestionAdapter extends BaseAdapter {
         }
         View view = inflater.inflate(R.layout.item_question_type_on_list, null);
         QuestionType questionType = list.get(position);
+
         if (view != null && questionType != null) {
             TextView txtPackName = (TextView) view.findViewById(R.id.sumary_pack_name);
             TextView txtTotalQues = (TextView) view.findViewById(R.id.sumary_total_question);
             NumberProgressBar numberProgressBar = (NumberProgressBar) view.findViewById(R.id.sumary_progress);
             txtPackName.setText(questionType.getTypeName());
-            txtTotalQues.setText(questionType.getTotalQuestion() + " questions");
+            if(questionType.getTotalQuestion()>1) {
+                txtTotalQues.setText("Total "+questionType.getTotalQuestion() + " questions");
+            }else if(questionType.getTotalQuestion()==1) {
+                txtTotalQues.setText("Total "+questionType.getTotalQuestion() + " question");
+            }else{
+                txtTotalQues.setText("Empty");
+            }
             numberProgressBar.setMax(questionType.getTotalQuestion());
             numberProgressBar.setProgress(questionType.getTotalAnswer());
         }
         return view;
     }
+
+
 }

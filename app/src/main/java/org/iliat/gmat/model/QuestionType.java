@@ -2,7 +2,10 @@ package org.iliat.gmat.model;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.RealmList;
 
 /**
  * Created by MrBom on 5/13/2016.
@@ -10,25 +13,26 @@ import java.util.List;
 public class QuestionType implements Serializable {
     private String code;
     private String typeName;
-    private List<QuestionSubTypeModel> subTypeList;
+    private RealmList<QuestionSubTypeModel> subTypeList;
     private int totalQuestion;
     private int totalRightAnswer;
     private int totalAnswer;
 
     public QuestionType(String code, String typeName,
-                        int totalQuestion, int totalRightAnswer, int totalAnswer) {
+                        int totalQuestion, int totalRightAnswer, int totalAnswer, RealmList<QuestionSubTypeModel> subTypeList) {
         this.code = code;
         this.typeName = typeName;
         this.totalQuestion = totalQuestion;
         this.totalRightAnswer = totalRightAnswer;
         this.totalAnswer = totalAnswer;
+        this.subTypeList=subTypeList;
     }
 
-    public List<QuestionSubTypeModel> getSubTypeList() {
+    public RealmList<QuestionSubTypeModel> getSubTypeList() {
         return subTypeList;
     }
 
-    public void setSubTypeList(List<QuestionSubTypeModel> subTypeList) {
+    public void setSubTypeList(RealmList<QuestionSubTypeModel> subTypeList) {
         this.subTypeList = subTypeList;
     }
 

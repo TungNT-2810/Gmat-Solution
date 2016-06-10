@@ -1,5 +1,7 @@
 package org.iliat.gmat.model;
 
+import java.util.ArrayList;
+
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -11,7 +13,6 @@ import io.realm.annotations.Required;
 public class QuestionTypeModel extends RealmObject {
     @PrimaryKey
     private String code;
-    @Required
     private String detail;
     private RealmList<QuestionSubTypeModel> listSubType;
 
