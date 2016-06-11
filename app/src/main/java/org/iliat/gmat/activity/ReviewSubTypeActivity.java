@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -15,6 +17,9 @@ import org.iliat.gmat.adapter.ListQuestionReviewBySubTypeAdapter;
 import org.iliat.gmat.constant.Constant;
 import org.iliat.gmat.db_connect.DBContext;
 import org.iliat.gmat.model.QuestionModel;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 
 import io.realm.RealmResults;
 
@@ -36,6 +41,7 @@ public class ReviewSubTypeActivity extends AppCompatActivity {
     private String subTypeCode;
     private String subTypeDetail;
 
+    private ArrayList<QuestionModel> modelArrayList;
     private RealmResults<QuestionModel> list;
     private ListQuestionReviewBySubTypeAdapter adapter;
 
@@ -58,6 +64,7 @@ public class ReviewSubTypeActivity extends AppCompatActivity {
         getDataFromIntent();
         bindDataToListView();
         bindDataToTopView();
+        addListener();
     }
 
     private void init() {
@@ -100,6 +107,25 @@ public class ReviewSubTypeActivity extends AppCompatActivity {
         }
         txtCountTimeAverage.setText(String.format("%dm %ds", (totalTime / list.size()) / 60,
                 (totalTime / list.size()) % 60));
+        modelArrayList=new ArrayList<>();
+        for(QuestionModel q: list){
+            modelArrayList.add(q);
+        }
+    }
+
+    private void addListener(){
+        ltvQuestionAnswerSummary.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Bundle bundle=new Bundle();
+                bundle.putInt("possition",position);
+                bundle.putString("typeCode",typeCode);
+                bundle.putString("subTypeCode",subTypeCode);
+                Intent intent=new Intent(ReviewSubTypeActivity.this,QuestionReviewActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
     }
 
     private void getDataFromIntent() {

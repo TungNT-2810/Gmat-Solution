@@ -127,9 +127,10 @@ public class ScoreActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(ScoreActivity.this, QuestionReviewActivity.class);
                 Bundle bundle = new Bundle();
+                bundle.putBoolean("ScoreActivity",true);
                 bundle.putInt(SCOREACTIIVTY_POSITION, position);
                 bundle.putString(TAG_QUESTION_PACK_VIEW_MODEL, questionPackViewModel.getId());
-                intent.putExtra(TAG_QUESTION_PACK_VIEW_MODEL, bundle);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });

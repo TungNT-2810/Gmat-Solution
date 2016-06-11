@@ -1,7 +1,6 @@
 package org.iliat.gmat.fragment;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -17,20 +16,19 @@ import org.iliat.gmat.R;
 import org.iliat.gmat.constant.Constant;
 import org.iliat.gmat.item_view.AnswerCRQuestionReview;
 import org.iliat.gmat.model.QuestionModel;
-import org.iliat.gmat.view_model.QuestionPackViewModel;
 import org.iliat.gmat.view_model.QuestionViewModel;
 
 import java.util.ArrayList;
 
-import io.github.kexanie.library.MathView;
+import io.realm.RealmList;
 
 /**
  * Created by MrBom on 6/3/2016.
  */
 public class PlaceholderFragment extends Fragment {
 
-    public void setQuestionPack(QuestionPackViewModel mQuestionPack, int position) {
-        this.mQuestionPack = mQuestionPack;
+    public void setQuestionList(RealmList<QuestionModel> listQuestion, int position) {
+        this.listQuestion = listQuestion;
         this.position = position;
     }
 
@@ -40,7 +38,7 @@ public class PlaceholderFragment extends Fragment {
      * fragment.
      */
     private int position;
-    private QuestionPackViewModel mQuestionPack;
+    private RealmList<QuestionModel> listQuestion;
     private WebView contentQuestion;
     private TextView contentQuestionText;
     private CardView cardAnswers;
@@ -85,7 +83,7 @@ public class PlaceholderFragment extends Fragment {
     }
 
     private void fillData() {
-        questionViewModel = mQuestionPack.getQuestionViewModel(position);
+        questionViewModel = new QuestionViewModel(listQuestion.get(position));
         if (questionViewModel != null) {
             if (questionViewModel.getTypeQuestion().equals(Constant.TYPE_Q)) {
                 contentQuestion.setVisibility(View.VISIBLE);
@@ -117,7 +115,7 @@ public class PlaceholderFragment extends Fragment {
     }
 
     public QuestionModel getQuestion() {
-        return mQuestionPack.getQuestionViewModels().get(position).getQuestion();
+        return listQuestion.get(position);
     }
 
     private void getRefercence(View view) {

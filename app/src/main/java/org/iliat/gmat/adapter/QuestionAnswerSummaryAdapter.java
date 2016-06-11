@@ -103,11 +103,9 @@ public class QuestionAnswerSummaryAdapter extends ArrayAdapter<QuestionViewModel
             if(questionViewModel.isCorrect()){
                 txvIndex.setTextColor(context.getResources().getColor(R.color.color_green_500));
                 txvPreview.setTextColor(context.getResources().getColor(R.color.color_green_500));
-                linearLayout.setBackgroundColor(getContext().getResources().getColor(R.color.green_beautiful));
             }else{
                 txvIndex.setTextColor(context.getResources().getColor(R.color.color_red_500));
                 txvPreview.setTextColor(context.getResources().getColor(R.color.color_red_500));
-                linearLayout.setBackgroundColor(getContext().getResources().getColor(R.color.red_beautiful));
             }
         }
     }

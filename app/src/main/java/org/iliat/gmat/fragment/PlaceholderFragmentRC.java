@@ -18,13 +18,15 @@ import org.iliat.gmat.view_model.QuestionViewModel;
 
 import java.util.ArrayList;
 
+import io.realm.RealmList;
+
 /**
  * Created by MrBom on 6/3/2016.
  */
 public class PlaceholderFragmentRC extends Fragment {
 
-    public void setQuestionPack(QuestionPackViewModel mQuestionPack) {
-        this.mQuestionPack = mQuestionPack;
+    public void setQuestionPack(RealmList<QuestionModel> listQuestion) {
+        this.listQuestion = listQuestion;
     }
 
     /**
@@ -33,7 +35,7 @@ public class PlaceholderFragmentRC extends Fragment {
      */
 
     private int position;
-    private QuestionPackViewModel mQuestionPack;
+    private RealmList<QuestionModel> listQuestion;
     private ArrayList<AnswerCRQuestionReview> answerChoiseViewItemArrayList;
     public static Context context;
     private TextView txtReadingText;
@@ -83,29 +85,28 @@ public class PlaceholderFragmentRC extends Fragment {
     public void onResume() {
         super.onResume();
         fillData();
+    }
+
+    private void fillData() {
+        final QuestionViewModel questionViewModel = new QuestionViewModel(listQuestion.get(position));
+        txtReadingText.setText(questionViewModel.getStimulus());
+        txtQuestion.setText(questionViewModel.getStem());
         for (int i = 0; i < 5; i++) {
             answerChoiseViewItemArrayList.get(i)
-                    .setAnswerModel(mQuestionPack.getQuestionViewModels().get(position).getAnswerChoiceViewModel(i));
-            if (mQuestionPack.getQuestionViewModels().get(position).getUserChoise() == i) {
+                    .setAnswerModel(questionViewModel.getAnswerChoiceViewModel(i));
+            if (questionViewModel.getUserChoise() == i) {
                 answerChoiseViewItemArrayList.get(i).setUserChoise(true);
             }
-            if (mQuestionPack.getQuestionViewModels().get(position).getQuestion().getRightAnswerIndex() == i) {
+            if (questionViewModel.getQuestion().getRightAnswerIndex() == i) {
                 answerChoiseViewItemArrayList.get(i).setRightAnswer(true);
             }
-            answerChoiseViewItemArrayList.get(i).setQuestionType(mQuestionPack.getQuestionViewModels().get(position).getQuestion().getType());
+            answerChoiseViewItemArrayList.get(i).setQuestionType(questionViewModel.getQuestion().getType());
             answerChoiseViewItemArrayList.get(i).fillData();
         }
     }
 
-    private void fillData() {
-        final QuestionViewModel questionViewModel = (mQuestionPack.getQuestionViewModels().get(position));
-        txtReadingText.setText(questionViewModel.getStimulus());
-        txtQuestion.setText(questionViewModel.getStem());
-
-    }
-
-    public QuestionModel getQuestion(){
-        return mQuestionPack.getQuestionViewModels().get(position).getQuestion();
+    public QuestionModel getQuestion() {
+        return listQuestion.get(position);
     }
 
     private void getRefercence(View view) {

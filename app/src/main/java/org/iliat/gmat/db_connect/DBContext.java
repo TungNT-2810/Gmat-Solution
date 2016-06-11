@@ -1,6 +1,7 @@
 package org.iliat.gmat.db_connect;
 
 import org.iliat.gmat.model.QuestionModel;
+import org.iliat.gmat.model.QuestionPackModel;
 import org.iliat.gmat.model.QuestionSubTypeModel;
 import org.iliat.gmat.model.QuestionTypeModel;
 
@@ -89,6 +90,10 @@ public class DBContext {
     public static int getNumberOfStar(boolean isStar, String type, String subType) {
         return (int) realm.where(QuestionModel.class).equalTo("type", type).equalTo("subType", subType)
                 .equalTo("isStar", isStar).notEqualTo("userAnswer", -1).count();
+    }
+
+    public static RealmList<QuestionModel> getAllQuestionModelByPackId(String id) {
+        return realm.where(QuestionPackModel.class).equalTo("id", id).findFirst().getQuestionList();
     }
 
 }

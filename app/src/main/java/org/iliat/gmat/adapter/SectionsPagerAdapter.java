@@ -10,9 +10,13 @@ import org.iliat.gmat.fragment.PlaceholderFragment;
 import org.iliat.gmat.fragment.PlaceholderFragmentRC;
 import org.iliat.gmat.model.QuestionModel;
 import org.iliat.gmat.view_model.QuestionPackViewModel;
+import org.iliat.gmat.view_model.QuestionViewModel;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import io.realm.RealmList;
+import io.realm.RealmResults;
 
 /**
  * Created by MrBom on 6/3/2016.
@@ -22,15 +26,15 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     private Map<Integer, String> fragmentTags;
 
-    private QuestionPackViewModel questionPack;
     private Fragment currentFragment;
     private FragmentManager fragmentManager;
+    private RealmList<QuestionModel> listQuestion;
 
-    public SectionsPagerAdapter(FragmentManager fm, QuestionPackViewModel questionPack) {
+    public SectionsPagerAdapter(FragmentManager fm, RealmList<QuestionModel> listQuestion) {
         super(fm);
-        this.questionPack = questionPack;
         fragmentTags = new HashMap<>();
-        this.fragmentManager=fm;
+        this.fragmentManager = fm;
+        this.listQuestion = listQuestion;
     }
 
     @Override
@@ -55,14 +59,14 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     private Fragment createFragment(int position) {
 
-        QuestionModel question = questionPack.getQuestionViewModels().get(position).getQuestion();
+        QuestionModel question = listQuestion.get(position);
         if (question.getType().equals(Constant.TYPE_RC)) {
-            PlaceholderFragmentRC placeholderFragmentRc = PlaceholderFragmentRC.newInstance(position+1);
-            placeholderFragmentRc.setQuestionPack(questionPack);
+            PlaceholderFragmentRC placeholderFragmentRc = PlaceholderFragmentRC.newInstance(position + 1);
+            placeholderFragmentRc.setQuestionPack(listQuestion);
             return placeholderFragmentRc;
         } else {
-            PlaceholderFragment fragment = PlaceholderFragment.newInstance(position+1);
-            fragment.setQuestionPack(questionPack, position);
+            PlaceholderFragment fragment = PlaceholderFragment.newInstance(position + 1);
+            fragment.setQuestionList(listQuestion, position);
             return fragment;
         }
     }
@@ -70,7 +74,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return this.questionPack.getNumberOfQuestions();
+        return this.listQuestion.size();
     }
 
     @Override

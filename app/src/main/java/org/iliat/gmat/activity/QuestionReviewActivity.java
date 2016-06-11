@@ -30,9 +30,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
 import com.zyuternity.arclayout.ArcLayout;
@@ -40,13 +38,13 @@ import com.zyuternity.arclayout.ArcLayout;
 import org.iliat.gmat.R;
 import org.iliat.gmat.adapter.SectionsPagerAdapter;
 import org.iliat.gmat.constant.Constant;
+import org.iliat.gmat.db_connect.DBContext;
 import org.iliat.gmat.fragment.PlaceholderFragment;
 import org.iliat.gmat.fragment.PlaceholderFragmentRC;
 import org.iliat.gmat.interf.ScreenManager;
 import org.iliat.gmat.model.QuestionModel;
-import org.iliat.gmat.model.QuestionPackModel;
 import org.iliat.gmat.utils.AnimatorUtils;
-import org.iliat.gmat.view_model.QuestionPackViewModel;
+import org.iliat.gmat.view_model.QuestionViewModel;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -54,6 +52,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 
 
 /**
@@ -63,8 +62,7 @@ import io.realm.Realm;
 public class QuestionReviewActivity extends AppCompatActivity implements ScreenManager, View.OnClickListener {
 
     //question Pack của cái activity này
-    private QuestionPackViewModel mQuestionPack;
-    QuestionPackModel questionPackModel;
+    private RealmList<QuestionModel> listQuestion;
     private android.app.FragmentManager mFragmentManager;
     private TextView isCorrect;
     private LinearLayout topController;
@@ -77,16 +75,16 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     private ImageButton btnGreen;
     private ImageButton btnYellow;
     private ImageButton btnRed;
-    private Realm realm;
-    private int totalItem;
-    private boolean isGone;
-    private int position;
-    private boolean isOpen = false;
     private View btn_open;
     private View menuLayout;
     private ArcLayout arcLayout;
     private ImageView imageTag;
     private ImageView imageStar;
+    private Realm realm;
+    private int totalItem;
+    private boolean isGone;
+    private int position;
+    private boolean isOpen = false;
     private QuestionModel questionModel;
 
 
@@ -160,21 +158,27 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     @Override
     protected void onResume() {
         super.onResume();
-        Intent intent = this.getIntent();
-        String questionPackID = (intent.getBundleExtra(ScoreActivity.TAG_QUESTION_PACK_VIEW_MODEL))
-                .getString(ScoreActivity.TAG_QUESTION_PACK_VIEW_MODEL);
-        questionPackModel = realm.where(QuestionPackModel.class).equalTo("id", questionPackID).findFirst();
-        mQuestionPack = new QuestionPackViewModel(questionPackModel);
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), mQuestionPack);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setPageTransformer(true, new CubeOutTransformer());
-        Bundle bundle = getIntent().getBundleExtra(ScoreActivity.TAG_QUESTION_PACK_VIEW_MODEL);
-        int position = bundle.getInt(ScoreActivity.SCOREACTIIVTY_POSITION);
-        if (position != -1) {
-            mViewPager.setCurrentItem(position);
-            updateTopView(position);
-            this.position = position;
-            setImageButtonState(position);
+        Bundle bundle = this.getIntent().getExtras();
+        if (bundle != null) {
+            if (bundle.getBoolean("ScoreActivity")) {
+                String questionPackID = bundle.getString(ScoreActivity.TAG_QUESTION_PACK_VIEW_MODEL);
+                listQuestion = DBContext.getAllQuestionModelByPackId(questionPackID);
+                position = bundle.getInt(ScoreActivity.SCOREACTIIVTY_POSITION);
+            } else {
+                String typeCode = bundle.getString("typeCode");
+                String subTypeCode = bundle.getString("subTypeCode");
+                listQuestion=new RealmList<>();
+                listQuestion.addAll(DBContext.getAllQuestionAnsweredByTypeAndSubType(typeCode, subTypeCode));
+                position = bundle.getInt("possition");
+            }
+            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), listQuestion);
+            mViewPager.setAdapter(mSectionsPagerAdapter);
+            mViewPager.setPageTransformer(true, new CubeOutTransformer());
+            if (position != -1) {
+                mViewPager.setCurrentItem(position);
+                updateTopView(position);
+                setImageButtonState(position);
+            }
         }
         isGone = true;
     }
@@ -252,12 +256,13 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     }
 
     private void updateTopView(int position) {
-        String str = String.format("%d/%d\nTime: %d:%d", position + 1, mQuestionPack.getQuestionViewModels().size(),
-                mQuestionPack.getQuestionViewModels().get(position).getTimeToFinish() / 60,
-                mQuestionPack.getQuestionViewModels().get(position).getTimeToFinish() % 60);
+        QuestionViewModel questionViewModel = new QuestionViewModel(listQuestion.get(position));
+        String str = String.format("%d/%d\nTime: %d:%d", position + 1, listQuestion.size(),
+                questionViewModel.getTimeToFinish() / 60,
+                questionViewModel.getTimeToFinish() % 60);
         txtProcess.setText(str);
-        if (mQuestionPack.getQuestionViewModels().get(position).getUserChoise()
-                == mQuestionPack.getQuestionViewModels().get(position).getQuestion().getRightAnswerIndex()) {
+        if (questionViewModel.getUserChoise()
+                == questionViewModel.getQuestion().getRightAnswerIndex()) {
             isCorrect.setText("Correct");
             isCorrect.setTextColor(getResources().getColor(R.color.color_green_500));
             txtProcess.setTextColor(getResources().getColor(R.color.color_green_500));
@@ -268,7 +273,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
             isCorrect.setText("Incorrect");
             topController.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
         }
-        switch (mQuestionPack.getQuestionViewModels().get(position).getTag()) {
+        switch (questionViewModel.getTag()) {
             case Constant.TAG_GREY:
                 imageTag.setImageResource(R.mipmap.grey);
                 break;
@@ -282,15 +287,15 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                 imageTag.setImageResource(R.mipmap.red);
                 break;
         }
-        if (mQuestionPack.getQuestionViewModels().get(position).isStar()) {
-            imageStar.setColorFilter(getResources().getColor(R.color.yellow),PorterDuff.Mode.SRC_ATOP);
+        if (questionViewModel.isStar()) {
+            imageStar.setColorFilter(getResources().getColor(R.color.yellow), PorterDuff.Mode.SRC_ATOP);
         } else {
-            imageStar.setColorFilter(getResources().getColor(R.color.color_white),PorterDuff.Mode.SRC_ATOP);
+            imageStar.setColorFilter(getResources().getColor(R.color.color_white), PorterDuff.Mode.SRC_ATOP);
         }
     }
 
     private void setImageButtonState(int position) {
-        if (mQuestionPack.getQuestionViewModels().get(position).getQuestion().getType().equals("RC")) {
+        if (listQuestion.get(position).getType().equals("RC")) {
             btnExpandStimulus.setVisibility(View.VISIBLE);
         } else {
             btnExpandStimulus.setVisibility(View.GONE);
@@ -304,12 +309,12 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                totalItem = mQuestionPack.getNumberOfQuestions();
+                totalItem = listQuestion.size();
                 if (isOpen) {
                     hideMenu();
                 }
-                btnBack.setEnabled(position>0 && totalItem>0);
-                btnNext.setEnabled(totalItem>0 && position<totalItem-1);
+                btnBack.setEnabled(position > 0 && totalItem > 0);
+                btnNext.setEnabled(totalItem > 0 && position < totalItem - 1);
             }
 
             @Override
@@ -396,14 +401,11 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                 if (isOpen) {
                     hideMenu();
                 }
-                Log.d("position", position + "");
                 isGone = true;
                 btnExpandStimulus.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
-                if (mViewPager.getCurrentItem() + 1 < mQuestionPack.getQuestionViewModels().size()) {
+                if (mViewPager.getCurrentItem() + 1 < listQuestion.size()) {
                     mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
                 }
-
-                Log.d("questiontype",""+mQuestionPack.getQuestionViewModels().get(mViewPager.getCurrentItem()).getType());
                 break;
             }
             case R.id.btn_back: {
@@ -412,10 +414,9 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                 }
                 isGone = true;
                 btnExpandStimulus.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
-                if (mViewPager.getCurrentItem()>0) {
+                if (mViewPager.getCurrentItem() > 0) {
                     mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
                 }
-                Log.d("questiontype",""+mQuestionPack.getQuestionViewModels().get(mViewPager.getCurrentItem()).getType());
                 break;
             }
             case R.id.menu_layout: {
@@ -445,10 +446,10 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
             case R.id.btn_tag_star:
             case R.id.layout_tag_star:
                 updateTagToDatabase(Constant.TAG_STAR);
-                if(questionModel.isStar()){
-                    imageStar.setColorFilter(getResources().getColor(R.color.yellow),PorterDuff.Mode.SRC_ATOP);
-                }else{
-                    imageStar.setColorFilter(getResources().getColor(R.color.color_white),PorterDuff.Mode.SRC_ATOP);
+                if (questionModel.isStar()) {
+                    imageStar.setColorFilter(getResources().getColor(R.color.yellow), PorterDuff.Mode.SRC_ATOP);
+                } else {
+                    imageStar.setColorFilter(getResources().getColor(R.color.color_white), PorterDuff.Mode.SRC_ATOP);
                 }
                 hideMenu();
                 break;
@@ -458,7 +459,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     }
 
     private void updateTagToDatabase(int tag) {
-        int currentPossition=mViewPager.getCurrentItem();
+        int currentPossition = mViewPager.getCurrentItem();
         Fragment fragment = mSectionsPagerAdapter.getFragment(currentPossition);
         if (fragment instanceof PlaceholderFragment) {
             questionModel = ((PlaceholderFragment) fragment).getQuestion();
