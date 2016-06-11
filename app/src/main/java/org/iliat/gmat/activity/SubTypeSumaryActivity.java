@@ -1,12 +1,15 @@
 package org.iliat.gmat.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.data.BarData;
@@ -29,6 +32,9 @@ public class SubTypeSumaryActivity extends Activity {
     private Button btnClose;
     private RealmList<QuestionSubTypeModel> list;
     private String typeCode;
+    private String typeDetail;
+    private TextView txtTitle;
+    private Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +57,6 @@ public class SubTypeSumaryActivity extends Activity {
             ArrayList<String> labels = new ArrayList<>();
             ArrayList<BarEntry> groupTotalQuestion = new ArrayList<>();
             ArrayList<BarEntry> groupCorrectAnswer = new ArrayList<>();
-            int numberOfQuestion = 0;
-            int numberOfCorrectQues = 0;
-            int numberOfOtherQues = 0;
-            int numberOfOtherQuesCorrect = 0;
 
             for (int i = 0; i < list.size(); i++) {
                 labels.add(list.get(i).getDetail());
@@ -62,17 +64,6 @@ public class SubTypeSumaryActivity extends Activity {
                         list.get(i).getCode()), i));
                 groupCorrectAnswer.add(new BarEntry(DBContext.getNumberCorrectByTypeAndSubType(typeCode,
                         list.get(i).getCode()), i));
-                numberOfQuestion += DBContext.getNumberQustionAnsweredByTypeAndSubType(typeCode, list.get(i).getCode());
-                numberOfCorrectQues += DBContext.getNumberCorrectByTypeAndSubType(typeCode, list.get(i).getCode());
-                Log.d("Linh",typeCode+":"+list.get(i).getDetail()+":"+DBContext.getNumberQustionAnsweredByTypeAndSubType(typeCode, list.get(i).getCode()));
-                Log.d("Linh",typeCode+":"+list.get(i).getDetail()+": correct:"+DBContext.getNumberCorrectByTypeAndSubType(typeCode, list.get(i).getCode()));
-            }
-            numberOfOtherQues=DBContext.getNumberQustionByType(typeCode)-numberOfQuestion;
-            if(numberOfOtherQues!=0){
-                numberOfOtherQuesCorrect=DBContext.getNumberCorrectByType(typeCode)-numberOfCorrectQues;
-                labels.add("Others");
-                groupCorrectAnswer.add(new BarEntry(numberOfOtherQuesCorrect,list.size()));
-                groupTotalQuestion.add(new BarEntry(numberOfOtherQues,list.size()));
             }
 
             BarDataSet barDataSet1 = new BarDataSet(groupTotalQuestion, "Total answered");
@@ -95,11 +86,12 @@ public class SubTypeSumaryActivity extends Activity {
         Bundle bundle = this.getIntent().getExtras();
         if (bundle != null) {
             typeCode = bundle.getString("type");
+            typeDetail = bundle.getString("detail");
+            txtTitle.setText(typeDetail);
             if (typeCode != null) {
                 list = DBContext.getQuestionTypeByCode(typeCode).getListSubType();
                 if (list != null && list.size() != 0) {
-                    listView.setAdapter(new ListSubTypeAdapter(getBaseContext(), list,
-                            DBContext.getQuestionTypeByCode(typeCode).getCode()));
+                    listView.setAdapter(new ListSubTypeAdapter(getBaseContext(), list, typeCode));
                 }
             }
         }
@@ -109,6 +101,7 @@ public class SubTypeSumaryActivity extends Activity {
         horizontalBarChart = (HorizontalBarChart) findViewById(R.id.sub_type_chart);
         listView = (ListView) findViewById(R.id.list_sub_type);
         btnClose = (Button) findViewById(R.id.btn_close);
+        txtTitle = (TextView) findViewById(R.id.txtTitle);
     }
 
     private void addListener() {
@@ -116,6 +109,39 @@ public class SubTypeSumaryActivity extends Activity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+            }
+        });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(toast!=null){
+                    toast.cancel();
+                }
+                int totalQues = DBContext.getNumberQuestionByTypeAndSubTypeCode(typeCode,
+                        list.get(position).getCode());
+                if(totalQues==0){
+                    toast=Toast.makeText(view.getContext(),list.get(position).getDetail().toUpperCase()
+                            +" has no question!",Toast.LENGTH_SHORT);
+                    toast.show();
+                }else{
+                    if(DBContext.getNumberQustionAnsweredByTypeAndSubType(typeCode,list.get(position).getCode())>0) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("type", typeCode);
+                        bundle.putString("typeDetail", typeDetail);
+                        bundle.putString("subTypeCode", list.get(position).getCode());
+                        bundle.putString("subTypeDetail", list.get(position).getDetail());
+                        Intent intent = new Intent(SubTypeSumaryActivity.this, ReviewSubTypeActivity.class);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }else{
+                        toast=Toast.makeText(view.getContext(),list.get(position).getDetail().toUpperCase()
+                                +" has no completed question!",Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                    //start animation
+                    overridePendingTransition(R.anim.trans_in, R.anim.trans_out);
+                }
+
             }
         });
     }

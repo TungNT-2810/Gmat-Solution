@@ -18,7 +18,7 @@ import org.iliat.gmat.view_model.QuestionPackViewModel;
 
 import io.realm.Realm;
 
-public class ScoreActivity extends AppCompatActivity{
+public class ScoreActivity extends AppCompatActivity {
     private static final String TAG = ScoreActivity.class.toString();
     public static final String TAG_QUESTION_PACK_VIEW_MODEL = "QUESTION_PACK_VIEW_MODEL";
     public static final String SCOREACTIIVTY_POSITION = "SCOREACTIIVTY_POSITION";
@@ -27,22 +27,18 @@ public class ScoreActivity extends AppCompatActivity{
     private int maxScore = 16;//so cau hoi toi da
     private int countTimeAverage = 0;//thoi gian lam trung binh 1 cau
 
-    Realm realm;
+    private Realm realm;
 
-    public void setCountTimeAverage(int countTimeAverage) {
-        this.countTimeAverage = countTimeAverage;
-    }
+    private ArcProgress arcProgress;
+    private TextView txtCountStar;
+    private TextView txtCountGreyTag;
+    private TextView txtCountGreenTag;
+    private TextView txtCountYellowTag;
+    private TextView txtCountRedTag;
+    private  TextView txtCountTimeAverage;
+    private ListView ltvQuestionAnswerSummary;
 
-    ArcProgress arcProgress;
-    TextView txtCountStar;
-    TextView txtCountGreyTag;
-    TextView txtCountGreenTag;
-    TextView txtCountYellowTag;
-    TextView txtCountRedTag;
-    TextView txtCountTimeAverage;
-    ListView ltvQuestionAnswerSummary;
-
-    QuestionPackViewModel questionPackViewModel;
+    private QuestionPackViewModel questionPackViewModel;
 
     public int getYourScore() {
         return yourScore;
@@ -66,8 +62,8 @@ public class ScoreActivity extends AppCompatActivity{
         setContentView(R.layout.activity_score);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_score);
         setSupportActionBar(toolbar);
-        setTitle("Score review");
-        init();//ket noi xml voi java
+        setTitle("Package review");
+        init();
         overridePendingTransition(R.anim.trans_in, R.anim.trans_out);
     }
 
@@ -88,12 +84,13 @@ public class ScoreActivity extends AppCompatActivity{
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         String questionPackId = getDataFromBundle(bundle);
-        QuestionPackModel questionPack = realm.where(QuestionPackModel.class).equalTo("id",questionPackId).findFirst();
+        QuestionPackModel questionPack = realm.where(QuestionPackModel.class).equalTo("id", questionPackId).findFirst();
         questionPackViewModel = new QuestionPackViewModel(questionPack, this);
         countTimeAverage = bundle.getInt(AnswerQuestionActivity.KEY_TIME_AVERAGE);
     }
 
-    private void init(){
+
+    private void init() {
         txtCountStar = (TextView) this.findViewById(R.id.txtCountStar);
         txtCountGreyTag = (TextView) this.findViewById(R.id.txtCountGrey);
         txtCountGreenTag = (TextView) this.findViewById(R.id.txtCountGreen);
@@ -102,14 +99,14 @@ public class ScoreActivity extends AppCompatActivity{
         txtCountTimeAverage = (TextView) this.findViewById(R.id.txtTime);
         ltvQuestionAnswerSummary = (ListView) this.findViewById(R.id.ltv_score_question_answer_summary);
         arcProgress = (ArcProgress) this.findViewById(R.id.arc_progress);
-
     }
 
     /**
      * Hàm này để đổ data vào các view
+     *
      * @param
      */
-    private void fillData(){
+    private void fillData() {
         yourScore = questionPackViewModel.getNumberOfCorrectAnswers();
         maxScore = questionPackViewModel.getNumberOfQuestions();
         txtCountStar.setText(String.valueOf(questionPackViewModel.getStarTag()));
@@ -117,7 +114,7 @@ public class ScoreActivity extends AppCompatActivity{
         txtCountGreenTag.setText(String.valueOf(questionPackViewModel.getGreenTag()));
         txtCountRedTag.setText(String.valueOf(questionPackViewModel.getRedTag()));
         txtCountYellowTag.setText(String.valueOf(questionPackViewModel.getYellowTag()));
-        txtCountTimeAverage.setText(String.format("%dm %ds",countTimeAverage/60,countTimeAverage%60));
+        txtCountTimeAverage.setText(String.format("%dm %ds", countTimeAverage / 60, countTimeAverage % 60));
 
         arcProgress.setBottomText(String.format("%d / %d", yourScore, maxScore));
         arcProgress.setProgress((int) (yourScore * 100.0f / maxScore));
@@ -126,7 +123,6 @@ public class ScoreActivity extends AppCompatActivity{
                 R.layout.list_item_score_question_answer_summary,
                 questionPackViewModel.getQuestionViewModels()));
         ltvQuestionAnswerSummary.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            /*TODO*/
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(ScoreActivity.this, QuestionReviewActivity.class);
@@ -139,10 +135,6 @@ public class ScoreActivity extends AppCompatActivity{
         });
     }
 
-    private void getTagFromQuestionPack(){
-
-    }
-
     private static final String QUESTION_PACK_VIEW_MODEL_BUNDLE_STRING = "Question_pack_view_model";
 
     public static Bundle buildBundle(String questionPackId) {
@@ -152,7 +144,7 @@ public class ScoreActivity extends AppCompatActivity{
     }
 
     public static String getDataFromBundle(Bundle bundle) {
-        return (String)bundle.getSerializable(QUESTION_PACK_VIEW_MODEL_BUNDLE_STRING);
+        return (String) bundle.getSerializable(QUESTION_PACK_VIEW_MODEL_BUNDLE_STRING);
     }
 
     @Override

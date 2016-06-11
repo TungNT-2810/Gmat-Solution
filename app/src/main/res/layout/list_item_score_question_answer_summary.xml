@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:minHeight="60dp"
     android:id="@+id/item_list_answer"
-    android:background="@color/color_white"
     android:gravity="center_vertical"
     android:padding="@dimen/question_answer_summary_padding">
     <TextView

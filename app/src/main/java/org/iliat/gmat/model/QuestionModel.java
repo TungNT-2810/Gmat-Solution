@@ -123,4 +123,11 @@ public class QuestionModel extends RealmObject {
     public void setTimeToFinish(int timeToFinish) {
         this.timeToFinish = timeToFinish;
     }
+
+    public boolean isCorrect(){
+        if(this.getUserAnswer()==this.getRightAnswerIndex()){
+            return true;
+        }
+        return false;
+    }
 }

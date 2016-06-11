@@ -111,6 +111,7 @@ public class SummaryFragment extends BaseFragment {
                     Intent intent=new Intent(view.getContext(), SubTypeSumaryActivity.class);
                     Bundle bundle=new Bundle();
                     bundle.putString("type",arrayList.get(position).getCode());
+                    bundle.putString("detail",arrayList.get(position).getTypeName());
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }
