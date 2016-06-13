@@ -124,10 +124,28 @@ public class AnswerQuestionActivity
         maxQuestion = questionPackViewModel.getNumberOfQuestions();
 
         if (questionPackViewModel.isCompleted()) {
+            totalTime = questionPack.getTotalTimeToFinish();
             new AlertDialog.Builder(this)
                     .setTitle(getString(R.string.string_title_confirmation))
                     .setMessage(getString(R.string.string_message_pack_already_done))
-                    .setPositiveButton("Start over", new DialogInterface.OnClickListener() {
+                    .setPositiveButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(AnswerQuestionActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.trans_back_in, R.anim.trans_back_out);
+                        }
+                    })
+                    .setNegativeButton("Review", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Bundle bundle = PackReviewActivity.buildBundle(questionPack.getId());
+                            bundle.putInt(KEY_TIME_AVERAGE, (int) (totalTime / questionPack.getQuestionList().size()));
+                            goToActivity(PackReviewActivity.class, bundle);
+                            overridePendingTransition(R.anim.trans_in, R.anim.trans_out);
+                        }
+                    })
+                    .setNeutralButton("Start over", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             saveTotalTimeToFinish(0);
@@ -137,36 +155,36 @@ public class AnswerQuestionActivity
                             startProcess();
                         }
                     })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(AnswerQuestionActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.trans_back_in,R.anim.trans_back_out);
-                        }
-                    })
                     .show();
         } else {
             if (!questionPackViewModel.isNew()) {
                 new AlertDialog.Builder(this)
                         .setTitle(R.string.string_title_confirmation)
                         .setMessage(getString(R.string.string_message_pack_not_done))
-                        .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(AnswerQuestionActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.trans_back_in, R.anim.trans_back_out);
+                            }
+                        })
+                        .setNegativeButton("Continue", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 if (questionPackViewModel.getContinueQuestionViewModel() != null) {
-                                    totalTime=questionPack.getTotalTimeToFinish();
+                                    totalTime = questionPack.getTotalTimeToFinish();
                                     questionViewModel = questionPackViewModel.getContinueQuestionViewModel();
                                     countAnswer = questionPackViewModel.getNumberQuestionAnswered();
                                     startProcess();
                                 } else {
                                     Intent intent = new Intent(AnswerQuestionActivity.this, MainActivity.class);
                                     startActivity(intent);
-                                    overridePendingTransition(R.anim.trans_back_in,R.anim.trans_back_out);
+                                    overridePendingTransition(R.anim.trans_back_in, R.anim.trans_back_out);
                                 }
                             }
                         })
-                        .setNegativeButton("Do again", new DialogInterface.OnClickListener() {
+                        .setNeutralButton("Do again", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 saveTotalTimeToFinish(0);
@@ -365,7 +383,7 @@ public class AnswerQuestionActivity
         }
     }
 
-    public void saveTotalTimeToFinish(long totalTime){
+    public void saveTotalTimeToFinish(long totalTime) {
         realm.beginTransaction();
         questionPackViewModel.setTotalTimeToFinish(totalTime);
         realm.copyToRealmOrUpdate(questionPackViewModel.getQuestionPack());
@@ -410,9 +428,9 @@ public class AnswerQuestionActivity
 
                     saveTotalTimeToFinish(totalTime);
 
-                    Bundle bundle = ScoreActivity.buildBundle(questionPackViewModel.getQuestionPack().getId());
+                    Bundle bundle = PackReviewActivity.buildBundle(questionPackViewModel.getQuestionPack().getId());
                     bundle.putInt(KEY_TIME_AVERAGE, (int) (totalTime / 10));
-                    goToActivity(ScoreActivity.class, bundle);
+                    goToActivity(PackReviewActivity.class, bundle);
                     overridePendingTransition(R.anim.trans_in, R.anim.trans_out);
                 } else {
                     countAnswer++;

@@ -5,8 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
-    tools:context="org.iliat.gmat.activity.ScoreActivity"
-    android:background="#224b5f">
+    tools:context=".activity.PackReviewActivity"
+    android:background="#fca771">
 
 
 
@@ -15,7 +15,6 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-
         >
         <RelativeLayout
             android:layout_width="0dp"
@@ -32,7 +31,7 @@
                 custom:arc_text_size="30sp"
                 custom:arc_stroke_width="10dp"
                 custom:arc_bottom_text_size="15sp"
-                custom:arc_finished_color="#ff7f00"
+                custom:arc_finished_color="@color/color_primary"
                 custom:arc_unfinished_color="#EEEEEE"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"/>
@@ -196,20 +195,17 @@
         android:textStyle="bold"
         android:textSize="18dp"
         android:layout_marginLeft="10dp"
-        android:textColor="#9E9E9E"
+        android:textColor="#607D8B"
         android:id="@+id/txtCategory"
-        />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#616161"
-        android:layout_marginTop="3dp"
         />
 
     <ListView
         android:id="@+id/ltv_type_question"
         android:layout_width="match_parent"
+        android:background="#FAFAFA"
         android:layout_height="0dp"
+        android:dividerHeight="1dp"
+        android:divider="#B2DFDB"
         android:fitsSystemWindows="true"
         android:layout_weight="1">
 

@@ -17,6 +17,20 @@ import io.realm.RealmResults;
 public class DBContext {
     private static Realm realm = Realm.getDefaultInstance();
 
+    public static void updateStarForEachQuestion(QuestionModel questionModel){
+        realm.beginTransaction();
+        questionModel.setStar(!questionModel.isStar());
+        realm.copyToRealmOrUpdate(questionModel);
+        realm.commitTransaction();
+    }
+
+    public static void updateTagForEachQuestion(QuestionModel questionModel, int tagId){
+        realm.beginTransaction();
+        questionModel.setTagId(tagId);
+        realm.copyToRealmOrUpdate(questionModel);
+        realm.commitTransaction();
+    }
+
     public static int getNumberQuestionBySubTypeCode(String code) {
         return realm.where(QuestionModel.class).equalTo("subType", code).distinct("id").size();
     }

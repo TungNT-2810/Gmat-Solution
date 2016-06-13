@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -18,7 +19,6 @@ import org.iliat.gmat.constant.Constant;
 import org.iliat.gmat.db_connect.DBContext;
 import org.iliat.gmat.model.QuestionModel;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import io.realm.RealmResults;
@@ -48,9 +48,10 @@ public class ReviewSubTypeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_score);
+        setContentView(R.layout.activity_review);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_score);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Review");
         init();
 
@@ -65,6 +66,19 @@ public class ReviewSubTypeActivity extends AppCompatActivity {
         bindDataToListView();
         bindDataToTopView();
         addListener();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_settings:
+                break;
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void init() {
@@ -107,21 +121,21 @@ public class ReviewSubTypeActivity extends AppCompatActivity {
         }
         txtCountTimeAverage.setText(String.format("%dm %ds", (totalTime / list.size()) / 60,
                 (totalTime / list.size()) % 60));
-        modelArrayList=new ArrayList<>();
-        for(QuestionModel q: list){
+        modelArrayList = new ArrayList<>();
+        for (QuestionModel q : list) {
             modelArrayList.add(q);
         }
     }
 
-    private void addListener(){
+    private void addListener() {
         ltvQuestionAnswerSummary.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Bundle bundle=new Bundle();
-                bundle.putInt("possition",position);
-                bundle.putString("typeCode",typeCode);
-                bundle.putString("subTypeCode",subTypeCode);
-                Intent intent=new Intent(ReviewSubTypeActivity.this,QuestionReviewActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("possition", position);
+                bundle.putString("typeCode", typeCode);
+                bundle.putString("subTypeCode", subTypeCode);
+                Intent intent = new Intent(ReviewSubTypeActivity.this, QuestionReviewActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }

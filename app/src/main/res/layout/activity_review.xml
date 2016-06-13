@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#40c181"
+    android:background="#fca771"
     android:orientation="vertical"
-    tools:context="org.iliat.gmat.activity.ScoreActivity">
+    tools:context=".activity.PackReviewActivity">
 
     <include
         android:id="@+id/toolbar_score"
@@ -31,7 +31,7 @@
                 android:layout_centerVertical="true"
                 custom:arc_bottom_text="10/16"
                 custom:arc_bottom_text_size="15sp"
-                custom:arc_finished_color="#FF8F00"
+                custom:arc_finished_color="@color/color_primary"
                 custom:arc_progress="80"
                 custom:arc_stroke_width="10dp"
                 custom:arc_text_color="@color/color_white"
@@ -220,22 +220,16 @@
         android:layout_marginTop="10dp"
         android:background="#FFAB91"></View>
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/color_white"
-        android:fitsSystemWindows="true">
 
         <ListView
             android:id="@+id/ltv_score_question_answer_summary"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:dividerHeight="1dp"
             android:divider="#B2DFDB"
             android:background="@color/color_white">
 
         </ListView>
-    </android.support.v7.widget.CardView>
 
 </LinearLayout>

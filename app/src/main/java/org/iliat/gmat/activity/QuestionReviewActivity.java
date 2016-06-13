@@ -51,7 +51,6 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.realm.Realm;
 import io.realm.RealmList;
 
 
@@ -80,7 +79,6 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     private ArcLayout arcLayout;
     private ImageView imageTag;
     private ImageView imageStar;
-    private Realm realm;
     private int totalItem;
     private boolean isGone;
     private int position;
@@ -143,16 +141,10 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
             case R.id.action_settings:
                 break;
             case android.R.id.home:
-                finish();
+                onBackPressed();
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        realm = Realm.getDefaultInstance();
     }
 
     @Override
@@ -160,14 +152,14 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         super.onResume();
         Bundle bundle = this.getIntent().getExtras();
         if (bundle != null) {
-            if (bundle.getBoolean("ScoreActivity")) {
-                String questionPackID = bundle.getString(ScoreActivity.TAG_QUESTION_PACK_VIEW_MODEL);
+            if (bundle.getBoolean("PackReviewActivity")) {
+                String questionPackID = bundle.getString(PackReviewActivity.TAG_QUESTION_PACK_VIEW_MODEL);
                 listQuestion = DBContext.getAllQuestionModelByPackId(questionPackID);
-                position = bundle.getInt(ScoreActivity.SCOREACTIIVTY_POSITION);
+                position = bundle.getInt(PackReviewActivity.SCOREACTIIVTY_POSITION);
             } else {
                 String typeCode = bundle.getString("typeCode");
                 String subTypeCode = bundle.getString("subTypeCode");
-                listQuestion=new RealmList<>();
+                listQuestion = new RealmList<>();
                 listQuestion.addAll(DBContext.getAllQuestionAnsweredByTypeAndSubType(typeCode, subTypeCode));
                 position = bundle.getInt("possition");
             }
@@ -467,15 +459,9 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
             questionModel = ((PlaceholderFragmentRC) fragment).getQuestion();
         }
         if (tag == Constant.TAG_STAR) {
-            realm.beginTransaction();
-            questionModel.setStar(!questionModel.isStar());
-            realm.copyToRealmOrUpdate(questionModel);
-            realm.commitTransaction();
+            DBContext.updateStarForEachQuestion(questionModel);
         } else {
-            realm.beginTransaction();
-            questionModel.setTagId(tag);
-            realm.copyToRealmOrUpdate(questionModel);
-            realm.commitTransaction();
+            DBContext.updateTagForEachQuestion(questionModel, tag);
         }
     }
 

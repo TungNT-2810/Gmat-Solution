@@ -28,7 +28,7 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
                 android:text="Hello everyone"
-                android:textColor="@color/color_white"
+                android:textColor="#009688"
                 android:textSize="18dp" />
 
             <TextView
@@ -56,7 +56,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
         app:progress_reached_color="#ff7f00"
         app:progress_text_color="#607D8B"
-        app:progress_unreached_color="#607D8B" />
+        app:progress_unreached_color="#BDBDBD" />
 </LinearLayout>

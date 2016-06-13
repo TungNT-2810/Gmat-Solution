@@ -43,7 +43,7 @@
             android:name=".activity.AnswerQuestionActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ScoreActivity"
+            android:name=".activity.PackReviewActivity"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activity.QuestionReviewActivity"

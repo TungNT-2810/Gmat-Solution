@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -18,8 +19,8 @@ import org.iliat.gmat.view_model.QuestionPackViewModel;
 
 import io.realm.Realm;
 
-public class ScoreActivity extends AppCompatActivity {
-    private static final String TAG = ScoreActivity.class.toString();
+public class PackReviewActivity extends AppCompatActivity {
+    private static final String TAG = PackReviewActivity.class.toString();
     public static final String TAG_QUESTION_PACK_VIEW_MODEL = "QUESTION_PACK_VIEW_MODEL";
     public static final String SCOREACTIIVTY_POSITION = "SCOREACTIIVTY_POSITION";
 
@@ -35,7 +36,7 @@ public class ScoreActivity extends AppCompatActivity {
     private TextView txtCountGreenTag;
     private TextView txtCountYellowTag;
     private TextView txtCountRedTag;
-    private  TextView txtCountTimeAverage;
+    private TextView txtCountTimeAverage;
     private ListView ltvQuestionAnswerSummary;
 
     private QuestionPackViewModel questionPackViewModel;
@@ -59,9 +60,10 @@ public class ScoreActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_score);
+        setContentView(R.layout.activity_review);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_score);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Package review");
         init();
         overridePendingTransition(R.anim.trans_in, R.anim.trans_out);
@@ -78,6 +80,19 @@ public class ScoreActivity extends AppCompatActivity {
         super.onResume();
         getDataFromIntent();
         fillData();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_settings:
+                break;
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void getDataFromIntent() {
@@ -125,9 +140,9 @@ public class ScoreActivity extends AppCompatActivity {
         ltvQuestionAnswerSummary.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(ScoreActivity.this, QuestionReviewActivity.class);
+                Intent intent = new Intent(PackReviewActivity.this, QuestionReviewActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putBoolean("ScoreActivity",true);
+                bundle.putBoolean("PackReviewActivity", true);
                 bundle.putInt(SCOREACTIIVTY_POSITION, position);
                 bundle.putString(TAG_QUESTION_PACK_VIEW_MODEL, questionPackViewModel.getId());
                 intent.putExtras(bundle);

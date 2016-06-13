@@ -37,7 +37,7 @@
                 custom:arc_text_size="18sp"
                 custom:arc_stroke_width="7dp"
                 custom:arc_suffix_text_padding="-6dp"
-                custom:arc_finished_color="#ff7f00"
+                custom:arc_finished_color="@color/color_primary"
                 custom:arc_unfinished_color="@color/color_white"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"/>
@@ -56,9 +56,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="10dp"
-                android:text="Skill level"
+                android:text="SUMMARY"
                 android:textColor="@color/color_white"
                 android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:text="Skill Level"
+                android:textColor="@color/color_white"
+                android:textSize="20sp"
                 />
 
             <TextView
@@ -68,9 +78,9 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="10dp"
                 android:text="Master"
-                android:textColor="#ffb753"
+                android:textColor="#ed7500"
                 android:textSize="25sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
         </LinearLayout>
 
         <LinearLayout

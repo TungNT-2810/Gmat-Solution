@@ -50,7 +50,7 @@ public class MainFragment extends BaseFragment {
 //                UserAnswerList.getInst().updateList();
 
                 getScreenManager().goToActivity(AnswerQuestionActivity.class, null);
-                //getScreenManager().goToActivity(ScoreActivity.class);
+                //getScreenManager().goToActivity(PackReviewActivity.class);
             }
         });
     }

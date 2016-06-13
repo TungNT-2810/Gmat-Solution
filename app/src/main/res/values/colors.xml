@@ -17,8 +17,8 @@
     <color name="color_red_500">#D50000</color>
     <color name="color_green_500">#33691E</color>
     <color name="color_yellow_500">#FFEB3B</color>
-    <color name="color_primary">#c96424</color>
-    <color name="color_primary_dark">#c05414</color>
+    <color name="color_primary">#fc650b</color>
+    <color name="color_primary_dark">#521704</color>
     <color name="color_window_background">#FAFAFA</color>
     <color name="color_background_line">#E0E0E0</color>
     <color name="color_home_background">#eeeeee</color>
@@ -32,4 +32,5 @@
     <color name="green_beautiful">#C8E6C9</color>
     <color name="color_background_tag">#E6224b5f</color>
     <color name="yellow">#FFF176</color>
+    <color name="text_color_orange">#fb5b00</color>
 </resources>
