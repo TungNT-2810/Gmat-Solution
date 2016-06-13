@@ -91,7 +91,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener,
         listQuestionPackAdapter.setContext(context);
         recyclerView.setAdapter(listQuestionPackAdapter);
         StaggeredGridLayoutManager staggeredGridLayoutManager =
-                new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
+                new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
     }
 
@@ -121,7 +121,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener,
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnMore: {
-                getScreenManager().setTitleOfActionBar("Summary");
+                getScreenManager().setTitleOfActionBar("Question Type Summary");
                 getScreenManager().openFragment(new SummaryFragment(), true);
                 break;
             }

@@ -52,7 +52,6 @@ public class ReviewSubTypeActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_score);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("Review");
         init();
 
         //start animation
@@ -135,6 +134,7 @@ public class ReviewSubTypeActivity extends AppCompatActivity {
                 bundle.putInt("possition", position);
                 bundle.putString("typeCode", typeCode);
                 bundle.putString("subTypeCode", subTypeCode);
+                bundle.putString("subTypeDetail", subTypeDetail);
                 Intent intent = new Intent(ReviewSubTypeActivity.this, QuestionReviewActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -152,6 +152,8 @@ public class ReviewSubTypeActivity extends AppCompatActivity {
             if (typeCode != null && subTypeCode != null) {
                 list = DBContext.getAllQuestionAnsweredByTypeAndSubType(typeCode, subTypeCode);
             }
+
+            setTitle(subTypeDetail+" Review");
         }
     }
 

@@ -4,7 +4,7 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#224b5f"
+    android:background="#FFF3E0"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
@@ -14,11 +14,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="horizontal"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/custom_layout_grey"
+        android:background="#fca771"
         >
 
         <LinearLayout
@@ -58,7 +54,7 @@
                 android:layout_marginRight="10dp"
                 android:text="SUMMARY"
                 android:textColor="@color/color_white"
-                android:textSize="25sp"
+                android:textSize="23sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -78,7 +74,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="10dp"
                 android:text="Master"
-                android:textColor="#ed7500"
+                android:textColor="@color/color_primary"
                 android:textSize="25sp"
                 android:textStyle="bold"/>
         </LinearLayout>
@@ -101,88 +97,21 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:src="@drawable/ic_arrow_back_white_24dp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_weight="5"
-            android:text="Swipe to choose Q packs!"
-            android:gravity="center"
-            android:textColor="@color/color_white"
-            android:textSize="16sp" />
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:src="@drawable/ic_arrow_forward_white_24dp" />
-    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="15dp"
         android:id="@+id/list_pack_question"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_weight="3"
         app:layoutManager="LinearLayoutManager" />
 
-    <LinearLayout
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="0.5"
-        android:background="@drawable/custom_layout_grey"
-        android:orientation="horizontal">
+        android:layout_weight="0.3"
+        android:src="@mipmap/logo"
+        android:scaleType="fitCenter"
+        android:padding="2dp"/>
 
-        <Button
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawableLeft="@mipmap/reminder"
-            android:drawablePadding="-10dp"
-            android:gravity="center"
-            android:text="Reminder"
-            android:textAllCaps="false"
-            android:textColor="@color/color_white"
-            android:textSize="18sp"
-
-            />
-
-        <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:background="#224b5f" />
-
-        <Button
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawablePadding="-15dp"
-            android:drawableRight="@mipmap/aboutus"
-            android:gravity="center"
-            android:text="About us"
-            android:textAllCaps="false"
-            android:textColor="@color/color_white"
-            android:textSize="18sp" />
-    </LinearLayout>
 
 </LinearLayout>

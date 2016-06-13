@@ -47,7 +47,6 @@
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activity.QuestionReviewActivity"
-            android:label="@string/title_activity_question_review_fragment"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2" />
         <activity android:name=".activity.SubTypeSumaryActivity"

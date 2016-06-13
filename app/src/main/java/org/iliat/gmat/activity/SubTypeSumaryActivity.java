@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -12,10 +13,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.DefaultXAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.formatter.XAxisValueFormatter;
+import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import org.iliat.gmat.R;
 import org.iliat.gmat.adapter.ListSubTypeAdapter;
@@ -77,8 +86,19 @@ public class SubTypeSumaryActivity extends Activity {
             dataSets.add(barDataSet2);
 
             BarData data = new BarData(labels, dataSets);
+            data.setValueFormatter(new ValueFormatter() {
+                @Override
+                public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                    if(value!=0) {
+                        return String.format("%d", (int) value);
+                    }
+                    return "";
+                }
+            });
             horizontalBarChart.setData(data);
             horizontalBarChart.setDescription("");
+            horizontalBarChart.getData().setHighlightEnabled(false);
+            horizontalBarChart.getData().setGroupSpace(1f);
         }
     }
 

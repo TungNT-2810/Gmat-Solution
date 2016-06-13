@@ -147,18 +147,22 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         return super.onOptionsItemSelected(item);
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
         Bundle bundle = this.getIntent().getExtras();
         if (bundle != null) {
             if (bundle.getBoolean("PackReviewActivity")) {
+                getSupportActionBar().setTitle("Package Review");
                 String questionPackID = bundle.getString(PackReviewActivity.TAG_QUESTION_PACK_VIEW_MODEL);
                 listQuestion = DBContext.getAllQuestionModelByPackId(questionPackID);
                 position = bundle.getInt(PackReviewActivity.SCOREACTIIVTY_POSITION);
             } else {
                 String typeCode = bundle.getString("typeCode");
                 String subTypeCode = bundle.getString("subTypeCode");
+                String subTypeDetail = bundle.getString("subTypeDetail");
+                getSupportActionBar().setTitle(subTypeDetail+" Review");
                 listQuestion = new RealmList<>();
                 listQuestion.addAll(DBContext.getAllQuestionAnsweredByTypeAndSubType(typeCode, subTypeCode));
                 position = bundle.getInt("possition");
