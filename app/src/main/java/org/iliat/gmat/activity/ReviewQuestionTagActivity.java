@@ -8,11 +8,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import org.iliat.gmat.R;
+import org.iliat.gmat.adapter.SummaryTagAdapter;
 
 public class ReviewQuestionTagActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Toolbar toolbar;
+    private SummaryTagAdapter summaryTagAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,13 @@ public class ReviewQuestionTagActivity extends AppCompatActivity {
 
         //
         setIconForTab();
+        addListener();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bindDataToViewPager();
     }
 
     @Override
@@ -59,6 +68,31 @@ public class ReviewQuestionTagActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setIcon(R.mipmap.yellow));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.mipmap.red));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.mipmap.ic_star_black_24dp));
+    }
+
+    private void bindDataToViewPager(){
+        summaryTagAdapter=new SummaryTagAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(summaryTagAdapter);
+    }
+
+    private void addListener(){
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     @Override
