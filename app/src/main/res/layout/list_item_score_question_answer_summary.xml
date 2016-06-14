@@ -32,6 +32,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
+        android:id="@+id/container_tag"
         >
         <ImageView
             android:id="@+id/imv_star"

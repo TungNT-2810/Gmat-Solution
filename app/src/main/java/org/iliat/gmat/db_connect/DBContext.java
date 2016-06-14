@@ -1,5 +1,6 @@
 package org.iliat.gmat.db_connect;
 
+import org.iliat.gmat.constant.Constant;
 import org.iliat.gmat.model.QuestionModel;
 import org.iliat.gmat.model.QuestionPackModel;
 import org.iliat.gmat.model.QuestionSubTypeModel;
@@ -108,6 +109,13 @@ public class DBContext {
 
     public static RealmList<QuestionModel> getAllQuestionModelByPackId(String id) {
         return realm.where(QuestionPackModel.class).equalTo("id", id).findFirst().getQuestionList();
+    }
+
+    public static RealmResults<QuestionModel> getAllQuestionAnsweredByTagId(int id) {
+        if(id== Constant.TAG_STAR){
+            return realm.where(QuestionModel.class).notEqualTo("userAnswer",-1).equalTo("isStar", true).findAll();
+        }
+        return realm.where(QuestionModel.class).notEqualTo("userAnswer",-1).equalTo("tagId", id).findAll();
     }
 
 }

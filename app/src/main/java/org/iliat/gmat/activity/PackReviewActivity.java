@@ -143,7 +143,7 @@ public class PackReviewActivity extends AppCompatActivity {
                 Intent intent = new Intent(PackReviewActivity.this, QuestionReviewActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putBoolean("PackReviewActivity", true);
-                bundle.putInt(SCOREACTIIVTY_POSITION, position);
+                bundle.putInt("position", position);
                 bundle.putString(TAG_QUESTION_PACK_VIEW_MODEL, questionPackViewModel.getId());
                 intent.putExtras(bundle);
                 startActivity(intent);

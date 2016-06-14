@@ -166,6 +166,7 @@
             app:arc_axisRadius="180dp"
             app:arc_freeAngle="true"
             app:arc_origin="bottom|left"
+            android:background="@color/background_color"
             >
 
             <LinearLayout

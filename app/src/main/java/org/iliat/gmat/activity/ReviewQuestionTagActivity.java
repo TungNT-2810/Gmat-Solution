@@ -71,7 +71,7 @@ public class ReviewQuestionTagActivity extends AppCompatActivity {
     }
 
     private void bindDataToViewPager(){
-        summaryTagAdapter=new SummaryTagAdapter(getSupportFragmentManager());
+        summaryTagAdapter=new SummaryTagAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(summaryTagAdapter);
     }
 

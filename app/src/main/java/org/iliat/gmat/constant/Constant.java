@@ -21,11 +21,10 @@ public class Constant {
     public static final String TYPE_SC = "SC";
     public static final String TYPE_Q = "Q";
     public static final int[] COLOR_PICKER = {Color.parseColor("#673AB7"), Color.parseColor("#2962FF"),
-            Color.parseColor("#4CAF50"), Color.parseColor("#FFEB3B"), Color.parseColor("#FF5722"),
+            Color.parseColor("#4CAF50"), Color.parseColor("#FF5722"),
             Color.parseColor("#607D8B"), Color.parseColor("#795548"), Color.parseColor("#CDDC39"), Color.parseColor("#00BFA5"),
             Color.parseColor("#0091EA"), Color.parseColor("#2962FF"), Color.parseColor("#6b3c3c"), Color.parseColor("#3c6b67"),
             Color.parseColor("#6b573c"), Color.parseColor("#6b3c56")};
-    public static final int[] PICTURES = {R.drawable.pic1, R.drawable.pic2, R.drawable.pic3, R.drawable.pic4, R.drawable.pic5};
     public static final int[] STARS = {R.drawable.star0, R.drawable.star1, R.drawable.stars2, R.drawable.stars3};
     public static final String JS = "<html><head>"
             + "<link rel='stylesheet' href='file:///android_asset/mathscribe/jqmath-0.4.3.css'>"

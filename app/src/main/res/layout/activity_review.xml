@@ -228,7 +228,7 @@
             android:layout_weight="1"
             android:dividerHeight="1dp"
             android:divider="#B2DFDB"
-            android:background="@color/color_white">
+            android:background="@color/background_color">
 
         </ListView>
 

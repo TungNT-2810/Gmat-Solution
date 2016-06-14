@@ -1,4 +1,4 @@
-package org.iliat.gmat.enitity;
+package org.iliat.gmat.interf;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;

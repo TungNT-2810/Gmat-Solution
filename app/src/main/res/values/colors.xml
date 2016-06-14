@@ -33,4 +33,5 @@
     <color name="color_background_tag">#E6224b5f</color>
     <color name="yellow">#FFF176</color>
     <color name="text_color_orange">#fb5b00</color>
+    <color name="background_color">#FFF3E0</color>
 </resources>

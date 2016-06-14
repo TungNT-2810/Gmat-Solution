@@ -1,4 +1,4 @@
-package org.iliat.gmat.enitity;
+package org.iliat.gmat.interf;
 
 import org.json.JSONObject;
 

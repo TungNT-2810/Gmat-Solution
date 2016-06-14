@@ -146,7 +146,10 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                 getSupportActionBar().setTitle("Package Review");
                 String questionPackID = bundle.getString(PackReviewActivity.TAG_QUESTION_PACK_VIEW_MODEL);
                 listQuestion = DBContext.getAllQuestionModelByPackId(questionPackID);
-                position = bundle.getInt(PackReviewActivity.SCOREACTIIVTY_POSITION);
+            } else if(bundle.getBoolean("summaryTag") ){
+                int tagId=bundle.getInt("tagId");
+                listQuestion=new RealmList<>();
+                listQuestion.addAll(DBContext.getAllQuestionAnsweredByTagId(tagId));
             } else {
                 String typeCode = bundle.getString("typeCode");
                 String subTypeCode = bundle.getString("subTypeCode");
@@ -154,8 +157,8 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                 getSupportActionBar().setTitle(subTypeDetail+" Review");
                 listQuestion = new RealmList<>();
                 listQuestion.addAll(DBContext.getAllQuestionAnsweredByTypeAndSubType(typeCode, subTypeCode));
-                position = bundle.getInt("position");
             }
+            position = bundle.getInt("position");
             mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), listQuestion);
             mViewPager.setAdapter(mSectionsPagerAdapter);
             mViewPager.setPageTransformer(true, new CubeOutTransformer());

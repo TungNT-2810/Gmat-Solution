@@ -1,4 +1,4 @@
-package org.iliat.gmat.enitity;
+package org.iliat.gmat.interf;
 
 /**
  * Created by qhuydtvt on 3/9/2016.

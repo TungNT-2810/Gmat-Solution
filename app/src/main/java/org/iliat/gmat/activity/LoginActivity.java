@@ -21,9 +21,9 @@ import com.google.gson.Gson;
 
 import org.iliat.gmat.GMATApplication;
 import org.iliat.gmat.R;
-import org.iliat.gmat.enitity.JSONParser;
-import org.iliat.gmat.enitity.JSONPostDownloadHandler;
-import org.iliat.gmat.enitity.JSONPreDownloadHandler;
+import org.iliat.gmat.interf.JSONParser;
+import org.iliat.gmat.interf.JSONPostDownloadHandler;
+import org.iliat.gmat.interf.JSONPreDownloadHandler;
 import org.iliat.gmat.model.AnswerModel;
 import org.iliat.gmat.model.QuestionModel;
 import org.iliat.gmat.model.QuestionPackModel;
@@ -43,7 +43,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;

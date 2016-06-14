@@ -129,6 +129,7 @@
     <string name="string_title_exit_gmat">Exit GMAT</string>
     <string name="string_message_exit_gmat">Are you sure you want to exit?</string>
     <string name="string_title_GMAT">GMAT</string>
+    <string name="text_data_empty">Data is empty!</string>
 
 
 </resources>

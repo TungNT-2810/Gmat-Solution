@@ -63,7 +63,7 @@ public class SubTypeSumaryActivity extends Activity {
     private void addStyleForChart(HorizontalBarChart chart) {
         // View
         chart.setDescription("");
-        chart.animateXY(2000, 2000);
+        chart.animateXY(1000, 1000);
         chart.setClickable(false);
         chart.setTouchEnabled(false);
         chart.setFocusable(false);
