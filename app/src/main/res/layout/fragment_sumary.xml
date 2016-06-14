@@ -37,6 +37,7 @@
                 android:layout_centerVertical="true"/>
         </RelativeLayout>
         <LinearLayout
+            android:id="@+id/tag_container"
             android:paddingLeft="15dp"
             android:layout_width="0dp"
             android:layout_height="match_parent"

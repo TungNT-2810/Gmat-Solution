@@ -9,23 +9,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.lzyzsd.circleprogress.ArcProgress;
 
 import org.iliat.gmat.R;
+import org.iliat.gmat.activity.ReviewQuestionTagActivity;
 import org.iliat.gmat.activity.SubTypeSumaryActivity;
 import org.iliat.gmat.adapter.ListTypeQuestionAdapter;
 import org.iliat.gmat.constant.Constant;
 import org.iliat.gmat.model.QuestionModel;
-import org.iliat.gmat.model.QuestionSubTypeModel;
 import org.iliat.gmat.model.QuestionType;
 import org.iliat.gmat.model.QuestionTypeModel;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -60,6 +59,7 @@ public class SummaryFragment extends BaseFragment {
     private TextView txtTagRed;
     private TextView txtStar;
     private View view;
+    private LinearLayout linearLayout;
 
 
     @Nullable
@@ -71,7 +71,7 @@ public class SummaryFragment extends BaseFragment {
         } else {
             container.removeView(view);
         }
-        initControl(view);
+        init(view);
         addListener();
         getDataForSumary();
         getSumaryTypeOfQuestion();
@@ -88,7 +88,7 @@ public class SummaryFragment extends BaseFragment {
     }
 
 
-    private void initControl(View view) {
+    private void init(View view) {
         listTypeQuestion = (ListView) view.findViewById(R.id.ltv_type_question);
         arcProgress = (ArcProgress) view.findViewById(R.id.sumary_arc_progress);
         txtAverageTime = (TextView) view.findViewById(R.id.sumary_avg_time);
@@ -97,6 +97,7 @@ public class SummaryFragment extends BaseFragment {
         txtTagGrey = (TextView) view.findViewById(R.id.sumary_grey);
         txtTagRed = (TextView) view.findViewById(R.id.sumary_Red);
         txtTagYellow = (TextView) view.findViewById(R.id.sumary_Yellow);
+        linearLayout = (LinearLayout) view.findViewById(R.id.tag_container);
         arrayList = new ArrayList<>();
         realm = Realm.getDefaultInstance();
         averageTime = totalAnswered = totalRightAnswer = 0;
@@ -107,14 +108,22 @@ public class SummaryFragment extends BaseFragment {
         listTypeQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(arrayList!=null){
-                    Intent intent=new Intent(view.getContext(), SubTypeSumaryActivity.class);
-                    Bundle bundle=new Bundle();
-                    bundle.putString("type",arrayList.get(position).getCode());
-                    bundle.putString("detail",arrayList.get(position).getTypeName());
+                if (arrayList != null) {
+                    Intent intent = new Intent(view.getContext(), SubTypeSumaryActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("type", arrayList.get(position).getCode());
+                    bundle.putString("detail", arrayList.get(position).getTypeName());
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }
+            }
+        });
+
+        linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(v.getContext(), ReviewQuestionTagActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -169,7 +178,7 @@ public class SummaryFragment extends BaseFragment {
 
             }
             arrayList.add(new QuestionType(resultQTypes.get(i).getCode(), resultQTypes.get(i).getDetail(),
-                    results.size(),totalRightAnswer,totalAnswered,resultQTypes.get(i).getListSubType()));
+                    results.size(), totalRightAnswer, totalAnswered, resultQTypes.get(i).getListSubType()));
             //push data
             txtTagGrey.setText(String.valueOf(totalTagGrey));
             txtTagGreen.setText(String.valueOf(totalTagGreen));

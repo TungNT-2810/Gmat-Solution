@@ -5,7 +5,7 @@
     android:versionName="1.0">
 
     <uses-sdk
-        android:minSdkVersion="19"
+        android:minSdkVersion="17"
         android:targetSdkVersion="23" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -27,6 +27,7 @@
         <activity
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,21 +42,28 @@
             android:theme="@style/AppTheme2" />
         <activity
             android:name=".activity.AnswerQuestionActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2"/>
         <activity
             android:name=".activity.PackReviewActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2" />
         <activity
             android:name=".activity.QuestionReviewActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2" />
-        <activity android:name=".activity.SubTypeSumaryActivity"
-            android:theme="@style/custom_dialog"
+        <activity
+            android:name=".activity.SubTypeSumaryActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/custom_dialog" />
+        <activity
+            android:name=".activity.ReviewSubTypeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2" />
+        <activity android:name=".activity.ReviewQuestionTagActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2"
             ></activity>
-        <activity android:name=".activity.ReviewSubTypeActivity"
-            android:screenOrientation="portrait"
-            />
     </application>
 
 </manifest>
