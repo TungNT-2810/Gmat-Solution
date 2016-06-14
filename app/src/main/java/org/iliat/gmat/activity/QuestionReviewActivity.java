@@ -122,17 +122,6 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         return true;
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d("ON PAUSE", "ON PAUSE");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d("ON STOP", "ON STOP");
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -165,7 +154,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
                 getSupportActionBar().setTitle(subTypeDetail+" Review");
                 listQuestion = new RealmList<>();
                 listQuestion.addAll(DBContext.getAllQuestionAnsweredByTypeAndSubType(typeCode, subTypeCode));
-                position = bundle.getInt("possition");
+                position = bundle.getInt("position");
             }
             mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), listQuestion);
             mViewPager.setAdapter(mSectionsPagerAdapter);

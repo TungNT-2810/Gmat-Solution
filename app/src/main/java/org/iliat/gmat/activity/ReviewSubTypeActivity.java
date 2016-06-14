@@ -19,8 +19,6 @@ import org.iliat.gmat.constant.Constant;
 import org.iliat.gmat.db_connect.DBContext;
 import org.iliat.gmat.model.QuestionModel;
 
-import java.util.ArrayList;
-
 import io.realm.RealmResults;
 
 /**
@@ -41,7 +39,6 @@ public class ReviewSubTypeActivity extends AppCompatActivity {
     private String subTypeCode;
     private String subTypeDetail;
 
-    private ArrayList<QuestionModel> modelArrayList;
     private RealmResults<QuestionModel> list;
     private ListQuestionReviewBySubTypeAdapter adapter;
 
@@ -120,10 +117,6 @@ public class ReviewSubTypeActivity extends AppCompatActivity {
         }
         txtCountTimeAverage.setText(String.format("%dm %ds", (totalTime / list.size()) / 60,
                 (totalTime / list.size()) % 60));
-        modelArrayList = new ArrayList<>();
-        for (QuestionModel q : list) {
-            modelArrayList.add(q);
-        }
     }
 
     private void addListener() {
@@ -131,7 +124,7 @@ public class ReviewSubTypeActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = new Bundle();
-                bundle.putInt("possition", position);
+                bundle.putInt("position", position);
                 bundle.putString("typeCode", typeCode);
                 bundle.putString("subTypeCode", subTypeCode);
                 bundle.putString("subTypeDetail", subTypeDetail);
@@ -152,7 +145,6 @@ public class ReviewSubTypeActivity extends AppCompatActivity {
             if (typeCode != null && subTypeCode != null) {
                 list = DBContext.getAllQuestionAnsweredByTypeAndSubType(typeCode, subTypeCode);
             }
-
             setTitle(subTypeDetail+" Review");
         }
     }

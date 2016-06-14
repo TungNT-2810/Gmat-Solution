@@ -18,6 +18,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.DefaultXAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
@@ -51,11 +52,6 @@ public class SubTypeSumaryActivity extends Activity {
         setContentView(R.layout.activity_sub_type_sumary);
         overridePendingTransition(R.anim.trans_in, R.anim.trans_out);
         init();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         getDataFromIntent();
         addListener();
         getDataForChart();
@@ -66,13 +62,17 @@ public class SubTypeSumaryActivity extends Activity {
             ArrayList<String> labels = new ArrayList<>();
             ArrayList<BarEntry> groupTotalQuestion = new ArrayList<>();
             ArrayList<BarEntry> groupCorrectAnswer = new ArrayList<>();
-
-            for (int i = 0; i < list.size(); i++) {
-                labels.add(list.get(i).getDetail());
+            int index=0;
+            for (QuestionSubTypeModel q: list) {
+                //Add label
+                labels.add(q.getDetail());
+                //Add number of answered questions
                 groupTotalQuestion.add(new BarEntry(DBContext.getNumberQustionAnsweredByTypeAndSubType(typeCode,
-                        list.get(i).getCode()), i));
+                        q.getCode()), index));
+                //Add number of correct questions
                 groupCorrectAnswer.add(new BarEntry(DBContext.getNumberCorrectByTypeAndSubType(typeCode,
-                        list.get(i).getCode()), i));
+                        q.getCode()), index));
+                index++;
             }
 
             BarDataSet barDataSet1 = new BarDataSet(groupTotalQuestion, "Total answered");
@@ -85,7 +85,7 @@ public class SubTypeSumaryActivity extends Activity {
             dataSets.add(barDataSet1);
             dataSets.add(barDataSet2);
 
-            BarData data = new BarData(labels, dataSets);
+            BarData data = new BarData(labels,dataSets);
             data.setValueFormatter(new ValueFormatter() {
                 @Override
                 public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {

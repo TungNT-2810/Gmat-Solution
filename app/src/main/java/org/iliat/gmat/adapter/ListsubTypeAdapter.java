@@ -21,7 +21,6 @@ public class ListSubTypeAdapter extends BaseAdapter {
     private RealmList<QuestionSubTypeModel> list = null;
     private LayoutInflater inflater = null;
     private String typeCode;
-    private int numberOfOther = 0;
 
     public ListSubTypeAdapter(Context context, RealmList<QuestionSubTypeModel> list, String typeCode) {
         this.context = context;
@@ -40,7 +39,7 @@ public class ListSubTypeAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        if (list != null) {
+        if (list != null && position<list.size()) {
             return list.get(position);
         }
         return null;
