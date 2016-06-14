@@ -12,7 +12,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -21,6 +23,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.DefaultXAxisValueFormatter;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.formatter.XAxisValueFormatter;
 import com.github.mikephil.charting.formatter.YAxisValueFormatter;
@@ -57,13 +60,35 @@ public class SubTypeSumaryActivity extends Activity {
         getDataForChart();
     }
 
+    private void addStyleForChart(HorizontalBarChart chart) {
+        // View
+        chart.setDescription("");
+        chart.animateXY(2000, 2000);
+        chart.setClickable(false);
+        chart.setTouchEnabled(false);
+        chart.setFocusable(false);
+        chart.setSelected(false);
+        chart.setPinchZoom(false);
+        chart.setPressed(false);
+
+        // Label
+        Legend legend = chart.getLegend();
+        legend.setFormSize(12f);
+        legend.setForm(Legend.LegendForm.CIRCLE);
+        legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
+        legend.setTextSize(12f);
+        legend.setTextColor(Color.BLACK);
+        legend.setXEntrySpace(8f);
+        legend.setYEntrySpace(8f);
+    }
+
     private void getDataForChart() {
         if (list != null) {
             ArrayList<String> labels = new ArrayList<>();
             ArrayList<BarEntry> groupTotalQuestion = new ArrayList<>();
             ArrayList<BarEntry> groupCorrectAnswer = new ArrayList<>();
-            int index=0;
-            for (QuestionSubTypeModel q: list) {
+            int index = 0;
+            for (QuestionSubTypeModel q : list) {
                 //Add label
                 labels.add(q.getDetail());
                 //Add number of answered questions
@@ -85,20 +110,18 @@ public class SubTypeSumaryActivity extends Activity {
             dataSets.add(barDataSet1);
             dataSets.add(barDataSet2);
 
-            BarData data = new BarData(labels,dataSets);
+            BarData data = new BarData(labels, dataSets);
             data.setValueFormatter(new ValueFormatter() {
                 @Override
                 public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-                    if(value!=0) {
+                    if (value != 0) {
                         return String.format("%d", (int) value);
                     }
                     return "";
                 }
             });
+
             horizontalBarChart.setData(data);
-            horizontalBarChart.setDescription("");
-            horizontalBarChart.getData().setHighlightEnabled(false);
-            horizontalBarChart.getData().setGroupSpace(1f);
         }
     }
 
@@ -122,6 +145,7 @@ public class SubTypeSumaryActivity extends Activity {
         listView = (ListView) findViewById(R.id.list_sub_type);
         btnClose = (Button) findViewById(R.id.btn_close);
         txtTitle = (TextView) findViewById(R.id.txtTitle);
+        addStyleForChart(horizontalBarChart);
     }
 
     private void addListener() {
@@ -134,17 +158,17 @@ public class SubTypeSumaryActivity extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(toast!=null){
+                if (toast != null) {
                     toast.cancel();
                 }
                 int totalQues = DBContext.getNumberQuestionByTypeAndSubTypeCode(typeCode,
                         list.get(position).getCode());
-                if(totalQues==0){
-                    toast=Toast.makeText(view.getContext(),list.get(position).getDetail().toUpperCase()
-                            +" has no question!",Toast.LENGTH_SHORT);
+                if (totalQues == 0) {
+                    toast = Toast.makeText(view.getContext(), list.get(position).getDetail().toUpperCase()
+                            + " has no question!", Toast.LENGTH_SHORT);
                     toast.show();
-                }else{
-                    if(DBContext.getNumberQustionAnsweredByTypeAndSubType(typeCode,list.get(position).getCode())>0) {
+                } else {
+                    if (DBContext.getNumberQustionAnsweredByTypeAndSubType(typeCode, list.get(position).getCode()) > 0) {
                         Bundle bundle = new Bundle();
                         bundle.putString("type", typeCode);
                         bundle.putString("typeDetail", typeDetail);
@@ -153,9 +177,9 @@ public class SubTypeSumaryActivity extends Activity {
                         Intent intent = new Intent(SubTypeSumaryActivity.this, ReviewSubTypeActivity.class);
                         intent.putExtras(bundle);
                         startActivity(intent);
-                    }else{
-                        toast=Toast.makeText(view.getContext(),list.get(position).getDetail().toUpperCase()
-                                +" has no completed question!",Toast.LENGTH_SHORT);
+                    } else {
+                        toast = Toast.makeText(view.getContext(), list.get(position).getDetail().toUpperCase()
+                                + " has no completed question!", Toast.LENGTH_SHORT);
                         toast.show();
                     }
                     //start animation
