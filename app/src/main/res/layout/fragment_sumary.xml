@@ -20,7 +20,6 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
             >
             <TextView
                 android:layout_width="wrap_content"
@@ -29,15 +28,17 @@
                 android:textStyle="bold"
                 android:textSize="18dp"
                 android:layout_marginLeft="10dp"
-                android:textColor="#607D8B"
+                android:textColor="#E0E0E0"
                 android:id="@+id/txtCategory"
                 android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
                 />
             <com.github.lzyzsd.circleprogress.ArcProgress
+                android:layout_centerInParent="true"
                 android:layout_above="@id/txtCategory"
                 android:id="@+id/sumary_arc_progress"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
                 custom:arc_progress="10"
                 custom:arc_text_color="@color/color_white"
                 custom:arc_text_size="30sp"
