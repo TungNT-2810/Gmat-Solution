@@ -27,7 +27,7 @@ public class ListQuestionByTagAdapter extends BaseAdapter {
     public ListQuestionByTagAdapter(RealmResults<QuestionModel> listQuestion, Context context) {
         this.listQuestion = listQuestion;
         this.context = context;
-        inflater=LayoutInflater.from(this.context);
+        inflater = LayoutInflater.from(this.context);
     }
 
     @Override
@@ -47,13 +47,14 @@ public class ListQuestionByTagAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view=inflater.inflate(R.layout.list_item_score_question_answer_summary,null);
-        QuestionModel questionModel=listQuestion.get(position);
-        if(view!=null && questionModel!=null){
+        View view = inflater.inflate(R.layout.list_item_score_question_answer_summary, null);
+        QuestionModel questionModel = listQuestion.get(position);
+        if (view != null && questionModel != null) {
             //init control
-            TextView txvIndex=(TextView)view.findViewById(R.id.txv_index);
-            TextView txvPreview=(TextView)view.findViewById(R.id.txv_preview);
-            ((LinearLayout)view.findViewById(R.id.container_tag)).setVisibility(View.GONE);
+            TextView txvIndex = (TextView) view.findViewById(R.id.txv_index);
+            TextView txvPreview = (TextView) view.findViewById(R.id.txv_preview);
+            ((LinearLayout) view.findViewById(R.id.container_tag)).setVisibility(View.GONE);
+            LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.item_list_answer);
 
             //bind data
             txvIndex.setText(String.valueOf(position + 1) + ".");
@@ -63,12 +64,14 @@ public class ListQuestionByTagAdapter extends BaseAdapter {
             txvPreview.setText(Html.fromHtml(stimulus));
 
             //set color
-            if(questionModel.isCorrect()){
+            if (questionModel.isCorrect()) {
                 txvIndex.setTextColor(context.getResources().getColor(R.color.color_green_500));
                 txvPreview.setTextColor(context.getResources().getColor(R.color.color_green_500));
-            }else{
+                //linearLayout.setBackgroundColor(context.getResources().getColor(R.color.green_beautiful));
+            } else {
                 txvIndex.setTextColor(context.getResources().getColor(R.color.color_red_500));
                 txvPreview.setTextColor(context.getResources().getColor(R.color.color_red_500));
+                //linearLayout.setBackgroundColor(context.getResources().getColor(R.color.red_beautiful));
             }
         }
         return view;

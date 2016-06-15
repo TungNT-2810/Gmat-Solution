@@ -46,10 +46,10 @@ public class AnswerQuestionActivity
     public static final String KEY_TIME_AVERAGE = "ANSWER_QUESTION_KEY_TIME_AVERAGE";
     private static final String QUESTION_PACK_BUNDLE_STRING = "question pack";
     private static final String LOG_TAG = AnswerQuestionActivity.class.getSimpleName();
-    private long totalTime = 0;
-    private long timeForEachQuestion = 0;
-    private int countAnswer = 12;
-    private int maxQuestion = 16;
+    private long totalTime;
+    private long timeForEachQuestion;
+    private int countAnswer;
+    private int maxQuestion;
     private TextView txtCountTime;
     private TextView progressText;
     private ProgressBar progressBarDoing;

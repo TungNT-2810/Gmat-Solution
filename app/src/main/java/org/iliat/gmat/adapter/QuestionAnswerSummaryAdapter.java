@@ -81,9 +81,9 @@ public class QuestionAnswerSummaryAdapter extends ArrayAdapter<QuestionViewModel
 
             //set color for star
             if (questionViewModel.isStar()) {
-                imvStar.setColorFilter(context.getResources().getColor(R.color.yellow, null), PorterDuff.Mode.SRC_ATOP);
+                imvStar.setColorFilter(context.getResources().getColor(R.color.yellow), PorterDuff.Mode.SRC_ATOP);
             } else {
-                imvStar.setColorFilter(context.getResources().getColor(R.color.color_white, null), PorterDuff.Mode.SRC_ATOP);
+                imvStar.setColorFilter(context.getResources().getColor(R.color.color_white), PorterDuff.Mode.SRC_ATOP);
             }
 
             //set tag
@@ -104,11 +104,11 @@ public class QuestionAnswerSummaryAdapter extends ArrayAdapter<QuestionViewModel
 
             //set color
             if (questionViewModel.isCorrect()) {
-                txvIndex.setTextColor(context.getResources().getColor(R.color.color_green_500, null));
-                txvPreview.setTextColor(context.getResources().getColor(R.color.color_green_500, null));
+                txvIndex.setTextColor(context.getResources().getColor(R.color.color_green_500));
+                txvPreview.setTextColor(context.getResources().getColor(R.color.color_green_500));
             } else {
-                txvIndex.setTextColor(context.getResources().getColor(R.color.color_red_500, null));
-                txvPreview.setTextColor(context.getResources().getColor(R.color.color_red_500, null));
+                txvIndex.setTextColor(context.getResources().getColor(R.color.color_red_500));
+                txvPreview.setTextColor(context.getResources().getColor(R.color.color_red_500));
             }
         }
     }

@@ -53,7 +53,6 @@ import java.util.List;
 
 import io.realm.RealmList;
 
-/*TODO*/
 public class QuestionReviewActivity extends AppCompatActivity implements ScreenManager, View.OnClickListener {
     //view
     private TextView isCorrect;

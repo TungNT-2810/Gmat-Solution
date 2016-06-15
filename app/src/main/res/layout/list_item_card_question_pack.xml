@@ -81,8 +81,8 @@
                 android:id="@+id/txt_status_correct"
                 />
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:id="@+id/status_lock"
                 android:src="@drawable/ic_lock_black_48px"
                 android:tint="#212121"
