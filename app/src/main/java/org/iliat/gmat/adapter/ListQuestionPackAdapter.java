@@ -36,14 +36,15 @@ public class ListQuestionPackAdapter extends
     private List<QuestionPackViewModel> mQuestionPackVIewModels;
     private OnListQuestionPackListener mQuestionPackListener;
     private MultipleSelectAdapterCallback mMultipleSelectAdapterCallback;
+
     private Context mContext;
     private Toast toast;
+    private LayoutInflater inflater;
 
     public void setContext(Context context) {
         this.mContext = context;
+        inflater=LayoutInflater.from(this.mContext);
     }
-
-    public ListQuestionPackAdapter() { }
 
     public void setQuestionPackList(List<QuestionPackModel> questionPackList){
         mQuestionPackVIewModels = new ArrayList<>();
@@ -58,13 +59,14 @@ public class ListQuestionPackAdapter extends
 
     @Override
     public QuestionPackViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = inflater.inflate(R.layout.list_item_card_question_pack, parent, false);
 
-        View v = LayoutInflater.from(parent.getContext()).
-                inflate(R.layout.list_item_card_question_pack,
-                        parent, false);
         QuestionPackViewHolder questionPackViewHolder = new QuestionPackViewHolder(v);
+
+        //init toast
         toast=Toast.makeText(v.getContext(), "This package is not available for today!",
                 Toast.LENGTH_SHORT);
+
         return questionPackViewHolder;
     }
 
@@ -99,6 +101,7 @@ public class ListQuestionPackAdapter extends
                 holder.txtCorrect.setText(String.format("%.1f",
                         (float) questionPack.getNumberOfCorrectAnswers()*100 / questionPack.getNumberOfQuestions()) + "%");
             }
+
             //check available time to unpack
             if (!questionPack.isUnpack(position)) {
                 holder.txtAnswered.setVisibility(View.GONE);
@@ -123,9 +126,9 @@ public class ListQuestionPackAdapter extends
     }
 
     public class QuestionPackViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        //view
         private CardView cardMain;
         private TextView txtDateOfPack;
-        private Animation animationIn, animationOut;
         private ImageView imgRateStar;
         private TextView txtPackIndex;
         private TextView txtAnswered;
@@ -133,10 +136,13 @@ public class ListQuestionPackAdapter extends
         private TextView txtCorrect;
         private TextView txtStatusCorrect;
         private ImageView imgStatusLock;
+        private Animation animationIn, animationOut;
 
         public QuestionPackViewModel questionPack;
+
         public QuestionPackViewHolder(View itemView) {
             super(itemView);
+            //init controls
             cardMain = (CardView) itemView.findViewById(R.id.card_question_pack);
             txtDateOfPack = (TextView) itemView.findViewById(R.id.txtDateOfPack);
             imgRateStar=(ImageView)itemView.findViewById(R.id.imgRateStar);
@@ -148,6 +154,8 @@ public class ListQuestionPackAdapter extends
             txtStatusCorrect = (TextView) itemView.findViewById(R.id.txt_status_correct);
             animationIn=AnimationUtils.loadAnimation(itemView.getContext(),R.anim.zoom_in);
             animationOut=AnimationUtils.loadAnimation(itemView.getContext(),R.anim.zoom_out);
+
+            //add listener
             itemView.setOnClickListener(this);
         }
 
@@ -203,7 +211,6 @@ public class ListQuestionPackAdapter extends
             for (QuestionPackViewModel item : mQuestionPackVIewModels) {
                 if (item.isChecked()) {
                     counter++;
-                    //selectedItem.addItemIds(item.getId());
                 }
             }
         }
@@ -216,11 +223,8 @@ public class ListQuestionPackAdapter extends
     private class SelectedItem {
 
         private int mCount;
-        private List<String> mSelectedItemIds = new ArrayList<>();
 
-        private void addItemIds(String id) {
-            mSelectedItemIds.add(id);
-        }
+        private List<String> mSelectedItemIds = new ArrayList<>();
 
         public int getCount() {
             return mCount;

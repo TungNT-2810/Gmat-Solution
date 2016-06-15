@@ -8,6 +8,7 @@ import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by hungtran on 4/17/16.
+ * Modified by LinhDQ
  */
 public class QuestionModel extends RealmObject {
     @PrimaryKey

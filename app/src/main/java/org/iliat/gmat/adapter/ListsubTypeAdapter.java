@@ -17,16 +17,19 @@ import io.realm.RealmList;
  * Created by MrBom on 6/10/2016.
  */
 public class ListSubTypeAdapter extends BaseAdapter {
+
     private Context context = null;
     private RealmList<QuestionSubTypeModel> list = null;
     private LayoutInflater inflater = null;
     private String typeCode;
+    private DBContext dbContext;
 
     public ListSubTypeAdapter(Context context, RealmList<QuestionSubTypeModel> list, String typeCode) {
         this.context = context;
         this.list = list;
         this.inflater = LayoutInflater.from(this.context);
         this.typeCode = typeCode;
+        this.dbContext=DBContext.getInst();
     }
 
     @Override
@@ -53,11 +56,15 @@ public class ListSubTypeAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = inflater.inflate(R.layout.item_sub_type_on_list, null);
+
         QuestionSubTypeModel questionSubTypeModel = list.get(position);
+
         if (view != null && questionSubTypeModel != null) {
+            //init view
             TextView txtSubTypeName = (TextView) view.findViewById(R.id.sub_type_name);
             TextView txtSubTypeTotalQues = (TextView) view.findViewById(R.id.sub_type_total_ques);
-            int totalQues = DBContext.getNumberQuestionByTypeAndSubTypeCode(typeCode, questionSubTypeModel.getCode());
+            //bind data
+            int totalQues = dbContext.getNumberQuestionByTypeAndSubTypeCode(typeCode, questionSubTypeModel.getCode());
             txtSubTypeName.setText(questionSubTypeModel.getDetail());
             if (totalQues > 1) {
                 txtSubTypeTotalQues.setText("Total " + totalQues + " questions");
@@ -66,8 +73,7 @@ public class ListSubTypeAdapter extends BaseAdapter {
             } else {
                 txtSubTypeTotalQues.setText("Empty");
             }
-            return view;
         }
-        return null;
+        return view;
     }
 }

@@ -1,16 +1,13 @@
 package org.iliat.gmat.dialog;
 
 import android.app.DialogFragment;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -20,8 +17,6 @@ import org.iliat.gmat.R;
 import org.iliat.gmat.utils.Decompress;
 
 import java.io.File;
-import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
 
 /**
  * Created by hungtran on 5/4/16.

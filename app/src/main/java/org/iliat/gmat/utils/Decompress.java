@@ -1,12 +1,10 @@
 package org.iliat.gmat.utils;
 
-import android.content.Context;
-import android.os.Environment;
 import android.util.Log;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 

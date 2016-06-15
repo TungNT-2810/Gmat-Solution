@@ -1,11 +1,8 @@
 package org.iliat.gmat.model;
 
-import java.util.ArrayList;
-
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
-import io.realm.annotations.Required;
 
 /**
  * Created by MrBom on 5/16/2016.

@@ -11,9 +11,11 @@ import org.iliat.gmat.R;
 import org.iliat.gmat.adapter.SummaryTagAdapter;
 
 public class ReviewQuestionTagActivity extends AppCompatActivity {
+    //view
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Toolbar toolbar;
+    //
     private SummaryTagAdapter summaryTagAdapter;
 
     @Override
@@ -90,7 +92,7 @@ public class ReviewQuestionTagActivity extends AppCompatActivity {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                viewPager.setCurrentItem(tab.getPosition());
             }
         });
     }

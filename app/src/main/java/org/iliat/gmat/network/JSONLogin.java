@@ -29,20 +29,4 @@ public class JSONLogin {
     public void setLogin_message(String login_message) {
         this.login_message = login_message;
     }
-
-    //    public String getLoginMessage() {
-//        return loginMessage;
-//    }
-//
-//    public void setLoginMessage(String loginMessage) {
-//        this.loginMessage = loginMessage;
-//    }
-//
-//    public Integer getLoginStatus() {
-//        return loginStatus;
-//    }
-//
-//    public void setLoginStatus(Integer loginStatus) {
-//        this.loginStatus = loginStatus;
-//    }
 }

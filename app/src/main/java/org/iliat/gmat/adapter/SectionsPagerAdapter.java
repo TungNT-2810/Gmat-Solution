@@ -76,17 +76,4 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return this.listQuestion.size();
     }
-
-    @Override
-    public CharSequence getPageTitle(int position) {
-        switch (position) {
-            case 0:
-                return "SECTION 1";
-            case 1:
-                return "SECTION 2";
-            case 2:
-                return "SECTION 3";
-        }
-        return "SECTION 4";
-    }
 }

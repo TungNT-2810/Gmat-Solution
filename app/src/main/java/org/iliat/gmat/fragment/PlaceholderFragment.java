@@ -27,30 +27,24 @@ import io.realm.RealmList;
  */
 public class PlaceholderFragment extends Fragment {
 
-    public void setQuestionList(RealmList<QuestionModel> listQuestion, int position) {
-        this.listQuestion = listQuestion;
-        this.position = position;
-    }
+    public static Context context;
+    private static final String ARG_SECTION_NUMBER = "section_number";
 
-
-    /**
-     * The fragment argument representing the section number for this
-     * fragment.
-     */
-    private int position;
-    private RealmList<QuestionModel> listQuestion;
+    //view
     private WebView contentQuestion;
     private TextView contentQuestionText;
     private CardView cardAnswers;
-    private ArrayList<AnswerCRQuestionReview> answerChoiseViewItemArrayList;
     private View contentView;
-    public static Context context;
+
+    //
     private QuestionViewModel questionViewModel;
+    private int position;
+    private ArrayList<AnswerCRQuestionReview> answerChoiseViewItemArrayList;
+    private RealmList<QuestionModel> listQuestion;
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
-
-    public PlaceholderFragment() {
-        Log.d("PlaceholderFragment", "PlaceholderFragment");
+    public void setQuestionList(RealmList<QuestionModel> listQuestion, int position) {
+        this.listQuestion = listQuestion;
+        this.position = position;
     }
 
     /**
@@ -58,22 +52,25 @@ public class PlaceholderFragment extends Fragment {
      * number.
      */
     public static PlaceholderFragment newInstance(int sectionNumber) {
-        Log.d("PlaceholderFragment", "newInstance" + sectionNumber);
+
         PlaceholderFragment fragment = new PlaceholderFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d("PlaceholderFragment", "onCreateView");
+
         View rootView = inflater.inflate(R.layout.fragment_question_review, container, false);
+
         getRefercence(rootView);
         fillData();
         this.contentView = rootView;
+
         return rootView;
     }
 
@@ -129,7 +126,7 @@ public class PlaceholderFragment extends Fragment {
 
         contentQuestionText = (TextView) view.findViewById(R.id.question_content_txt);
         if (answerChoiseViewItemArrayList == null) {
-            answerChoiseViewItemArrayList = new ArrayList<AnswerCRQuestionReview>();
+            answerChoiseViewItemArrayList = new ArrayList<>();
             AnswerCRQuestionReview answerChoiseViewItem0 = (AnswerCRQuestionReview) view.findViewById(R.id.answer_queston_review_1);
             AnswerCRQuestionReview answerChoiseViewItem1 = (AnswerCRQuestionReview) view.findViewById(R.id.answer_queston_review_2);
             AnswerCRQuestionReview answerChoiseViewItem2 = (AnswerCRQuestionReview) view.findViewById(R.id.answer_queston_review_3);

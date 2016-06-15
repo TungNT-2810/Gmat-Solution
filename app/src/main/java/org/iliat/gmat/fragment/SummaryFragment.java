@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,37 +19,23 @@ import org.iliat.gmat.activity.ReviewQuestionTagActivity;
 import org.iliat.gmat.activity.SubTypeSumaryActivity;
 import org.iliat.gmat.adapter.ListTypeQuestionAdapter;
 import org.iliat.gmat.constant.Constant;
+import org.iliat.gmat.db_connect.DBContext;
 import org.iliat.gmat.model.QuestionModel;
 import org.iliat.gmat.model.QuestionType;
 import org.iliat.gmat.model.QuestionTypeModel;
 
 import java.util.ArrayList;
 
-import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 
 public class SummaryFragment extends BaseFragment {
+
     private static final String TAG = SummaryFragment.class.toString();
 
+    //view
     private ListView listTypeQuestion;
-    private ArrayList<QuestionType> arrayList;
-    private Realm realm;
-    private RealmResults<QuestionModel> results;
-    private RealmQuery<QuestionModel> query;
-    private RealmResults<QuestionTypeModel> resultQTypes;
-    private RealmQuery<QuestionTypeModel> queryType;
-    private ListTypeQuestionAdapter listTypeQuestionAdapter;
-    private int totalAnswered;
-    private int totalRightAnswer;
-    private int totalQuestion;
-    private int averageTime;
-    private int totalTagGrey;
-    private int totalTagGreen;
-    private int totalTagYellow;
-    private int totalTagStar;
-    private int totalTagRed;
     private ArcProgress arcProgress;
     private TextView txtAverageTime;
     private TextView txtTagGrey;
@@ -60,6 +45,25 @@ public class SummaryFragment extends BaseFragment {
     private TextView txtStar;
     private View view;
     private LinearLayout linearLayout;
+
+    //
+    private ArrayList<QuestionType> arrayList;
+    private RealmResults<QuestionModel> results;
+    private RealmQuery<QuestionModel> query;
+    private RealmResults<QuestionTypeModel> resultQTypes;
+    private RealmQuery<QuestionTypeModel> queryType;
+    private ListTypeQuestionAdapter listTypeQuestionAdapter;
+    private DBContext dbContext;
+
+    private int totalAnswered;
+    private int totalRightAnswer;
+    private int totalQuestion;
+    private int totalTime;
+    private int totalTagGrey;
+    private int totalTagGreen;
+    private int totalTagYellow;
+    private int totalTagStar;
+    private int totalTagRed;
 
 
     @Nullable
@@ -71,24 +75,25 @@ public class SummaryFragment extends BaseFragment {
         } else {
             container.removeView(view);
         }
+
         init(view);
         addListener();
         getDataForSumary();
         getSumaryTypeOfQuestion();
-        listTypeQuestionAdapter = new ListTypeQuestionAdapter(view.getContext(), arrayList);
-        listTypeQuestion.setAdapter(listTypeQuestionAdapter);
+        bindDataToListview();
+
         return view;
     }
 
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
+    private void bindDataToListview() {
+        if (arrayList != null) {
+            listTypeQuestionAdapter = new ListTypeQuestionAdapter(view.getContext(), arrayList);
+            listTypeQuestion.setAdapter(listTypeQuestionAdapter);
+        }
     }
 
-
     private void init(View view) {
+        //
         listTypeQuestion = (ListView) view.findViewById(R.id.ltv_type_question);
         arcProgress = (ArcProgress) view.findViewById(R.id.sumary_arc_progress);
         txtAverageTime = (TextView) view.findViewById(R.id.sumary_avg_time);
@@ -98,9 +103,11 @@ public class SummaryFragment extends BaseFragment {
         txtTagRed = (TextView) view.findViewById(R.id.sumary_Red);
         txtTagYellow = (TextView) view.findViewById(R.id.sumary_Yellow);
         linearLayout = (LinearLayout) view.findViewById(R.id.tag_container);
+
+        //
         arrayList = new ArrayList<>();
-        realm = Realm.getDefaultInstance();
-        averageTime = totalAnswered = totalRightAnswer = 0;
+        dbContext=DBContext.getInst();
+        totalTime = totalAnswered = totalRightAnswer = 0;
         totalTagGreen = totalTagGrey = totalTagYellow = totalTagStar = totalTagRed = 0;
     }
 
@@ -122,7 +129,7 @@ public class SummaryFragment extends BaseFragment {
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(v.getContext(), ReviewQuestionTagActivity.class);
+                Intent intent = new Intent(v.getContext(), ReviewQuestionTagActivity.class);
                 startActivity(intent);
             }
         });
@@ -130,56 +137,32 @@ public class SummaryFragment extends BaseFragment {
 
 
     private void getSumaryTypeOfQuestion() {
-        queryType = realm.where(QuestionTypeModel.class);
-        resultQTypes = queryType.findAll();
+        resultQTypes = dbContext.getAllQuestiontype();
 
         for (int i = 0; i < resultQTypes.size(); i++) {
-            query = realm.where(QuestionModel.class);
+
             String code = resultQTypes.get(i).getCode();
-            query.equalTo("type", code);
-            results = query.findAll();
-            Log.d(TAG, code + " " + results.size());
-            totalAnswered = totalRightAnswer = 0;
-            Log.d("type", resultQTypes.get(i).getCode());
+            results=dbContext.getAllQuestionByType(code);
+
+            totalRightAnswer=0;
+            totalAnswered= dbContext.getNumberQuestionAnsweredByTypeCode(code);
+            totalTagStar=dbContext.getNumberOfQuestionByTagId(code,Constant.TAG_STAR);
+            totalTagGrey=dbContext.getNumberOfQuestionByTagId(code,Constant.TAG_GREY);
+            totalTagGreen=dbContext.getNumberOfQuestionByTagId(code,Constant.TAG_GREEN);
+            totalTagYellow=dbContext.getNumberOfQuestionByTagId(code,Constant.TAG_YELLOW);
+            totalTagRed=dbContext.getNumberOfQuestionByTagId(code,Constant.TAG_RED);
+
+
+            //total correct
             for (int j = 0; j < results.size(); j++) {
-                //total answered
-                if (results.get(j).getUserAnswer() != -1) {
-                    totalAnswered++;
-                }
-                //total correct
                 if (results.get(j).getUserAnswer() == results.get(j).getRightAnswerIndex()) {
                     totalRightAnswer++;
                 }
-                //
-                if (results.get(j).isStar()) {
-                    totalTagStar++;
-                }
-                //calculate number of tag
-                switch (results.get(j).getTagId()) {
-                    case Constant.TAG_GREY: {
-                        totalTagGrey++;
-                        break;
-                    }
-                    case Constant.TAG_GREEN: {
-                        totalTagGreen++;
-                        break;
-                    }
-                    case Constant.TAG_YELLOW: {
-                        totalTagYellow++;
-                        break;
-                    }
-                    case Constant.TAG_RED: {
-                        totalTagRed++;
-                        break;
-                    }
-                    default:
-                        break;
-                }
-
             }
+
             arrayList.add(new QuestionType(resultQTypes.get(i).getCode(), resultQTypes.get(i).getDetail(),
                     results.size(), totalRightAnswer, totalAnswered, resultQTypes.get(i).getListSubType()));
-            //push data
+            //bind data
             txtTagGrey.setText(String.valueOf(totalTagGrey));
             txtTagGreen.setText(String.valueOf(totalTagGreen));
             txtTagRed.setText(String.valueOf(totalTagRed));
@@ -189,19 +172,19 @@ public class SummaryFragment extends BaseFragment {
     }
 
     private void getDataForSumary() {
-        results = realm.where(QuestionModel.class).findAll().distinct("id");
-        totalQuestion = results.size();
-        totalAnswered = realm.where(QuestionModel.class).notEqualTo("userAnswer", (-1)).findAll().size();
-        for (QuestionModel q : results) {
-            averageTime += q.getTimeToFinish();
-        }
+        totalQuestion = dbContext.getNumberOfQuestion();
+        totalAnswered = dbContext.getNumberOfQuestionAnswered();
+        totalTime = (int) dbContext.getTotalTime();
+
         if (totalAnswered != 0) {
-            averageTime /= totalAnswered;
-            txtAverageTime.setText(averageTime / 60 + "m " + averageTime % 60 + "s");
+            totalTime /= totalAnswered;
+            txtAverageTime.setText(totalTime / 60 + "m " + totalTime % 60 + "s");
         } else {
             txtAverageTime.setText("0m 0s");
         }
+
         arcProgress.setMax(100);
+
         if (totalQuestion != 0) {
             arcProgress.setProgress(totalAnswered * 100 / totalQuestion);
         } else {

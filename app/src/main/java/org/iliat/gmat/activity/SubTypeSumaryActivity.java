@@ -40,20 +40,26 @@ import java.util.ArrayList;
 import io.realm.RealmList;
 
 public class SubTypeSumaryActivity extends Activity {
+    //view
     private HorizontalBarChart horizontalBarChart;
     private ListView listView;
     private Button btnClose;
+    private TextView txtTitle;
+    private Toast toast;
+    //
     private RealmList<QuestionSubTypeModel> list;
     private String typeCode;
     private String typeDetail;
-    private TextView txtTitle;
-    private Toast toast;
+
+    private DBContext dbContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sub_type_sumary);
+        //set animation
         overridePendingTransition(R.anim.trans_in, R.anim.trans_out);
+        //
         init();
         getDataFromIntent();
         addListener();
@@ -92,10 +98,10 @@ public class SubTypeSumaryActivity extends Activity {
                 //Add label
                 labels.add(q.getDetail());
                 //Add number of answered questions
-                groupTotalQuestion.add(new BarEntry(DBContext.getNumberQustionAnsweredByTypeAndSubType(typeCode,
+                groupTotalQuestion.add(new BarEntry(dbContext.getNumberQustionAnsweredByTypeAndSubType(typeCode,
                         q.getCode()), index));
                 //Add number of correct questions
-                groupCorrectAnswer.add(new BarEntry(DBContext.getNumberCorrectByTypeAndSubType(typeCode,
+                groupCorrectAnswer.add(new BarEntry(dbContext.getNumberCorrectByTypeAndSubType(typeCode,
                         q.getCode()), index));
                 index++;
             }
@@ -132,7 +138,7 @@ public class SubTypeSumaryActivity extends Activity {
             typeDetail = bundle.getString("detail");
             txtTitle.setText(typeDetail);
             if (typeCode != null) {
-                list = DBContext.getQuestionTypeByCode(typeCode).getListSubType();
+                list = dbContext.getQuestionTypeByCode(typeCode).getListSubType();
                 if (list != null && list.size() != 0) {
                     listView.setAdapter(new ListSubTypeAdapter(getBaseContext(), list, typeCode));
                 }
@@ -141,11 +147,19 @@ public class SubTypeSumaryActivity extends Activity {
     }
 
     private void init() {
+        //view
         horizontalBarChart = (HorizontalBarChart) findViewById(R.id.sub_type_chart);
         listView = (ListView) findViewById(R.id.list_sub_type);
         btnClose = (Button) findViewById(R.id.btn_close);
         txtTitle = (TextView) findViewById(R.id.txtTitle);
         addStyleForChart(horizontalBarChart);
+
+        dbContext = DBContext.getInst();
+    }
+
+    private void getToast(String mess) {
+        toast = Toast.makeText(this, mess, Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     private void addListener() {
@@ -161,14 +175,12 @@ public class SubTypeSumaryActivity extends Activity {
                 if (toast != null) {
                     toast.cancel();
                 }
-                int totalQues = DBContext.getNumberQuestionByTypeAndSubTypeCode(typeCode,
+                int totalQues = dbContext.getNumberQuestionByTypeAndSubTypeCode(typeCode,
                         list.get(position).getCode());
                 if (totalQues == 0) {
-                    toast = Toast.makeText(view.getContext(), list.get(position).getDetail().toUpperCase()
-                            + " has no question!", Toast.LENGTH_SHORT);
-                    toast.show();
+
                 } else {
-                    if (DBContext.getNumberQustionAnsweredByTypeAndSubType(typeCode, list.get(position).getCode()) > 0) {
+                    if (dbContext.getNumberQustionAnsweredByTypeAndSubType(typeCode, list.get(position).getCode()) > 0) {
                         Bundle bundle = new Bundle();
                         bundle.putString("type", typeCode);
                         bundle.putString("typeDetail", typeDetail);
@@ -178,14 +190,10 @@ public class SubTypeSumaryActivity extends Activity {
                         intent.putExtras(bundle);
                         startActivity(intent);
                     } else {
-                        toast = Toast.makeText(view.getContext(), list.get(position).getDetail().toUpperCase()
-                                + " has no completed question!", Toast.LENGTH_SHORT);
-                        toast.show();
+                        getToast(list.get(position).getDetail().toUpperCase()
+                                + " has no completed question!");
                     }
-                    //start animation
-                    overridePendingTransition(R.anim.trans_in, R.anim.trans_out);
                 }
-
             }
         });
     }

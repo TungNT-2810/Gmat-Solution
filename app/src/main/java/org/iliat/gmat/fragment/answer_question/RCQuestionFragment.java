@@ -24,13 +24,18 @@ import java.util.ArrayList;
 public class RCQuestionFragment extends Fragment
         implements AdapterView.OnItemSelectedListener,
         ChangeStateOfAnswerItemsInterface {
+
     private final int ANSWER_CHOICE_NUM = 5;
+
+    //view
     private ButtonControl buttonControl;
-    private ArrayList<AnswerCRQuestion> answerCRQuestionArrayList;
     private TextView txtReadingText;
     private ScrollView scrollView;
-    private QuestionViewModel mQuestionCRModel;
     private TextView txtQuestion;
+
+    //
+    private QuestionViewModel mQuestionCRModel;
+    private ArrayList<AnswerCRQuestion> answerCRQuestionArrayList;
     private QuestionModel question;
 
     public QuestionViewModel getmQuestionCRModel() {
@@ -43,10 +48,6 @@ public class RCQuestionFragment extends Fragment
 
     public void setButtonControl(ButtonControl buttonControl) {
         this.buttonControl = buttonControl;
-    }
-
-    public RCQuestionFragment() {
-        // Required empty public constructor
     }
 
     public void setQuestion(QuestionViewModel question) {
@@ -80,17 +81,22 @@ public class RCQuestionFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reading_question, container, false);
+
         initLayout(view);
         fillData();
+
         return view;
     }
 
     private void initLayout(View view) {
         if (answerCRQuestionArrayList == null) {
+
             txtReadingText = (TextView) view.findViewById(R.id.txtReadingText);
             txtQuestion = (TextView) view.findViewById(R.id.txtQuestion);
             scrollView = (ScrollView) view.findViewById(R.id.scrollViewAnswer);
+
             answerCRQuestionArrayList = new ArrayList<>();
+
             answerCRQuestionArrayList.add((AnswerCRQuestion) view.findViewById(R.id.answer_queston_1));
             answerCRQuestionArrayList.add((AnswerCRQuestion) view.findViewById(R.id.answer_queston_2));
             answerCRQuestionArrayList.add((AnswerCRQuestion) view.findViewById(R.id.answer_queston_3));
@@ -119,10 +125,6 @@ public class RCQuestionFragment extends Fragment
         }
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

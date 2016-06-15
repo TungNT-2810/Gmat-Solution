@@ -17,6 +17,7 @@ import com.github.lzyzsd.circleprogress.ArcProgress;
 import org.iliat.gmat.R;
 import org.iliat.gmat.activity.AnswerQuestionActivity;
 import org.iliat.gmat.adapter.ListQuestionPackAdapter;
+import org.iliat.gmat.db_connect.DBContext;
 import org.iliat.gmat.model.QuestionModel;
 import org.iliat.gmat.model.QuestionPackModel;
 import org.iliat.gmat.view_model.QuestionPackViewModel;
@@ -31,21 +32,27 @@ import io.realm.Sort;
  */
 public class HomeFragment extends BaseFragment implements View.OnClickListener,
         ListQuestionPackAdapter.OnListQuestionPackListener {
-
-    private Realm realm;
+    //view
+    private View view;
+    private TextView txtSkillLevel;
     private RecyclerView recyclerView;
     private Button btnMore;
     private ArcProgress arcProgress;
+
+    //
+    private DBContext dbContext;
     private RealmResults<QuestionModel> results;
-    private View view;
-    private TextView txtSkillLevel;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         view = inflater.inflate(R.layout.home_screen, container, false);
+
         getScreenManager().setTitleOfActionBar(getResources().getString(R.string.string_title_GMAT));
+
         init(view);
+
         return view;
     }
 
@@ -59,9 +66,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener,
     public void init(View view) {
         recyclerView = (RecyclerView) view.findViewById(R.id.list_pack_question);
         btnMore = (Button) view.findViewById(R.id.btnMore);
-        btnMore.setOnClickListener(this);
         arcProgress = (ArcProgress) view.findViewById(R.id.home_arc_progress);
         txtSkillLevel = (TextView) view.findViewById(R.id.txt_skill_leel);
+
+        //add listener
+        btnMore.setOnClickListener(this);
+
+        //get singleton
+        dbContext = DBContext.getInst();
     }
 
     private void calculateSkillLevel(int totalRightAnswer, int totalQuestion) {
@@ -80,39 +92,35 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener,
 
     private void loadQuestionPack(View view) {
         Context context = view.getContext();
+
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
+
         ListQuestionPackAdapter listQuestionPackAdapter = new ListQuestionPackAdapter();
-        realm = Realm.getDefaultInstance();
-        listQuestionPackAdapter.setQuestionPackList(realm.where(QuestionPackModel.class)
-                .findAllSorted("availableTime", Sort.ASCENDING));
+
+        listQuestionPackAdapter.setQuestionPackList(dbContext.getAllQuestionPack());
+
         listQuestionPackAdapter.setQuestionPackListener(this);
         listQuestionPackAdapter.setContext(context);
         recyclerView.setAdapter(listQuestionPackAdapter);
+
         StaggeredGridLayoutManager staggeredGridLayoutManager =
                 new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
     }
 
     private void getDataForArcProgress() {
-        int totalQuestion = 0;
-        int totalAnswered = 0;
-        int totalRightAnswer = 0;
-        results = realm.where(QuestionModel.class).findAll().distinct("id");
-        totalQuestion = results.size();
-        results = realm.where(QuestionModel.class).notEqualTo("userAnswer", (-1)).findAll().distinct("id");
-        totalAnswered = results.size();
+        int totalRightAnswer = dbContext.getNumberCorrectQuestion();
+        int totalQuestion = dbContext.getNumberOfQuestion();
+        int totalAnswered = dbContext.getNumberOfQuestionAnswered();
+
         arcProgress.setMax(100);
         if (totalQuestion != 0) {
             arcProgress.setProgress(totalAnswered * 100 / totalQuestion);
         } else {
             arcProgress.setProgress(0);
-        }
-        for (int i = 0; i < results.size(); i++) {
-            if (results.get(i).getUserAnswer() == results.get(i).getRightAnswerIndex()) {
-                totalRightAnswer++;
-            }
         }
         calculateSkillLevel(totalRightAnswer, totalQuestion);
     }

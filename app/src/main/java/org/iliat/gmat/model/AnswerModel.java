@@ -6,9 +6,6 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
 
-/**
- * Created by hungtran on 4/17/16.
- */
 public class AnswerModel extends RealmObject implements Serializable{
     @PrimaryKey
     private String id;

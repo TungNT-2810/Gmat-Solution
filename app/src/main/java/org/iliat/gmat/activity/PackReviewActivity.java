@@ -14,22 +14,20 @@ import com.github.lzyzsd.circleprogress.ArcProgress;
 
 import org.iliat.gmat.R;
 import org.iliat.gmat.adapter.QuestionAnswerSummaryAdapter;
+import org.iliat.gmat.db_connect.DBContext;
 import org.iliat.gmat.model.QuestionPackModel;
 import org.iliat.gmat.view_model.QuestionPackViewModel;
-
-import io.realm.Realm;
 
 public class PackReviewActivity extends AppCompatActivity {
     private static final String TAG = PackReviewActivity.class.toString();
     public static final String TAG_QUESTION_PACK_VIEW_MODEL = "QUESTION_PACK_VIEW_MODEL";
-    public static final String SCOREACTIIVTY_POSITION = "SCOREACTIIVTY_POSITION";
+    private static final String QUESTION_PACK_VIEW_MODEL_BUNDLE_STRING = "Question_pack_view_model";
 
-    private int yourScore = 10;//so cau tra loi dung
-    private int maxScore = 16;//so cau hoi toi da
-    private int countTimeAverage = 0;//thoi gian lam trung binh 1 cau
 
-    private Realm realm;
+    private int numberOfCorrect;
+    private int totalQuestion;
 
+    private int countTimeAverage;
     private ArcProgress arcProgress;
     private TextView txtCountStar;
     private TextView txtCountGreyTag;
@@ -37,42 +35,25 @@ public class PackReviewActivity extends AppCompatActivity {
     private TextView txtCountYellowTag;
     private TextView txtCountRedTag;
     private TextView txtCountTimeAverage;
+
     private ListView ltvQuestionAnswerSummary;
 
+
     private QuestionPackViewModel questionPackViewModel;
-
-    public int getYourScore() {
-        return yourScore;
-    }
-
-    public void setYourScore(int yourScore) {
-        this.yourScore = yourScore;
-    }
-
-    public int getMaxScore() {
-        return maxScore;
-    }
-
-    public void setMaxScore(int maxScore) {
-        this.maxScore = maxScore;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
+        //tool bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_score);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Package review");
+        //
         init();
+        //set animation
         overridePendingTransition(R.anim.trans_in, R.anim.trans_out);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        realm = Realm.getDefaultInstance();
     }
 
     @Override
@@ -95,15 +76,15 @@ public class PackReviewActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
     private void getDataFromIntent() {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         String questionPackId = getDataFromBundle(bundle);
-        QuestionPackModel questionPack = realm.where(QuestionPackModel.class).equalTo("id", questionPackId).findFirst();
-        questionPackViewModel = new QuestionPackViewModel(questionPack, this);
         countTimeAverage = bundle.getInt(AnswerQuestionActivity.KEY_TIME_AVERAGE);
+        QuestionPackModel questionPack = DBContext.getInst().getQuestionPackModelById(questionPackId);
+        questionPackViewModel = new QuestionPackViewModel(questionPack, this);
     }
-
 
     private void init() {
         txtCountStar = (TextView) this.findViewById(R.id.txtCountStar);
@@ -116,14 +97,10 @@ public class PackReviewActivity extends AppCompatActivity {
         arcProgress = (ArcProgress) this.findViewById(R.id.arc_progress);
     }
 
-    /**
-     * Hàm này để đổ data vào các view
-     *
-     * @param
-     */
     private void fillData() {
-        yourScore = questionPackViewModel.getNumberOfCorrectAnswers();
-        maxScore = questionPackViewModel.getNumberOfQuestions();
+        numberOfCorrect = questionPackViewModel.getNumberOfCorrectAnswers();
+        totalQuestion = questionPackViewModel.getNumberOfQuestions();
+
         txtCountStar.setText(String.valueOf(questionPackViewModel.getStarTag()));
         txtCountGreyTag.setText(String.valueOf(questionPackViewModel.getGreyTag()));
         txtCountGreenTag.setText(String.valueOf(questionPackViewModel.getGreenTag()));
@@ -131,12 +108,13 @@ public class PackReviewActivity extends AppCompatActivity {
         txtCountYellowTag.setText(String.valueOf(questionPackViewModel.getYellowTag()));
         txtCountTimeAverage.setText(String.format("%dm %ds", countTimeAverage / 60, countTimeAverage % 60));
 
-        arcProgress.setBottomText(String.format("%d / %d", yourScore, maxScore));
-        arcProgress.setProgress((int) (yourScore * 100.0f / maxScore));
+        arcProgress.setBottomText(String.format("%d / %d", numberOfCorrect, totalQuestion));
+        arcProgress.setProgress((int) (numberOfCorrect * 100.0f / totalQuestion));
 
         ltvQuestionAnswerSummary.setAdapter(new QuestionAnswerSummaryAdapter(this,
                 R.layout.list_item_score_question_answer_summary,
                 questionPackViewModel.getQuestionViewModels()));
+
         ltvQuestionAnswerSummary.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -150,8 +128,6 @@ public class PackReviewActivity extends AppCompatActivity {
             }
         });
     }
-
-    private static final String QUESTION_PACK_VIEW_MODEL_BUNDLE_STRING = "Question_pack_view_model";
 
     public static Bundle buildBundle(String questionPackId) {
         Bundle bundle = new Bundle();

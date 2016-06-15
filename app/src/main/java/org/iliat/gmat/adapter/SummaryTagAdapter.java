@@ -14,13 +14,13 @@ public class SummaryTagAdapter extends FragmentPagerAdapter {
 
     public SummaryTagAdapter(FragmentManager fm, int numberTag) {
         super(fm);
-        this.numberTag=numberTag;
+        this.numberTag = numberTag;
     }
 
     @Override
     public Fragment getItem(int position) {
-        SummaryTagFragment summaryTagFragment=new SummaryTagFragment();
-        summaryTagFragment.setTagId(position+1);
+        SummaryTagFragment summaryTagFragment = new SummaryTagFragment();
+        summaryTagFragment.setTagId(position + 1);
         return summaryTagFragment;
     }
 

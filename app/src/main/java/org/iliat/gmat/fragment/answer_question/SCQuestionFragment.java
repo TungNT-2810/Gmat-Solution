@@ -1,6 +1,5 @@
 package org.iliat.gmat.fragment.answer_question;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -24,22 +23,18 @@ import org.iliat.gmat.view_model.QuestionViewModel;
 
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * to handle interaction events.
- * Use the {@link SCQuestionFragment} factory method to
- * create an instance of this fragment.
- */
 public class SCQuestionFragment extends BaseFragment
         implements AdapterView.OnItemSelectedListener,
         ChangeStateOfAnswerItemsInterface {
+
     private final int ANSWER_CHOICE_NUM = 5;
+    public static final String TYPE_Q = "Q";
+
     private ButtonControl buttonControl;
-    private ArrayList<AnswerCRQuestion> answerCRQuestionArrayList;
     private WebView questionContent;
     private TextView questionContentText;
-    public static final String TYPE_Q = "Q";
+
+    private ArrayList<AnswerCRQuestion> answerCRQuestionArrayList;
 
 
     public void setButtonControl(ButtonControl buttonControl) {
@@ -48,11 +43,6 @@ public class SCQuestionFragment extends BaseFragment
 
     private QuestionViewModel mQuestionCRModel;
 
-    // TODO: Rename and change types of parameters
-
-    public SCQuestionFragment() {
-        // Required empty public constructor
-    }
 
     public void setQuestion(QuestionViewModel question) {
         mQuestionCRModel = question;
@@ -106,7 +96,7 @@ public class SCQuestionFragment extends BaseFragment
             stimulus = stimulus.replace("span style=\"text-decoration: underline;\"", "u").replace("span", "u");
             questionContentText.setText(Html.fromHtml(stimulus));
         }
-        Log.d("Type1",mQuestionCRModel.getQuestion().getType());
+
         for (int i = 0; i < ANSWER_CHOICE_NUM; i++) {
             answerCRQuestionArrayList.get(i).setAnswerModel(mQuestionCRModel.getAnswerChoiceViewModel(i));
             answerCRQuestionArrayList.get(i).setmContext(getActivity());
@@ -116,11 +106,6 @@ public class SCQuestionFragment extends BaseFragment
             answerCRQuestionArrayList.get(i).fillData();
         }
 
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     @Override

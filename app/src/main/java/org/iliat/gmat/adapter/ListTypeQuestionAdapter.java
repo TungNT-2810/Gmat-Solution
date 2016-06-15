@@ -53,13 +53,18 @@ public class ListTypeQuestionAdapter extends BaseAdapter {
         if (convertView != null) {
             return convertView;
         }
+
         View view = inflater.inflate(R.layout.item_question_type_on_list, null);
+
         QuestionType questionType = list.get(position);
 
         if (view != null && questionType != null) {
+            //init view
             TextView txtPackName = (TextView) view.findViewById(R.id.sumary_pack_name);
             TextView txtTotalQues = (TextView) view.findViewById(R.id.sumary_total_question);
             NumberProgressBar numberProgressBar = (NumberProgressBar) view.findViewById(R.id.sumary_progress);
+
+            //bind data
             txtPackName.setText(questionType.getTypeName());
             if(questionType.getTotalQuestion()>1) {
                 txtTotalQues.setText("Total "+questionType.getTotalQuestion() + " questions");
@@ -73,6 +78,4 @@ public class ListTypeQuestionAdapter extends BaseAdapter {
         }
         return view;
     }
-
-
 }

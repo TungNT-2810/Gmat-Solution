@@ -41,6 +41,7 @@ public class ReviewSubTypeActivity extends AppCompatActivity {
 
     private RealmResults<QuestionModel> list;
     private ListQuestionReviewBySubTypeAdapter adapter;
+    private DBContext dbContext;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,6 +79,7 @@ public class ReviewSubTypeActivity extends AppCompatActivity {
     }
 
     private void init() {
+        //view
         txtCountStar = (TextView) this.findViewById(R.id.txtCountStar);
         txtCountGreyTag = (TextView) this.findViewById(R.id.txtCountGrey);
         txtCountGreenTag = (TextView) this.findViewById(R.id.txtCountGreen);
@@ -86,31 +88,41 @@ public class ReviewSubTypeActivity extends AppCompatActivity {
         txtCountTimeAverage = (TextView) this.findViewById(R.id.txtTime);
         ltvQuestionAnswerSummary = (ListView) this.findViewById(R.id.ltv_score_question_answer_summary);
         arcProgress = (ArcProgress) this.findViewById(R.id.arc_progress);
+
+        //get singleton
+        dbContext=DBContext.getInst();
     }
 
     private void bindDataToTopView() {
         //bind to progress
-        int total = DBContext.getNumberQuestionByTypeAndSubTypeCode(typeCode, subTypeCode);
+        int total = dbContext.getNumberQuestionByTypeAndSubTypeCode(typeCode, subTypeCode);
         arcProgress.setMax(100);
         arcProgress.setProgress(list.size() * 100 / total);
         arcProgress.setBottomText(list.size() + "/" + total);
     }
 
     private void bindDataToListView() {
+        //set adapter for listview
         if (list != null) {
             adapter = new ListQuestionReviewBySubTypeAdapter(list, this.getBaseContext());
             ltvQuestionAnswerSummary.setAdapter(adapter);
         }
-        txtCountGreenTag.setText(String.valueOf(DBContext.getNumberOfTagByTagId(Constant.TAG_GREEN,
+
+        txtCountGreenTag.setText(String.valueOf(dbContext.getNumberOfTagByTagId(Constant.TAG_GREEN,
                 typeCode, subTypeCode)));
-        txtCountGreyTag.setText(String.valueOf(DBContext.getNumberOfTagByTagId(Constant.TAG_GREY,
+
+        txtCountGreyTag.setText(String.valueOf(dbContext.getNumberOfTagByTagId(Constant.TAG_GREY,
                 typeCode, subTypeCode)));
-        txtCountRedTag.setText(String.valueOf(DBContext.getNumberOfTagByTagId(Constant.TAG_RED,
+
+        txtCountRedTag.setText(String.valueOf(dbContext.getNumberOfTagByTagId(Constant.TAG_RED,
                 typeCode, subTypeCode)));
-        txtCountYellowTag.setText(String.valueOf(DBContext.getNumberOfTagByTagId(Constant.TAG_YELLOW,
+
+        txtCountYellowTag.setText(String.valueOf(dbContext.getNumberOfTagByTagId(Constant.TAG_YELLOW,
                 typeCode, subTypeCode)));
-        txtCountStar.setText(String.valueOf(DBContext.getNumberOfStar(true,
+
+        txtCountStar.setText(String.valueOf(dbContext.getNumberOfStar(true,
                 typeCode, subTypeCode)));
+
         int totalTime = 0;
         for (QuestionModel q : list) {
             totalTime += q.getTimeToFinish();
@@ -143,7 +155,7 @@ public class ReviewSubTypeActivity extends AppCompatActivity {
             subTypeCode = bundle.getString("subTypeCode");
             subTypeDetail = bundle.getString("subTypeDetail");
             if (typeCode != null && subTypeCode != null) {
-                list = DBContext.getAllQuestionAnsweredByTypeAndSubType(typeCode, subTypeCode);
+                list = dbContext.getAllQuestionAnsweredByTypeAndSubType(typeCode, subTypeCode);
             }
             setTitle(subTypeDetail+" Review");
         }

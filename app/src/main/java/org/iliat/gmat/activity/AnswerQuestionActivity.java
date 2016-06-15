@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import org.iliat.gmat.R;
 import org.iliat.gmat.constant.Constant;
+import org.iliat.gmat.db_connect.DBContext;
 import org.iliat.gmat.fragment.answer_question.RCQuestionFragment;
 import org.iliat.gmat.fragment.answer_question.SCQuestionFragment;
 import org.iliat.gmat.interf.ButtonControl;
@@ -47,7 +48,6 @@ public class AnswerQuestionActivity
     private static final String LOG_TAG = AnswerQuestionActivity.class.getSimpleName();
     private long totalTime = 0;
     private long timeForEachQuestion = 0;
-    private Realm realm;
     private int countAnswer = 12;
     private int maxQuestion = 16;
     private TextView txtCountTime;
@@ -67,11 +67,13 @@ public class AnswerQuestionActivity
     private String currentStimulus;
     private String nextStimulus;
 
+    private DBContext dbContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answer_question);
-        inits();
+        init();
         getDataFromIntent();
         overridePendingTransition(R.anim.trans_in, R.anim.trans_out);
     }
@@ -118,8 +120,7 @@ public class AnswerQuestionActivity
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
         String questionPackId = getQuestionPackFromBundle(bundle);
-        realm = Realm.getDefaultInstance();
-        final QuestionPackModel questionPack = realm.where(QuestionPackModel.class).equalTo("id", questionPackId).findFirst();
+        final QuestionPackModel questionPack = dbContext.getQuestionPackModelById(questionPackId);
         questionPackViewModel = new QuestionPackViewModel(questionPack, this);
         maxQuestion = questionPackViewModel.getNumberOfQuestions();
 
@@ -140,7 +141,7 @@ public class AnswerQuestionActivity
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Bundle bundle = PackReviewActivity.buildBundle(questionPack.getId());
-                            bundle.putInt(KEY_TIME_AVERAGE, (int) (totalTime / questionPack.getQuestionList().size()));
+                            bundle.putInt(KEY_TIME_AVERAGE, (int) (totalTime / maxQuestion));
                             goToActivity(PackReviewActivity.class, bundle);
                             overridePendingTransition(R.anim.trans_in, R.anim.trans_out);
                         }
@@ -148,7 +149,9 @@ public class AnswerQuestionActivity
                     .setNeutralButton("Start over", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            saveTotalTimeToFinish(0);
+                            //save total time to finish
+                            dbContext.saveTotalTimeToFinish(questionPackViewModel ,0);
+
                             questionPackViewModel.clearUserAnswers();
                             questionViewModel = questionPackViewModel.getFirstQuestionViewModel();
                             countAnswer = 0;
@@ -187,7 +190,9 @@ public class AnswerQuestionActivity
                         .setNeutralButton("Do again", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                saveTotalTimeToFinish(0);
+                                //save total time to finish
+                                dbContext.saveTotalTimeToFinish(questionPackViewModel ,0);
+
                                 questionPackViewModel.clearUserAnswers();
                                 questionViewModel = questionPackViewModel.getFirstQuestionViewModel();
                                 countAnswer = 0;
@@ -242,7 +247,7 @@ public class AnswerQuestionActivity
         }
     }
 
-    private void inits() {
+    private void init() {
         txtCountTime = (TextView) this.findViewById(R.id.textView_count_down);
         progressText = (TextView) this.findViewById(R.id.text_progress);
         progressBarDoing = (ProgressBar) this.findViewById(R.id.doing_progressBar);
@@ -255,6 +260,7 @@ public class AnswerQuestionActivity
         btnExit = (ImageButton) findViewById(R.id.btnImgButtonExit);
         isGone = true;
         addListeners();
+        dbContext=DBContext.getInst();
     }
 
     private void updateSubmitButtonText() {
@@ -383,12 +389,7 @@ public class AnswerQuestionActivity
         }
     }
 
-    public void saveTotalTimeToFinish(long totalTime) {
-        realm.beginTransaction();
-        questionPackViewModel.setTotalTimeToFinish(totalTime);
-        realm.copyToRealmOrUpdate(questionPackViewModel.getQuestionPack());
-        realm.commitTransaction();
-    }
+
 
 
     @Override
@@ -401,9 +402,9 @@ public class AnswerQuestionActivity
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
-                                saveTotalTimeToFinish(totalTime);
-
+                                //save total time to finish
+                                dbContext.saveTotalTimeToFinish(questionPackViewModel ,totalTime);
+                                //
                                 Intent intent = new Intent(AnswerQuestionActivity.this, MainActivity.class);
                                 startActivity(intent);
                                 overridePendingTransition(R.anim.trans_back_in, R.anim.trans_back_out);
@@ -416,17 +417,16 @@ public class AnswerQuestionActivity
             case R.id.btn_next: {
                 //save user answer and time to finish to db when button Next is clicked
                 questionViewModel.saveUserAnswer();
-                realm.beginTransaction();
-                questionViewModel.getQuestion().setTimeToFinish((int) timeForEachQuestion);
-
+                //save time to finish for each question
+                dbContext.saveTimeFinishForEachQuestion(questionViewModel,timeForEachQuestion);
+                //save tag default for each question
                 if (questionViewModel.getQuestion().getTagId() == 0) {
-                    questionViewModel.getQuestion().setTagId(Constant.TAG_GREY);
+                    dbContext.saveTagForEachQuestion(questionViewModel,Constant.TAG_GREY);
                 }
-                realm.copyToRealmOrUpdate(questionViewModel.getQuestion());
-                realm.commitTransaction();
-                if (questionPackViewModel.isLastQuestionInPack(questionViewModel)) {
 
-                    saveTotalTimeToFinish(totalTime);
+                if (questionPackViewModel.isLastQuestionInPack(questionViewModel)) {
+                    //save total time to finish
+                    dbContext.saveTotalTimeToFinish(questionPackViewModel ,totalTime);
 
                     Bundle bundle = PackReviewActivity.buildBundle(questionPackViewModel.getQuestionPack().getId());
                     bundle.putInt(KEY_TIME_AVERAGE, (int) (totalTime / 10));

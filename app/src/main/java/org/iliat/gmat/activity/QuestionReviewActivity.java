@@ -53,16 +53,9 @@ import java.util.List;
 
 import io.realm.RealmList;
 
-
-/**
- * Khi sử dụng nhớ set QuestionPack cho nó
- */
 /*TODO*/
 public class QuestionReviewActivity extends AppCompatActivity implements ScreenManager, View.OnClickListener {
-
-    //question Pack của cái activity này
-    private RealmList<QuestionModel> listQuestion;
-    private android.app.FragmentManager mFragmentManager;
+    //view
     private TextView isCorrect;
     private LinearLayout topController;
     private TextView txtProcess;
@@ -79,26 +72,19 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     private ArcLayout arcLayout;
     private ImageView imageTag;
     private ImageView imageStar;
+    //
+    private RealmList<QuestionModel> listQuestion;
+    private android.app.FragmentManager mFragmentManager;
+    private QuestionModel questionModel;
+    private DBContext dbContext;
+    //
     private int totalItem;
     private boolean isGone;
     private int position;
-    private boolean isOpen = false;
-    private QuestionModel questionModel;
+    private boolean isOpen;
 
-
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
     private ViewPager mViewPager;
     private Toolbar toolbar;
 
@@ -106,11 +92,13 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_review_fragment);
+
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         PlaceholderFragment.context = this;
-        inits();
+
+        init();
         addListenerForTabChange();
         overridePendingTransition(R.anim.trans_in, R.anim.trans_out);
     }
@@ -145,18 +133,18 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
             if (bundle.getBoolean("PackReviewActivity")) {
                 getSupportActionBar().setTitle("Package Review");
                 String questionPackID = bundle.getString(PackReviewActivity.TAG_QUESTION_PACK_VIEW_MODEL);
-                listQuestion = DBContext.getAllQuestionModelByPackId(questionPackID);
+                listQuestion = dbContext.getAllQuestionModelByPackId(questionPackID);
             } else if(bundle.getBoolean("summaryTag") ){
                 int tagId=bundle.getInt("tagId");
                 listQuestion=new RealmList<>();
-                listQuestion.addAll(DBContext.getAllQuestionAnsweredByTagId(tagId));
+                listQuestion.addAll(dbContext.getAllQuestionAnsweredByTagId(tagId));
             } else {
                 String typeCode = bundle.getString("typeCode");
                 String subTypeCode = bundle.getString("subTypeCode");
                 String subTypeDetail = bundle.getString("subTypeDetail");
                 getSupportActionBar().setTitle(subTypeDetail+" Review");
                 listQuestion = new RealmList<>();
-                listQuestion.addAll(DBContext.getAllQuestionAnsweredByTypeAndSubType(typeCode, subTypeCode));
+                listQuestion.addAll(dbContext.getAllQuestionAnsweredByTypeAndSubType(typeCode, subTypeCode));
             }
             position = bundle.getInt("position");
             mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), listQuestion);
@@ -171,7 +159,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         isGone = true;
     }
 
-    private void inits() {
+    private void init() {
         isCorrect = (TextView) findViewById(R.id.txt_correct);
         isCorrect.setTypeface(Typeface.DEFAULT_BOLD);
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -194,10 +182,11 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         btnRed = (ImageButton) findViewById(R.id.btn_tag_red);
         imageTag = (ImageView) findViewById(R.id.image_tag);
         imageStar = (ImageView) findViewById(R.id.image_star);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        isGone = true;
+
         addListener();
+        dbContext=DBContext.getInst();
+        isGone = true;
+        isOpen=false;
     }
 
     private void addListener() {
@@ -455,9 +444,9 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
             questionModel = ((PlaceholderFragmentRC) fragment).getQuestion();
         }
         if (tag == Constant.TAG_STAR) {
-            DBContext.updateStarForEachQuestion(questionModel);
+            dbContext.updateStarForEachQuestion(questionModel);
         } else {
-            DBContext.updateTagForEachQuestion(questionModel, tag);
+            dbContext.updateTagForEachQuestion(questionModel, tag);
         }
     }
 

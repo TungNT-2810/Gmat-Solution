@@ -1,13 +1,16 @@
 package org.iliat.gmat.adapter;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.iliat.gmat.R;
@@ -45,15 +48,17 @@ public class ListQuestionReviewBySubTypeAdapter extends BaseAdapter {
         return position;
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = inflater.inflate(R.layout.list_item_score_question_answer_summary, null);
-        QuestionModel questionModel=list.get(position);
-        if (view != null && questionModel!=null) {
+        QuestionModel questionModel = list.get(position);
+        if (view != null && questionModel != null) {
             TextView txtindex = (TextView) view.findViewById(R.id.txv_index);
             TextView txtPreview = (TextView) view.findViewById(R.id.txv_preview);
             ImageView imvStar = (ImageView) view.findViewById(R.id.imv_star);
             ImageView imvTag = (ImageView) view.findViewById(R.id.imv_tag);
+            LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.item_list_answer);
 
             //bind data
             txtindex.setText(String.valueOf(position + 1) + ".");
@@ -61,9 +66,9 @@ public class ListQuestionReviewBySubTypeAdapter extends BaseAdapter {
             stimulus = stimulus.replace("span style=\"text-decoration: underline;\"", "u").replace("span", "u");
             txtPreview.setText(Html.fromHtml(stimulus));
 
-            if(questionModel.isStar()){
+            if (questionModel.isStar()) {
                 imvStar.setColorFilter(context.getResources().getColor(R.color.yellow), PorterDuff.Mode.SRC_ATOP);
-            }else{
+            } else {
                 imvStar.setColorFilter(context.getResources().getColor(R.color.color_white), PorterDuff.Mode.SRC_ATOP);
             }
 
@@ -82,14 +87,14 @@ public class ListQuestionReviewBySubTypeAdapter extends BaseAdapter {
                     break;
             }
 
-            if(questionModel.isCorrect()){
-                txtindex.setTextColor(context.getResources().getColor(R.color.color_green_500));
-                txtPreview.setTextColor(context.getResources().getColor(R.color.color_green_500));
-                //linearLayout.setBackgroundColor(getContext().getResources().getColor(R.color.green_beautiful));
-            }else{
-                txtindex.setTextColor(context.getResources().getColor(R.color.color_red_500));
-                txtPreview.setTextColor(context.getResources().getColor(R.color.color_red_500));
-                //linearLayout.setBackgroundColor(getContext().getResources().getColor(R.color.red_beautiful));
+            if (questionModel.isCorrect()) {
+                txtindex.setTextColor(view.getResources().getColor(R.color.color_green_500, null));
+                txtPreview.setTextColor(view.getResources().getColor(R.color.color_green_500, null));
+                linearLayout.setBackgroundColor(view.getResources().getColor(R.color.green_beautiful, null));
+            } else {
+                txtindex.setTextColor(view.getResources().getColor(R.color.color_red_500, null));
+                txtPreview.setTextColor(view.getResources().getColor(R.color.color_red_500, null));
+                linearLayout.setBackgroundColor(view.getResources().getColor(R.color.red_beautiful, null));
             }
             return view;
         }

@@ -30,6 +30,7 @@ public class SummaryTagFragment extends Fragment {
 
     private RealmResults<QuestionModel> listQuestion;
     private ListQuestionByTagAdapter listQuestionByTagAdapter;
+
     private int tagId;
 
     public void setTagId(int id) {
@@ -61,7 +62,7 @@ public class SummaryTagFragment extends Fragment {
         });
 
         //query data
-        listQuestion = DBContext.getAllQuestionAnsweredByTagId(tagId);
+        listQuestion = DBContext.getInst().getAllQuestionAnsweredByTagId(tagId);
 
         //check data is empty or not
         if (listQuestion == null || listQuestion.size() == 0) {

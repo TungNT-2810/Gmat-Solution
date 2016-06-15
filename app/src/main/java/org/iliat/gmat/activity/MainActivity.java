@@ -14,7 +14,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,8 +21,6 @@ import android.view.View;
 import org.iliat.gmat.R;
 import org.iliat.gmat.dialog.DownloadImageDialog;
 import org.iliat.gmat.fragment.HomeFragment;
-import org.iliat.gmat.fragment.QuestionPackFragment;
-import org.iliat.gmat.interf.OnDownloadFinished;
 import org.iliat.gmat.interf.ScreenManager;
 import org.iliat.gmat.utils.QuestionHelper;
 
@@ -34,8 +31,6 @@ import io.realm.RealmConfiguration;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ScreenManager, FragmentManager.OnBackStackChangedListener {
 
-    private FragmentManager mFragmentManager;
-    private QuestionPackFragment questionPackFragment;
     private HomeFragment homeFragment;
     private ActionBarDrawerToggle toggle;
 
@@ -72,8 +67,6 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        RealmConfiguration realmConfig = new RealmConfiguration.Builder(getApplicationContext()).build();
-        Realm.setDefaultConfiguration(realmConfig);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null && toolbar != null) {
@@ -91,7 +84,7 @@ public class MainActivity extends AppCompatActivity
                 }
             });
         }
-        getIntances();
+
         getFragmentManager().addOnBackStackChangedListener(this);
         homeFragment = new HomeFragment();
         openFragment(homeFragment, true);
@@ -100,6 +93,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+
+        //Realm config
+        RealmConfiguration realmConfig = new RealmConfiguration.Builder(getApplicationContext()).build();
+        Realm.setDefaultConfiguration(realmConfig);
     }
 
     @Override
@@ -112,7 +109,6 @@ public class MainActivity extends AppCompatActivity
     private void syncActionBarArrowState() {
         int backStackEntryCount =
                 getFragmentManager().getBackStackEntryCount();
-        Log.d("TAGGG", "" + backStackEntryCount);
         toggle.setDrawerIndicatorEnabled(backStackEntryCount == 1);
     }
 
@@ -122,12 +118,11 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            if (getFragmentManager().getBackStackEntryCount()<=1){
+            if (getFragmentManager().getBackStackEntryCount() <= 1) {
                 new AlertDialog.Builder(this)
                         .setTitle(getString(R.string.string_title_exit_gmat))
                         .setMessage(getString(R.string.string_message_exit_gmat))
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                        {
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -138,8 +133,7 @@ public class MainActivity extends AppCompatActivity
                         })
                         .setNegativeButton("No", null)
                         .show();
-            }
-            else {
+            } else {
                 super.onBackPressed();
             }
 
@@ -149,14 +143,6 @@ public class MainActivity extends AppCompatActivity
 
     private void updateQuestion() {
         QuestionHelper questionHelper = new QuestionHelper();
-        questionHelper.setOnDownloadFinished(new OnDownloadFinished() {
-            @Override
-            public void downloadFinish() {
-                //reload fragment
-                FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-                fragmentTransaction.detach(questionPackFragment).attach(questionPackFragment).commit();
-            }
-        });
         questionHelper.downloadQuestionInServer();
         showDialogFragment(new DownloadImageDialog(), "DOWNLOAD_IMAGE_DIALOG");
     }
@@ -184,9 +170,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void getIntances() {
-        mFragmentManager = getFragmentManager();
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -217,7 +200,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void openFragment(Fragment fragment, boolean addToBackStack) {
-        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.trans_left_in, R.anim.trans_left_out);
         fragmentTransaction.replace(R.id.view_fragment, fragment).addToBackStack(fragment.getClass().getName())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -229,13 +212,13 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void showDialogFragment(DialogFragment dialogFragment, String tag) {
-        dialogFragment.show(mFragmentManager, tag);
+        dialogFragment.show(getFragmentManager(), tag);
     }
 
     @Override
     public boolean back() {
-        if (mFragmentManager.getBackStackEntryCount() > 1) {
-            mFragmentManager.popBackStack();
+        if (getFragmentManager().getBackStackEntryCount() > 1) {
+            getFragmentManager().popBackStack();
             return true;
         } else {
             return false;
