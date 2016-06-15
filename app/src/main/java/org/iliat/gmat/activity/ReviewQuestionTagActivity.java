@@ -102,7 +102,6 @@ public class ReviewQuestionTagActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 currentPos=tab.getPosition();
                 viewPager.setCurrentItem(currentPos);
-
             }
 
             @Override
