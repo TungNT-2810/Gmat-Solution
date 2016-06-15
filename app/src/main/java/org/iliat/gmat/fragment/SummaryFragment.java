@@ -78,11 +78,16 @@ public class SummaryFragment extends BaseFragment {
 
         init(view);
         addListener();
-        getDataForSumary();
         getSumaryTypeOfQuestion();
         bindDataToListview();
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getDataForSumary();
     }
 
     private void bindDataToListview() {
@@ -146,12 +151,6 @@ public class SummaryFragment extends BaseFragment {
 
             totalRightAnswer=0;
             totalAnswered= dbContext.getNumberQuestionAnsweredByTypeCode(code);
-            totalTagStar=dbContext.getNumberOfQuestionByTagId(code,Constant.TAG_STAR);
-            totalTagGrey=dbContext.getNumberOfQuestionByTagId(code,Constant.TAG_GREY);
-            totalTagGreen=dbContext.getNumberOfQuestionByTagId(code,Constant.TAG_GREEN);
-            totalTagYellow=dbContext.getNumberOfQuestionByTagId(code,Constant.TAG_YELLOW);
-            totalTagRed=dbContext.getNumberOfQuestionByTagId(code,Constant.TAG_RED);
-
 
             //total correct
             for (int j = 0; j < results.size(); j++) {
@@ -162,12 +161,6 @@ public class SummaryFragment extends BaseFragment {
 
             arrayList.add(new QuestionType(resultQTypes.get(i).getCode(), resultQTypes.get(i).getDetail(),
                     results.size(), totalRightAnswer, totalAnswered, resultQTypes.get(i).getListSubType()));
-            //bind data
-            txtTagGrey.setText(String.valueOf(totalTagGrey));
-            txtTagGreen.setText(String.valueOf(totalTagGreen));
-            txtTagRed.setText(String.valueOf(totalTagRed));
-            txtTagYellow.setText(String.valueOf(totalTagYellow));
-            txtStar.setText(String.valueOf(totalTagStar));
         }
     }
 
@@ -175,6 +168,12 @@ public class SummaryFragment extends BaseFragment {
         totalQuestion = dbContext.getNumberOfQuestion();
         totalAnswered = dbContext.getNumberOfQuestionAnswered();
         totalTime = (int) dbContext.getTotalTime();
+
+        totalTagStar=dbContext.getNumberOfQuestionByTagId(Constant.TAG_STAR);
+        totalTagGrey=dbContext.getNumberOfQuestionByTagId(Constant.TAG_GREY);
+        totalTagGreen=dbContext.getNumberOfQuestionByTagId(Constant.TAG_GREEN);
+        totalTagYellow=dbContext.getNumberOfQuestionByTagId(Constant.TAG_YELLOW);
+        totalTagRed=dbContext.getNumberOfQuestionByTagId(Constant.TAG_RED);
 
         if (totalAnswered != 0) {
             totalTime /= totalAnswered;
@@ -190,5 +189,12 @@ public class SummaryFragment extends BaseFragment {
         } else {
             arcProgress.setProgress(0);
         }
+
+        //bind data
+        txtTagGrey.setText(String.valueOf(totalTagGrey));
+        txtTagGreen.setText(String.valueOf(totalTagGreen));
+        txtTagRed.setText(String.valueOf(totalTagRed));
+        txtTagYellow.setText(String.valueOf(totalTagYellow));
+        txtStar.setText(String.valueOf(totalTagStar));
     }
 }

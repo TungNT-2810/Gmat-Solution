@@ -202,13 +202,11 @@ public class DBContext {
         return realm.where(QuestionModel.class).equalTo("type", typeCode).findAll();
     }
 
-    public int getNumberOfQuestionByTagId(String type, int tagId) {
+    public int getNumberOfQuestionByTagId(int tagId) {
         if (tagId == Constant.TAG_STAR) {
-            return (int) realm.where(QuestionModel.class).equalTo("type", type)
-                    .equalTo("isStar", true).count();
+            return (int) realm.where(QuestionModel.class).equalTo("isStar", true).count();
         }
-        return (int) realm.where(QuestionModel.class).equalTo("type", type)
-                .equalTo("tagId", tagId).count();
+        return (int) realm.where(QuestionModel.class).equalTo("tagId", tagId).count();
     }
 
     public long getTotalTime() {
