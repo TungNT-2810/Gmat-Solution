@@ -11,6 +11,9 @@ import org.iliat.gmat.network.JSONQuestion;
 import org.iliat.gmat.network.JSONQuestionList;
 import org.iliat.gmat.network.JSONQuestionPack;
 import org.iliat.gmat.network.JSONQuestionPackList;
+import org.iliat.gmat.network.JSONQuestionSubType;
+import org.iliat.gmat.network.JSONQuestionType;
+import org.iliat.gmat.network.JSONQuestionTypeList;
 import org.iliat.gmat.view_model.QuestionPackViewModel;
 import org.iliat.gmat.view_model.QuestionViewModel;
 
@@ -228,6 +231,30 @@ public class DBContext {
                 }
                 realm.copyToRealmOrUpdate(questionPackModel);
             }
+            realm.commitTransaction();
+        }
+    }
+
+    public void saveQuestionType(JSONQuestionTypeList jsonQuestionTypeList) {
+        realm = Realm.getDefaultInstance();
+        RealmList<QuestionSubTypeModel> subTypeList = new RealmList<>();
+        for (JSONQuestionType jsonQuestionType : jsonQuestionTypeList.getList()) {
+            subTypeList.clear();
+            realm.beginTransaction();
+            List<JSONQuestionSubType> jsonQuestionSubTypeList = jsonQuestionType.getSubTypeList();
+            if (jsonQuestionSubTypeList != null && jsonQuestionSubTypeList.size() > 0) {
+                for (JSONQuestionSubType jsonQuestionSubType : jsonQuestionSubTypeList) {
+                    QuestionSubTypeModel questionSubTypeModel = new QuestionSubTypeModel();
+                    questionSubTypeModel.setCode(jsonQuestionSubType.getCode());
+                    questionSubTypeModel.setDetail(jsonQuestionSubType.getDetail());
+                    subTypeList.add(questionSubTypeModel);
+                }
+            }
+            QuestionTypeModel questionTypeModel = new QuestionTypeModel();
+            questionTypeModel.setCode(jsonQuestionType.getCode());
+            questionTypeModel.setDetail(jsonQuestionType.getDetail());
+            questionTypeModel.setListSubType(subTypeList);
+            realm.copyToRealmOrUpdate(questionTypeModel);
             realm.commitTransaction();
         }
     }

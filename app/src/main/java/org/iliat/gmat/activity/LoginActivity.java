@@ -15,12 +15,14 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 
 import org.iliat.gmat.GMATApplication;
 import org.iliat.gmat.R;
+import org.iliat.gmat.db_connect.DBContext;
 import org.iliat.gmat.interf.JSONParser;
 import org.iliat.gmat.interf.JSONPostDownloadHandler;
 import org.iliat.gmat.interf.JSONPreDownloadHandler;
@@ -59,24 +61,26 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
         JSONPostDownloadHandler, JSONParser {
 
     private static final String TAG = LoginActivity.class.toString();
-
     private static final String TAG_QUESION_PACK_DOWNLOAD = "question pack download";
     private static final String TAG_QUESION_DOWNLOAD = "question download";
     private static final String TAG_QUESION_TYPE_DOWNLOAD = "question type download";
-    private Realm realm;
+    private final String DOWNLOAD_QUESTION_TAG = "Download question";
+    private final String DOWNLOAD_QUESTION_PACK_TAG = "Download question pack";
+    private final String DOWNLOAD_QUESTION_TYPE_TAG = "Download question type";
 
+    //view
     private TextInputLayout inputLayoutEmail, inputLayoutPassword;
     private Button mLoginButton;
     private EditText mEmailEditText;
     private EditText mPasswordEditText;
     private CoordinatorLayout mCoordinatorLayout;
     private Snackbar mSnackbar;
+
+    //
     private OkHttpClient mHttpClient;
+    private DBContext dbContext;
 
-    private final String DOWNLOAD_QUESTION_TAG = "Download question";
-    private final String DOWNLOAD_QUESTION_PACK_TAG = "Download question pack";
-    private final String DOWNLOAD_QUESTION_TYPE_TAG = "Download question type";
-
+    //
     private boolean mQuestionDownloadCompleted = false;
     private boolean mQuestionPackDownloadCompleted = false;
     private boolean mQuestionTypeDownloadCompleted = false;
@@ -85,9 +89,13 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        SharedPreferences sharedPreferences = getSharedPreferences(GMATApplication.SHARE_PREFERENCES, MODE_PRIVATE);
-        boolean isLogged = sharedPreferences.getBoolean(GMATApplication.LOGIN_SHARE_PREFERENCES, false);
+
+        //set animation
         overridePendingTransition(R.anim.trans_in, R.anim.trans_out);
+        //
+        SharedPreferences sharedPreferences = getSharedPreferences(GMATApplication.SHARE_PREFERENCES, MODE_PRIVATE);
+
+        boolean isLogged = sharedPreferences.getBoolean(GMATApplication.LOGIN_SHARE_PREFERENCES, false);
         if (!isLogged) {
             this.initUtils();
             this.initLayout();
@@ -100,14 +108,9 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        realm = Realm.getDefaultInstance();
-    }
-
     private void initUtils() {
         this.mHttpClient = new OkHttpClient();
+        dbContext=DBContext.getInst();
     }
 
     private void initLayout() {
@@ -123,6 +126,8 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
                 Snackbar.make(mCoordinatorLayout,
                         getString(R.string.logging_in),
                         Snackbar.LENGTH_INDEFINITE);
+        Snackbar.SnackbarLayout snack_view = (Snackbar.SnackbarLayout) mSnackbar.getView();
+        snack_view.addView(new ProgressBar(this));
         mHttpClient = new OkHttpClient();
 
     }
@@ -247,7 +252,7 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
                         new Gson()).fromJson(response.body().charStream(),
                         JSONQuestionPackList.class);
                 Log.d(TAG, String.valueOf(jsonQuestionPackList.getList().size()));
-                saveQuestionPacks(jsonQuestionPackList);
+                dbContext.saveQuestionPacks(jsonQuestionPackList);
 
                 for (JSONQuestionPack jsonQuestionPack : jsonQuestionPackList.getList()) {
                     Log.d(TAG, jsonQuestionPack.getId());
@@ -279,7 +284,7 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
                         new Gson()).fromJson(response.body().charStream(),
                         JSONQuestionList.class);
 
-                saveQuestions(jsonQuestionList);
+                dbContext.saveQuestions(jsonQuestionList);
 
                 Log.d(TAG, "Download question " + jsonQuestionList.getList().size());
                 onJSONDownloadFinished(TAG_QUESION_DOWNLOAD, true);
@@ -307,81 +312,10 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
                 JSONQuestionTypeList jsonQuestionTypeList = (
                         new Gson()).fromJson(response.body().charStream(),
                         JSONQuestionTypeList.class);
-                saveQuestionType(jsonQuestionTypeList);
+                dbContext.saveQuestionType(jsonQuestionTypeList);
                 onJSONDownloadFinished(TAG_QUESION_TYPE_DOWNLOAD, true);
             }
         });
-    }
-
-    private void saveQuestionType(JSONQuestionTypeList jsonQuestionTypeList) {
-        realm = Realm.getDefaultInstance();
-        RealmList<QuestionSubTypeModel> subTypeList = new RealmList<>();
-        for (JSONQuestionType jsonQuestionType : jsonQuestionTypeList.getList()) {
-            subTypeList.clear();
-            realm.beginTransaction();
-            List<JSONQuestionSubType> jsonQuestionSubTypeList = jsonQuestionType.getSubTypeList();
-            if (jsonQuestionSubTypeList != null && jsonQuestionSubTypeList.size() > 0) {
-                for (JSONQuestionSubType jsonQuestionSubType : jsonQuestionSubTypeList) {
-                    QuestionSubTypeModel questionSubTypeModel = new QuestionSubTypeModel();
-                    questionSubTypeModel.setCode(jsonQuestionSubType.getCode());
-                    questionSubTypeModel.setDetail(jsonQuestionSubType.getDetail());
-                    subTypeList.add(questionSubTypeModel);
-                }
-            }
-            QuestionTypeModel questionTypeModel = new QuestionTypeModel();
-            questionTypeModel.setCode(jsonQuestionType.getCode());
-            questionTypeModel.setDetail(jsonQuestionType.getDetail());
-            questionTypeModel.setListSubType(subTypeList);
-            realm.copyToRealmOrUpdate(questionTypeModel);
-            realm.commitTransaction();
-        }
-    }
-
-    private void saveQuestions(JSONQuestionList jsonQuestionList) {
-        realm = Realm.getDefaultInstance();
-        for (JSONQuestion jsonQuestion : jsonQuestionList.getList()) {
-            {
-                realm.beginTransaction();
-                RealmList<AnswerModel> answerModels = new RealmList<AnswerModel>();
-                for (JSONAnswerChoice jsonAnswerChoice : jsonQuestion.getAnswerChoiceList()) {
-                    AnswerModel answerModel = new AnswerModel();
-                    answerModel.setId(jsonQuestion.getId() + jsonAnswerChoice.getIndex());
-                    answerModel.setChoise(jsonAnswerChoice.getChoice());
-                    answerModel.setExplanation(jsonAnswerChoice.getExplanation());
-                    answerModel.setIndex(jsonAnswerChoice.getIndex());
-                    answerModels.add(answerModel);
-                }
-                QuestionModel questionModel = new QuestionModel();
-                questionModel.setId(jsonQuestion.getId());
-                questionModel.setIdInServer(jsonQuestion.getId());
-                questionModel.setType(jsonQuestion.getType());
-                questionModel.setSubType(jsonQuestion.getSubType());
-                questionModel.setStimulus(jsonQuestion.getStimulus());
-                questionModel.setStem(jsonQuestion.getStem());
-                questionModel.setRightAnswerIndex(jsonQuestion.getRightAnswer());
-                questionModel.setAnswerList(answerModels);
-                realm.copyToRealmOrUpdate(questionModel);
-                realm.commitTransaction();
-            }
-        }
-    }
-
-    private void saveQuestionPacks(JSONQuestionPackList jsonQuestionPackList) {
-        for (JSONQuestionPack jsonQuestionPack : jsonQuestionPackList.getList()) {
-            realm = Realm.getDefaultInstance();
-            realm.beginTransaction();
-            QuestionPackModel questionPackModel = new QuestionPackModel();
-            questionPackModel.setAvainableTime(jsonQuestionPack.getAvailableTime());
-            questionPackModel.setId(jsonQuestionPack.getId());
-            questionPackModel.setQuestionList(new RealmList<QuestionModel>());
-            questionPackModel.setLevel(jsonQuestionPack.getLevel());
-            for (String id : jsonQuestionPack.getQuestionIds()) {
-                QuestionModel questionModel = realm.where(QuestionModel.class).equalTo("idInServer", id).findFirst();
-                questionPackModel.getQuestionList().add(questionModel);
-            }
-            realm.copyToRealmOrUpdate(questionPackModel);
-            realm.commitTransaction();
-        }
     }
 
     private void onJSONDownloadFinished(String tag, boolean result) {
