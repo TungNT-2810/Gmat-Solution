@@ -155,7 +155,7 @@
         android:layout_above="@id/bottom_controller"
         android:layout_below="@id/top_controller"
         android:visibility="invisible"
-        android:background="@color/color_background_tag"
+        android:background="#994527A0"
         >
 
         <com.zyuternity.arclayout.ArcLayout
@@ -166,7 +166,7 @@
             app:arc_axisRadius="180dp"
             app:arc_freeAngle="true"
             app:arc_origin="bottom|left"
-            android:background="@color/background_color"
+            android:background="#A64527A0"
             >
 
             <LinearLayout
