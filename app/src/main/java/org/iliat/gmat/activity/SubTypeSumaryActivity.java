@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -12,21 +11,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.DefaultXAxisValueFormatter;
-import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.formatter.XAxisValueFormatter;
-import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -157,7 +148,7 @@ public class SubTypeSumaryActivity extends Activity {
         dbContext = DBContext.getInst();
     }
 
-    private void getToast(String mess) {
+    private void showToast(String mess) {
         toast = Toast.makeText(this, mess, Toast.LENGTH_SHORT);
         toast.show();
     }
@@ -178,7 +169,8 @@ public class SubTypeSumaryActivity extends Activity {
                 int totalQues = dbContext.getNumberQuestionByTypeAndSubTypeCode(typeCode,
                         list.get(position).getCode());
                 if (totalQues == 0) {
-
+                    showToast(list.get(position).getDetail().toUpperCase()
+                            + " is empty!");
                 } else {
                     if (dbContext.getNumberQustionAnsweredByTypeAndSubType(typeCode, list.get(position).getCode()) > 0) {
                         Bundle bundle = new Bundle();
@@ -190,7 +182,7 @@ public class SubTypeSumaryActivity extends Activity {
                         intent.putExtras(bundle);
                         startActivity(intent);
                     } else {
-                        getToast(list.get(position).getDetail().toUpperCase()
+                        showToast(list.get(position).getDetail().toUpperCase()
                                 + " has no completed question!");
                     }
                 }
