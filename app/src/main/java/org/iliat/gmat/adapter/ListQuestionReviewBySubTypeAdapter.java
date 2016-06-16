@@ -88,16 +88,15 @@ public class ListQuestionReviewBySubTypeAdapter extends BaseAdapter {
             }
 
             if (questionModel.isCorrect()) {
-                txtindex.setTextColor(view.getResources().getColor(R.color.color_green_500, null));
-                txtPreview.setTextColor(view.getResources().getColor(R.color.color_green_500, null));
-                linearLayout.setBackgroundColor(view.getResources().getColor(R.color.green_beautiful, null));
+                txtindex.setTextColor(view.getResources().getColor(R.color.color_green_500));
+                txtPreview.setTextColor(view.getResources().getColor(R.color.color_green_500));
+                linearLayout.setBackgroundColor(view.getResources().getColor(R.color.green_beautiful));
             } else {
-                txtindex.setTextColor(view.getResources().getColor(R.color.color_red_500, null));
-                txtPreview.setTextColor(view.getResources().getColor(R.color.color_red_500, null));
-                linearLayout.setBackgroundColor(view.getResources().getColor(R.color.red_beautiful, null));
+                txtindex.setTextColor(view.getResources().getColor(R.color.color_red_500));
+                txtPreview.setTextColor(view.getResources().getColor(R.color.color_red_500));
+                linearLayout.setBackgroundColor(view.getResources().getColor(R.color.red_beautiful));
             }
-            return view;
         }
-        return null;
+        return view;
     }
 }

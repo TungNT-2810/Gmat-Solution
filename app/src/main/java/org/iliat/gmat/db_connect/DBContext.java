@@ -31,7 +31,6 @@ public class DBContext {
     private Realm realm;
 
     private DBContext() {
-        realm = Realm.getDefaultInstance();
     }
 
     //singleton
@@ -45,6 +44,7 @@ public class DBContext {
     }
 
     public void updateStarForEachQuestion(QuestionModel questionModel) {
+        realm=Realm.getDefaultInstance();
         realm.beginTransaction();
         questionModel.setStar(!questionModel.isStar());
         realm.copyToRealmOrUpdate(questionModel);
@@ -52,6 +52,7 @@ public class DBContext {
     }
 
     public void updateTagForEachQuestion(QuestionModel questionModel, int tagId) {
+        realm=Realm.getDefaultInstance();
         realm.beginTransaction();
         questionModel.setTagId(tagId);
         realm.copyToRealmOrUpdate(questionModel);
@@ -59,43 +60,52 @@ public class DBContext {
     }
 
     public int getNumberQuestionBySubTypeCode(String code) {
+        realm=Realm.getDefaultInstance();
         return realm.where(QuestionModel.class).equalTo("subType", code).distinct("id").size();
     }
 
     public int getNumberQuestionByTypeAndSubTypeCode(String type, String subType) {
+        realm=Realm.getDefaultInstance();
         return realm.where(QuestionModel.class).equalTo("type", type)
                 .equalTo("subType", subType).distinct("id").size();
     }
 
     public int getNumberQuestionAnsweredBySubTypeCode(String code) {
+        realm=Realm.getDefaultInstance();
         return (int) realm.where(QuestionModel.class).equalTo("subType", code).notEqualTo("userAnswer", -1)
                 .count();
     }
 
     public int getNumberQuestionAnsweredByTypeCode(String code) {
+        realm=Realm.getDefaultInstance();
         return (int) realm.where(QuestionModel.class).equalTo("type", code).notEqualTo("userAnswer", -1)
                 .count();
     }
 
     public QuestionTypeModel getQuestionTypeByCode(String code) {
+        realm=Realm.getDefaultInstance();
         return realm.where(QuestionTypeModel.class).equalTo("code", code).findFirst();
     }
 
     public int getNumberQustionAnsweredByTypeAndSubType(String type, String subType) {
+        realm=Realm.getDefaultInstance();
         return realm.where(QuestionModel.class).equalTo("type", type).equalTo("subType", subType)
                 .notEqualTo("userAnswer", -1).distinct("id").size();
     }
 
     public int getNumberQustionByType(String type) {
+        realm=Realm.getDefaultInstance();
         return realm.where(QuestionModel.class).equalTo("type", type).distinct("id").size();
     }
 
     public RealmResults<QuestionModel> getAllQuestionAnsweredByTypeAndSubType(String type, String subType) {
+        realm=Realm.getDefaultInstance();
         return realm.where(QuestionModel.class).equalTo("type", type).equalTo("subType", subType)
                 .notEqualTo("userAnswer", -1).findAll().distinct("id");
     }
 
     public int getNumberCorrectByTypeAndSubType(String type, String subType) {
+        realm=Realm.getDefaultInstance();
         RealmResults<QuestionModel> list = realm.where(QuestionModel.class).equalTo("type", type)
                 .equalTo("subType", subType).findAll().distinct("id");
         int count = 0;
@@ -108,6 +118,7 @@ public class DBContext {
     }
 
     public int getNumberCorrectQuestion() {
+        realm=Realm.getDefaultInstance();
         RealmResults<QuestionModel> list = realm.where(QuestionModel.class).findAll().distinct("id");
         int count = 0;
         for (QuestionModel q : list) {
@@ -119,6 +130,7 @@ public class DBContext {
     }
 
     public int getNumberCorrectByType(String type) {
+        realm=Realm.getDefaultInstance();
         RealmResults<QuestionModel> list = realm.where(QuestionModel.class).equalTo("type", type)
                 .findAll().distinct("id");
         int count = 0;
@@ -131,6 +143,7 @@ public class DBContext {
     }
 
     public int getNumberOfOtherQuestionByType(String type, RealmList<QuestionSubTypeModel> list) {
+        realm=Realm.getDefaultInstance();
         int count = 0;
         for (int i = 0; i < list.size(); i++) {
             count += realm.where(QuestionModel.class).equalTo("type", type)
@@ -140,20 +153,24 @@ public class DBContext {
     }
 
     public int getNumberOfTagByTagId(int id, String type, String subType) {
+        realm=Realm.getDefaultInstance();
         return (int) realm.where(QuestionModel.class).equalTo("type", type).equalTo("subType", subType)
                 .equalTo("tagId", id).notEqualTo("userAnswer", -1).count();
     }
 
     public int getNumberOfStar(boolean isStar, String type, String subType) {
+        realm=Realm.getDefaultInstance();
         return (int) realm.where(QuestionModel.class).equalTo("type", type).equalTo("subType", subType)
                 .equalTo("isStar", isStar).notEqualTo("userAnswer", -1).count();
     }
 
     public RealmList<QuestionModel> getAllQuestionModelByPackId(String id) {
+        realm=Realm.getDefaultInstance();
         return realm.where(QuestionPackModel.class).equalTo("id", id).findFirst().getQuestionList();
     }
 
     public RealmResults<QuestionModel> getAllQuestionAnsweredByTagId(int id) {
+        realm=Realm.getDefaultInstance();
         if (id == Constant.TAG_STAR) {
             return realm.where(QuestionModel.class).notEqualTo("userAnswer", -1).equalTo("isStar", true).findAll();
         }
@@ -161,10 +178,12 @@ public class DBContext {
     }
 
     public QuestionPackModel getQuestionPackModelById(String id) {
+        realm=Realm.getDefaultInstance();
         return realm.where(QuestionPackModel.class).equalTo("id", id).findFirst();
     }
 
     public void saveTotalTimeToFinish(QuestionPackViewModel questionPackViewModel, long totalTime) {
+        realm=Realm.getDefaultInstance();
         realm.beginTransaction();
         questionPackViewModel.setTotalTimeToFinish(totalTime);
         realm.copyToRealmOrUpdate(questionPackViewModel.getQuestionPack());
@@ -172,6 +191,7 @@ public class DBContext {
     }
 
     public void saveTimeFinishForEachQuestion(QuestionViewModel questionViewModel, long time) {
+        realm=Realm.getDefaultInstance();
         realm.beginTransaction();
         questionViewModel.getQuestion().setTimeToFinish((int) time);
         realm.copyToRealmOrUpdate(questionViewModel.getQuestion());
@@ -179,33 +199,40 @@ public class DBContext {
     }
 
     public void saveTagForEachQuestion(QuestionViewModel questionViewModel, int tagId) {
+        realm=Realm.getDefaultInstance();
         realm.beginTransaction();
-        questionViewModel.getQuestion().setTagId(Constant.TAG_GREY);
+        questionViewModel.getQuestion().setTagId(tagId);
         realm.copyToRealmOrUpdate(questionViewModel.getQuestion());
         realm.commitTransaction();
     }
 
     public List<QuestionPackModel> getAllQuestionPack() {
+        realm=Realm.getDefaultInstance();
         return realm.where(QuestionPackModel.class).findAllSorted("availableTime", Sort.ASCENDING);
     }
 
     public int getNumberOfQuestion() {
+        realm=Realm.getDefaultInstance();
         return (int) realm.where(QuestionModel.class).count();
     }
 
     public int getNumberOfQuestionAnswered() {
+        realm=Realm.getDefaultInstance();
         return (int) realm.where(QuestionModel.class).notEqualTo("userAnswer", -1).count();
     }
 
     public RealmResults<QuestionTypeModel> getAllQuestiontype() {
+        realm=Realm.getDefaultInstance();
         return realm.where(QuestionTypeModel.class).findAll();
     }
 
     public RealmResults<QuestionModel> getAllQuestionByType(String typeCode) {
+        realm=Realm.getDefaultInstance();
         return realm.where(QuestionModel.class).equalTo("type", typeCode).findAll();
     }
 
     public int getNumberOfQuestionByTagId(int tagId) {
+        realm=Realm.getDefaultInstance();
         if (tagId == Constant.TAG_STAR) {
             return (int) realm.where(QuestionModel.class).equalTo("isStar", true).count();
         }
@@ -213,12 +240,13 @@ public class DBContext {
     }
 
     public long getTotalTime() {
+        realm=Realm.getDefaultInstance();
         return (long) realm.where(QuestionModel.class).sum("timeToFinish");
     }
 
     public void saveQuestionPacks(JSONQuestionPackList jsonQuestionPackList) {
+        realm=Realm.getDefaultInstance();
         for (JSONQuestionPack jsonQuestionPack : jsonQuestionPackList.getList()) {
-            realm = Realm.getDefaultInstance();
             realm.beginTransaction();
             if (getQuestionPackModelById(jsonQuestionPack.getId()) == null) {
                 QuestionPackModel questionPackModel = new QuestionPackModel();
@@ -236,7 +264,7 @@ public class DBContext {
     }
 
     public void saveQuestionType(JSONQuestionTypeList jsonQuestionTypeList) {
-        realm = Realm.getDefaultInstance();
+        realm=Realm.getDefaultInstance();
         RealmList<QuestionSubTypeModel> subTypeList = new RealmList<>();
         for (JSONQuestionType jsonQuestionType : jsonQuestionTypeList.getList()) {
             subTypeList.clear();
@@ -260,6 +288,7 @@ public class DBContext {
     }
 
     public void saveQuestions(JSONQuestionList jsonQuestionList) {
+        realm=Realm.getDefaultInstance();
         for (JSONQuestion jsonQuestion : jsonQuestionList.getList()) {
             realm.beginTransaction();
             if (realm.where(QuestionModel.class).equalTo("id", jsonQuestion.getId()).findFirst() == null) {
