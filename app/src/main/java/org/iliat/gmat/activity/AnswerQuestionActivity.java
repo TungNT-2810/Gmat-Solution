@@ -126,7 +126,7 @@ public class AnswerQuestionActivity
 
         if (questionPackViewModel.isCompleted()) {
             totalTime = questionPack.getTotalTimeToFinish();
-            new AlertDialog.Builder(this)
+            AlertDialog alertDialog = new AlertDialog.Builder(this)
                     .setTitle(getString(R.string.string_title_confirmation))
                     .setMessage(getString(R.string.string_message_pack_already_done))
                     .setPositiveButton("No", new DialogInterface.OnClickListener() {
@@ -150,7 +150,7 @@ public class AnswerQuestionActivity
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             //save total time to finish
-                            dbContext.saveTotalTimeToFinish(questionPackViewModel ,0);
+                            dbContext.saveTotalTimeToFinish(questionPackViewModel, 0);
 
                             questionPackViewModel.clearUserAnswers();
                             questionViewModel = questionPackViewModel.getFirstQuestionViewModel();
@@ -159,9 +159,10 @@ public class AnswerQuestionActivity
                         }
                     })
                     .show();
+            alertDialog.setCanceledOnTouchOutside(false);
         } else {
             if (!questionPackViewModel.isNew()) {
-                new AlertDialog.Builder(this)
+                AlertDialog alertDialog= new AlertDialog.Builder(this)
                         .setTitle(R.string.string_title_confirmation)
                         .setMessage(getString(R.string.string_message_pack_not_done))
                         .setPositiveButton("No", new DialogInterface.OnClickListener() {
@@ -191,7 +192,7 @@ public class AnswerQuestionActivity
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 //save total time to finish
-                                dbContext.saveTotalTimeToFinish(questionPackViewModel ,0);
+                                dbContext.saveTotalTimeToFinish(questionPackViewModel, 0);
 
                                 questionPackViewModel.clearUserAnswers();
                                 questionViewModel = questionPackViewModel.getFirstQuestionViewModel();
@@ -200,6 +201,7 @@ public class AnswerQuestionActivity
                             }
                         })
                         .show();
+                alertDialog.setCanceledOnTouchOutside(false);
             } else {
                 questionViewModel = questionPackViewModel.getFirstQuestionViewModel();
                 countAnswer = 0;
@@ -260,7 +262,7 @@ public class AnswerQuestionActivity
         btnExit = (ImageButton) findViewById(R.id.btnImgButtonExit);
         isGone = true;
         addListeners();
-        dbContext=DBContext.getInst();
+        dbContext = DBContext.getInst();
     }
 
     private void updateSubmitButtonText() {
@@ -390,8 +392,6 @@ public class AnswerQuestionActivity
     }
 
 
-
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -403,7 +403,7 @@ public class AnswerQuestionActivity
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 //save total time to finish
-                                dbContext.saveTotalTimeToFinish(questionPackViewModel ,totalTime);
+                                dbContext.saveTotalTimeToFinish(questionPackViewModel, totalTime);
                                 //
                                 Intent intent = new Intent(AnswerQuestionActivity.this, MainActivity.class);
                                 startActivity(intent);
@@ -418,15 +418,15 @@ public class AnswerQuestionActivity
                 //save user answer and time to finish to db when button Next is clicked
                 questionViewModel.saveUserAnswer();
                 //save time to finish for each question
-                dbContext.saveTimeFinishForEachQuestion(questionViewModel,timeForEachQuestion);
+                dbContext.saveTimeFinishForEachQuestion(questionViewModel, timeForEachQuestion);
                 //save tag default for each question
                 if (questionViewModel.getQuestion().getTagId() == 0) {
-                    dbContext.saveTagForEachQuestion(questionViewModel,Constant.TAG_GREY);
+                    dbContext.saveTagForEachQuestion(questionViewModel, Constant.TAG_GREY);
                 }
 
                 if (questionPackViewModel.isLastQuestionInPack(questionViewModel)) {
                     //save total time to finish
-                    dbContext.saveTotalTimeToFinish(questionPackViewModel ,totalTime);
+                    dbContext.saveTotalTimeToFinish(questionPackViewModel, totalTime);
 
                     Bundle bundle = PackReviewActivity.buildBundle(questionPackViewModel.getQuestionPack().getId());
                     bundle.putInt(KEY_TIME_AVERAGE, (int) (totalTime / 10));

@@ -19,12 +19,9 @@ import org.iliat.gmat.activity.AnswerQuestionActivity;
 import org.iliat.gmat.adapter.ListQuestionPackAdapter;
 import org.iliat.gmat.db_connect.DBContext;
 import org.iliat.gmat.model.QuestionModel;
-import org.iliat.gmat.model.QuestionPackModel;
 import org.iliat.gmat.view_model.QuestionPackViewModel;
 
-import io.realm.Realm;
 import io.realm.RealmResults;
-import io.realm.Sort;
 
 /**
  * Created by ZYuTernity on 5/16/2016.

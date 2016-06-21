@@ -245,13 +245,14 @@ public class DBContext {
     }
 
     public void saveQuestionPacks(JSONQuestionPackList jsonQuestionPackList) {
-        realm=Realm.getDefaultInstance();
         for (JSONQuestionPack jsonQuestionPack : jsonQuestionPackList.getList()) {
+            realm=Realm.getDefaultInstance();
             realm.beginTransaction();
             if (getQuestionPackModelById(jsonQuestionPack.getId()) == null) {
                 QuestionPackModel questionPackModel = new QuestionPackModel();
                 questionPackModel.setAvainableTime(jsonQuestionPack.getAvailableTime());
                 questionPackModel.setId(jsonQuestionPack.getId());
+                questionPackModel.setLevel(jsonQuestionPack.getLevel());
                 questionPackModel.setQuestionList(new RealmList<QuestionModel>());
                 for (String id : jsonQuestionPack.getQuestionIds()) {
                     QuestionModel questionModel = realm.where(QuestionModel.class).equalTo("idInServer", id).findFirst();
@@ -264,10 +265,10 @@ public class DBContext {
     }
 
     public void saveQuestionType(JSONQuestionTypeList jsonQuestionTypeList) {
-        realm=Realm.getDefaultInstance();
         RealmList<QuestionSubTypeModel> subTypeList = new RealmList<>();
         for (JSONQuestionType jsonQuestionType : jsonQuestionTypeList.getList()) {
             subTypeList.clear();
+            realm=Realm.getDefaultInstance();
             realm.beginTransaction();
             List<JSONQuestionSubType> jsonQuestionSubTypeList = jsonQuestionType.getSubTypeList();
             if (jsonQuestionSubTypeList != null && jsonQuestionSubTypeList.size() > 0) {
@@ -288,8 +289,8 @@ public class DBContext {
     }
 
     public void saveQuestions(JSONQuestionList jsonQuestionList) {
-        realm=Realm.getDefaultInstance();
         for (JSONQuestion jsonQuestion : jsonQuestionList.getList()) {
+            realm=Realm.getDefaultInstance();
             realm.beginTransaction();
             if (realm.where(QuestionModel.class).equalTo("id", jsonQuestion.getId()).findFirst() == null) {
                 RealmList<AnswerModel> answerModels = new RealmList<AnswerModel>();
