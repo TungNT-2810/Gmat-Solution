@@ -6,6 +6,8 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -23,6 +25,9 @@ import org.iliat.gmat.dialog.DownloadImageDialog;
 import org.iliat.gmat.fragment.HomeFragment;
 import org.iliat.gmat.interf.ScreenManager;
 import org.iliat.gmat.utils.QuestionHelper;
+import org.iliat.gmat.utils.ScreenShot;
+
+import java.io.File;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -33,6 +38,8 @@ public class MainActivity extends AppCompatActivity
 
     private HomeFragment homeFragment;
     private ActionBarDrawerToggle toggle;
+
+    private ScreenShot screenShot;
 
     public void goToActivity(Class activityClass, Bundle bundle) {
         Intent intent = new Intent(this, activityClass);
@@ -97,6 +104,9 @@ public class MainActivity extends AppCompatActivity
         //Realm config
         RealmConfiguration realmConfig = new RealmConfiguration.Builder(getApplicationContext()).build();
         Realm.setDefaultConfiguration(realmConfig);
+
+        //
+        screenShot=new ScreenShot();
     }
 
     @Override
@@ -177,18 +187,19 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_general) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
+        if (id == R.id.nav_update) {
             updateQuestion();
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        }else if (id == R.id.nav_share) {
+            Bitmap bm = screenShot.getScreenShot(findViewById(R.id.layout_home_container));
+            File file = screenShot.saveBitmap(bm, "gmat_screen_shot.png");
+            Uri uri = Uri.fromFile(new File(file.getAbsolutePath()));
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out my app.");
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+            shareIntent.setType("image/*");
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivity(Intent.createChooser(shareIntent, "share via"));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

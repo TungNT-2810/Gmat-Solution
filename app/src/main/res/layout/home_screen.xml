@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background_color"
     android:fitsSystemWindows="true"
+    android:id="@+id/layout_home_container"
     android:orientation="vertical">
 
     <LinearLayout

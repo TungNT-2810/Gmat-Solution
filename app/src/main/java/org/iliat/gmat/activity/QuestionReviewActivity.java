@@ -7,19 +7,15 @@ import android.animation.ObjectAnimator;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,10 +40,10 @@ import org.iliat.gmat.fragment.PlaceholderFragmentRC;
 import org.iliat.gmat.interf.ScreenManager;
 import org.iliat.gmat.model.QuestionModel;
 import org.iliat.gmat.utils.AnimatorUtils;
+import org.iliat.gmat.utils.ScreenShot;
 import org.iliat.gmat.view_model.QuestionViewModel;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,6 +72,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
     private android.app.FragmentManager mFragmentManager;
     private QuestionModel questionModel;
     private DBContext dbContext;
+    private ScreenShot screenShot;
     //
     private int totalItem;
     private boolean isGone;
@@ -184,6 +181,7 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
 
         addListener();
         dbContext=DBContext.getInst();
+        screenShot=new ScreenShot();
         isGone = true;
         isOpen=false;
     }
@@ -205,30 +203,6 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
         for (int i = 0; i < arcLayout.getChildCount(); i++) {
             arcLayout.getChildAt(i).setOnClickListener(this);
         }
-    }
-
-    private Bitmap screenShot(View view) {
-        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        view.draw(canvas);
-        return bitmap;
-    }
-
-    private static File saveBitmap(Bitmap bm, String fileName) {
-        final String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Screenshots";
-        File dir = new File(path);
-        if (!dir.exists())
-            dir.mkdirs();
-        File file = new File(dir, fileName);
-        try {
-            FileOutputStream fOut = new FileOutputStream(file);
-            bm.compress(Bitmap.CompressFormat.PNG, 90, fOut);
-            fOut.flush();
-            fOut.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return file;
     }
 
     private void updateTopView(int position) {
@@ -360,9 +334,8 @@ public class QuestionReviewActivity extends AppCompatActivity implements ScreenM
             }
 
             case R.id.btn_share: {
-                Bitmap bm = screenShot(QuestionReviewActivity.this.mViewPager);
-                File file = saveBitmap(bm, "mantis_image.png");
-                Log.i("chase", "filepath: " + file.getAbsolutePath());
+                Bitmap bm = screenShot.getScreenShot(this.mViewPager);
+                File file = screenShot.saveBitmap(bm, "gmat_screen_shot.png");
                 Uri uri = Uri.fromFile(new File(file.getAbsolutePath()));
                 Intent shareIntent = new Intent();
                 shareIntent.setAction(Intent.ACTION_SEND);
