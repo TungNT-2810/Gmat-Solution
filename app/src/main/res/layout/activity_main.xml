@@ -20,6 +20,7 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer"
-        android:theme="@style/YourTheme.TranslucentStatus" />
+        android:theme="@style/YourTheme.TranslucentStatus"
+        android:elevation="16dp"/>
 
 </android.support.v4.widget.DrawerLayout>
