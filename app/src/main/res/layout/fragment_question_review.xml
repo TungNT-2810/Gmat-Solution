@@ -21,6 +21,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/question_content"
                     android:textSize="15sp"
+                    android:elevation="4dp"
                     android:padding="16dp"/>
                 <TextView
                     android:layout_width="match_parent"
@@ -29,6 +30,7 @@
                     android:textSize="15sp"
                     android:padding="16dp"
                     android:textColor="#212121"
+                    android:elevation="4dp"
                     android:background="@color/color_white"
                     android:visibility="gone"/>
                 <ImageView
@@ -41,6 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:elevation="4dp"
                 android:background="@color/color_white">
                 <LinearLayout
                     android:orientation="vertical"
