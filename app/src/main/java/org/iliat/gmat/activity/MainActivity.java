@@ -183,8 +183,6 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_slideshow) {
             updateQuestion();
-
-
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
@@ -201,7 +199,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void openFragment(Fragment fragment, boolean addToBackStack) {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.trans_left_in,R.anim.trans_left_out,
+        fragmentTransaction.setCustomAnimations(R.anim.trans_left_in, R.anim.trans_left_out,
                 R.anim.trans_left_out_back, R.anim.trans_left_in_back);
         fragmentTransaction.replace(R.id.view_fragment, fragment).addToBackStack(fragment.getClass().getName())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
