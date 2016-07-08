@@ -8,14 +8,12 @@
     tools:context=".activity.PackReviewActivity"
     android:background="#fca771">
 
-
-
     <LinearLayout
         android:id="@+id/viewHeader_score"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:elevation="4dp"
+        android:elevation="6dp"
         >
         <RelativeLayout
             android:layout_width="0dp"
