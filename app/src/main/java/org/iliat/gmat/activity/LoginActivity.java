@@ -171,14 +171,14 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
                         new Gson()).fromJson(response.body().charStream(),
                         JSONLogin.class);
                 if (jsonLogin.getLogin_status() == 1) {
-                    SharedPreferences sharedPreferences = getSharedPreferences(GMATApplication.SHARE_PREFERENCES, MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putBoolean(GMATApplication.LOGIN_SHARE_PREFERENCES, true);
-                    editor.putString(GMATApplication.EMAIL_SHARE_PREFERENCES, mEmailEditText.getText().toString());
-                    editor.putString(GMATApplication.PASSWORD_SHARE_PREFERENCES, mPasswordEditText.getText().toString());
-                    editor.commit();
-                    mSnackbar.setText("Downloading data...");
-                    downloadQuestions();
+                    mSnackbar.dismiss();
+                    LoginActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            saveLoginState();
+                            downloadQuestions();
+                        }
+                    });
                 } else {
                     mSnackbar.dismiss();
                     toast.show();
@@ -231,6 +231,15 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
         }
     }
 
+    private void saveLoginState() {
+        SharedPreferences sharedPreferences = getSharedPreferences(GMATApplication.SHARE_PREFERENCES, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(GMATApplication.LOGIN_SHARE_PREFERENCES, true);
+        editor.putString(GMATApplication.EMAIL_SHARE_PREFERENCES, mEmailEditText.getText().toString());
+        editor.putString(GMATApplication.PASSWORD_SHARE_PREFERENCES, mPasswordEditText.getText().toString());
+        editor.commit();
+    }
+
     private void downloadQuestionPacks() {
         mSnackbar.setDuration(Snackbar.LENGTH_INDEFINITE);
         mSnackbar.show();
@@ -266,6 +275,7 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
 
     private void downloadQuestions() {
         mSnackbar.setDuration(Snackbar.LENGTH_INDEFINITE);
+        mSnackbar.setText("Downloading data ...");
         mSnackbar.show();
 
         String url = APIUrls.QUESTIONS_API;
