@@ -80,13 +80,14 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
     private EditText mPasswordEditText;
     private CoordinatorLayout mCoordinatorLayout;
     private Snackbar mSnackbar;
+    private Toast toast;
 
     private OkHttpClient mHttpClient;
     private DBContext dbContext;
 
     private boolean mQuestionDownloadCompleted = false;
     private boolean mQuestionPackDownloadCompleted = false;
-    private boolean mQuestionTypeDownloadCompleted =false;
+    private boolean mQuestionTypeDownloadCompleted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +111,7 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
     @Override
     protected void onStart() {
         super.onStart();
-        dbContext=DBContext.getInst();
+        dbContext = DBContext.getInst();
     }
 
     private void initUtils() {
@@ -126,6 +127,7 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
         mPasswordEditText.addTextChangedListener(new MyTextWatcher(mPasswordEditText));
         mLoginButton = (Button) findViewById(R.id.button_login);
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+        toast = Toast.makeText(LoginActivity.this, "Login Fail", Toast.LENGTH_SHORT);
         mSnackbar =
                 Snackbar.make(mCoordinatorLayout,
                         getString(R.string.logging_in),
@@ -148,8 +150,7 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
     }
 
 
-    private void login(){
-        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    private void login() {
         RequestBody formBody = new FormBody.Builder()
                 .add("username", mEmailEditText.getText().toString())
                 .add("password", mPasswordEditText.getText().toString())
@@ -161,8 +162,6 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
         mHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.e("HttpService", "onFailure() Request was: ");
-
                 e.printStackTrace();
             }
 
@@ -171,24 +170,25 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
                 JSONLogin jsonLogin = (
                         new Gson()).fromJson(response.body().charStream(),
                         JSONLogin.class);
-                if(jsonLogin.getLogin_status() == 1){
+                if (jsonLogin.getLogin_status() == 1) {
                     SharedPreferences sharedPreferences = getSharedPreferences(GMATApplication.SHARE_PREFERENCES, MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putBoolean(GMATApplication.LOGIN_SHARE_PREFERENCES, true);
                     editor.putString(GMATApplication.EMAIL_SHARE_PREFERENCES, mEmailEditText.getText().toString());
                     editor.putString(GMATApplication.PASSWORD_SHARE_PREFERENCES, mPasswordEditText.getText().toString());
                     editor.commit();
+                    mSnackbar.setText("Downloading data...");
                     downloadQuestions();
                 } else {
-                    Toast.makeText(LoginActivity.this,"Login Fail", Toast.LENGTH_SHORT);
+                    mSnackbar.dismiss();
+                    toast.show();
                 }
             }
         });
     }
 
 
-
-    private void goToMainActivity(){
+    private void goToMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getApplicationContext().startActivity(intent);
@@ -255,7 +255,7 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
                 Log.d(TAG, String.valueOf(jsonQuestionPackList.getList().size()));
                 saveQuestionPacks(jsonQuestionPackList);
 
-                for(JSONQuestionPack jsonQuestionPack : jsonQuestionPackList.getList()) {
+                for (JSONQuestionPack jsonQuestionPack : jsonQuestionPackList.getList()) {
                     Log.d(TAG, jsonQuestionPack.getId());
                 }
 
@@ -264,7 +264,7 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
         });
     }
 
-    private  void downloadQuestions() {
+    private void downloadQuestions() {
         mSnackbar.setDuration(Snackbar.LENGTH_INDEFINITE);
         mSnackbar.show();
 
@@ -292,7 +292,8 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
             }
         });
     }
-    private  void downloadQuestionType() {
+
+    private void downloadQuestionType() {
         mSnackbar.setDuration(Snackbar.LENGTH_INDEFINITE);
         mSnackbar.show();
 
@@ -317,9 +318,11 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
             }
         });
     }
+
     private void saveQuestionType(JSONQuestionTypeList jsonQuestionTypeList) {
         dbContext.saveQuestionType(jsonQuestionTypeList);
     }
+
     private void saveQuestions(JSONQuestionList jsonQuestionList) {
         dbContext.saveQuestions(jsonQuestionList);
     }
@@ -329,7 +332,7 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
     }
 
     private void onJSONDownloadFinished(String tag, boolean result) {
-        if(!result){
+        if (!result) {
 
             runOnUiThread(new Runnable() {
                 @Override
@@ -343,17 +346,16 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
 
         } else {
             mSnackbar.dismiss();
-            if(tag == TAG_QUESION_PACK_DOWNLOAD) {
+            if (tag == TAG_QUESION_PACK_DOWNLOAD) {
                 mQuestionPackDownloadCompleted = true;
-            }
-            else if(tag == TAG_QUESION_DOWNLOAD) {
+            } else if (tag == TAG_QUESION_DOWNLOAD) {
                 mQuestionDownloadCompleted = true;
                 downloadQuestionPacks();
                 downloadQuestionType();
-            }else if(tag==TAG_QUESION_TYPE_DOWNLOAD){
-                mQuestionTypeDownloadCompleted=true;
+            } else if (tag == TAG_QUESION_TYPE_DOWNLOAD) {
+                mQuestionTypeDownloadCompleted = true;
             }
-            if(mQuestionDownloadCompleted && mQuestionPackDownloadCompleted) {
+            if (mQuestionDownloadCompleted && mQuestionPackDownloadCompleted) {
                 /* Good, move to next screen */
                 goToMainActivity();
             }
@@ -367,20 +369,20 @@ public class LoginActivity extends AppCompatActivity implements JSONPreDownloadH
 
     @Override
     public void onPostDownload(JSONObject jsonObject, String tag) {
-        switch(tag) {
+        switch (tag) {
             case DOWNLOAD_QUESTION_TAG:
                 mQuestionDownloadCompleted = true;
                 break;
             case DOWNLOAD_QUESTION_PACK_TAG:
                 mQuestionPackDownloadCompleted = true;
                 break;
-            case DOWNLOAD_QUESTION_TYPE_TAG:{
-                mQuestionTypeDownloadCompleted=true;
+            case DOWNLOAD_QUESTION_TYPE_TAG: {
+                mQuestionTypeDownloadCompleted = true;
                 break;
             }
         }
 
-        if(mQuestionDownloadCompleted && mQuestionPackDownloadCompleted && mQuestionTypeDownloadCompleted) {
+        if (mQuestionDownloadCompleted && mQuestionPackDownloadCompleted && mQuestionTypeDownloadCompleted) {
             goToMainActivity();
         }
     }

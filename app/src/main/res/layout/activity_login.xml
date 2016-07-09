@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="80dp"
-        android:paddingBottom="60dp">
+        android:paddingBottom="10dp">
 
         <ImageView
             android:layout_width="match_parent"
@@ -121,7 +121,7 @@
             android:textColor="@color/color_white"
             android:textSize="18dp"
             android:id="@+id/button_login"
-            android:background="@color/color_orange_main"/>
+            android:background="@drawable/custom_button_login"/>
 
     </RelativeLayout>
 
